@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="01082020-1" author="danielly">
+        <createTable tableName="user">
+            <column name="id" type="BIGINT"/>
+            <column name="email" type="VARCHAR(50)"/>
+            <column name="password" type="VARCHAR(300)"/>
+            <column name="name" type="VARCHAR(100)"/>
+            <column name="photo" type="VARCHAR(10000)"/>
+            <column name="cpf" type="VARCHAR(11)"/>
+            <column name="active" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-2" author="danielly">
+        <createTable tableName="notification">
+            <column name="id" type="BIGINT"/>
+            <column name="description" type="VARCHAR(200)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-3" author="danielly">
+        <createTable tableName="user_notification">
+            <column name="id" type="BIGINT"/>
+            <column name="notification_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="viewed" type="BOOLEAN"/>
+            <column name="date" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-4" author="danielly">
+        <createTable tableName="authorization">
+            <column name="id" type="BIGINT"/>
+            <column name="name" type="varchar(30)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-5" author="danielly">
+        <createTable tableName="user_authorization">
+            <column name="id" type="BIGINT"/>
+            <column name="authorization_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-6" author="danielly">
+        <createTable tableName="student">
+            <column name="id" type="BIGINT"/>
+            <column name="ra" type="VARCHAR(13)"/>
+            <column name="city" type="VARCHAR(50)"/>
+            <column name="linkedin" type="VARCHAR(150)"/>
+            <column name="biography" type="VARCHAR(1000)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-7" author="danielly">
+        <createTable tableName="representative">
+            <column name="id" type="BIGINT"/>
+            <column name="company" type="VARCHAR(100)"/>
+            <column name="telephone" type="VARCHAR(11)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-8" author="danielly">
+        <createTable tableName="cadi">
+            <column name="id" type="BIGINT"/>
+            <column name="position" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-9" author="danielly">
+        <createTable tableName="teacher">
+            <column name="id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-10" author="danielly">
+        <createTable tableName="professional_info">
+            <column name="id" type="BIGINT"/>
+            <column name="role" type="VARCHAR(20)"/>
+            <column name="activities_performed" type="VARCHAR(150)"/>
+            <column name="start" type="DATE"/>
+            <column name="end" type="DATE"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-11" author="danielly">
+        <createTable tableName="student_professional_info">
+            <column name="id" type="BIGINT"/>
+            <column name="student_id" type="BIGINT"/>
+            <column name="professional_info_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-12" author="danielly">
+        <createTable tableName="academic_info">
+            <column name="id" type="BIGINT"/>
+            <column name="course" type="VARCHAR(40)"/>
+            <column name="institution" type="VARCHAR(40)"/>
+            <column name="start" type="DATE"/>
+            <column name="end" type="DATE"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-13" author="danielly">
+        <createTable tableName="student_academic_info">
+            <column name="id" type="BIGINT"/>
+            <column name="student_id" type="BIGINT"/>
+            <column name="academic_info_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-14" author="danielly">
+        <createTable tableName="medal">
+            <column name="id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(10)"/>
+            <column name="description" type="VARCHAR(20)"/>
+            <column name="picture" type="VARCHAR(5000)"/>
+            <column name="creation_date" type="DATE"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-15" author="danielly">
+        <createTable tableName="category">
+            <column name="id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(30)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-16" author="danielly">
+        <createTable tableName="medal_category">
+            <column name="id" type="BIGINT"/>
+            <column name="medal_id" type="BIGINT"/>
+            <column name="category_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01082020-17" author="danielly">
+        <createTable tableName="student_medal">
+            <column name="id" type="BIGINT"/>
+            <column name="medal_id" type="BIGINT"/>
+            <column name="student_id" type="BIGINT"/>
+            <column name="date" type="DATE"/>
+        </createTable>
+    </changeSet>
+
+    <!--  CONSTRAINTS  -->
+
+    <changeSet author="danielly" id="01082020-1-const">
+        <addPrimaryKey columnNames="id" tableName="user" constraintName="user_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="user" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-2-const">
+        <addPrimaryKey columnNames="id" tableName="notification" constraintName="notification_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="notification" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-3-const">
+        <addPrimaryKey columnNames="id" tableName="user_notification" constraintName="user_notification_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="user_notification" columnDataType="BIGINT"/>
+
+        <addForeignKeyConstraint baseColumnNames="notification_id" baseTableName="user_notification" constraintName="userNotification_notification_fk"
+                                 referencedColumnNames="id" referencedTableName="notification"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_notification" constraintName="userNotification_user_fk"
+                                 referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-4-const">
+        <addPrimaryKey columnNames="id" tableName="authorization" constraintName="authorization_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="authorization" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-5-const">
+        <addPrimaryKey columnNames="id" tableName="user_authorization" constraintName="user_notification_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="user_authorization" columnDataType="BIGINT"/>
+
+        <addForeignKeyConstraint baseColumnNames="authorization_id" baseTableName="user_authorization" constraintName="userAuthorization_authorization_fk"
+                                 referencedColumnNames="id" referencedTableName="authorization"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_authorization" constraintName="userAuthorization_user_fk"
+                                 referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-6-const">
+        <addPrimaryKey columnNames="id" tableName="student" constraintName="student_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="student" columnDataType="BIGINT"/>
+
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="student" constraintName="student_user_fk"
+                                 referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-7-const">
+        <addPrimaryKey columnNames="id" tableName="representative" constraintName="representative_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="representative" columnDataType="BIGINT"/>
+
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="representative" constraintName="representative_user_fk"
+                                 referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-8-const">
+        <addPrimaryKey columnNames="id" tableName="cadi" constraintName="cadi_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="cadi" columnDataType="BIGINT"/>
+
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="cadi" constraintName="cadi_user_fk"
+                                 referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-9-const">
+        <addPrimaryKey columnNames="id" tableName="teacher" constraintName="teacher_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="teacher" columnDataType="BIGINT"/>
+
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="teacher" constraintName="teacher_user_fk"
+                                 referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-10-const">
+        <addPrimaryKey columnNames="id" tableName="professional_info" constraintName="professional_info_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="professional_info" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-11-const">
+        <addPrimaryKey columnNames="id" tableName="student_professional_info" constraintName="student_professional_info_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="student_professional_info" columnDataType="BIGINT"/>
+
+        <addForeignKeyConstraint baseColumnNames="student_id" baseTableName="student_professional_info" constraintName="studentProfessionalInfo_student_fk"
+                                 referencedColumnNames="id" referencedTableName="student"/>
+
+        <addForeignKeyConstraint baseColumnNames="professional_info_id" baseTableName="student_professional_info" constraintName="studentProfessionalInfo_professionalInfo_fk"
+                                 referencedColumnNames="id" referencedTableName="professional_info"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-12-const">
+        <addPrimaryKey columnNames="id" tableName="academic_info" constraintName="academic_info_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="academic_info" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-13-const">
+        <addPrimaryKey columnNames="id" tableName="student_academic_info" constraintName="student_professional_info_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="student_academic_info" columnDataType="BIGINT"/>
+
+        <addForeignKeyConstraint baseColumnNames="student_id" baseTableName="student_academic_info" constraintName="studentAcademicInfo_student_fk"
+                                 referencedColumnNames="id" referencedTableName="student"/>
+
+        <addForeignKeyConstraint baseColumnNames="academic_info_id" baseTableName="student_academic_info" constraintName="studentAcademicInfo_academicInfo_fk"
+                                 referencedColumnNames="id" referencedTableName="academic_info"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-14-const">
+        <addPrimaryKey columnNames="id" tableName="medal" constraintName="medal_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="medal" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-15-const">
+        <addPrimaryKey columnNames="id" tableName="category" constraintName="category_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="category" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-16-const">
+        <addPrimaryKey columnNames="id" tableName="medal_category" constraintName="medal_category_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="medal_category" columnDataType="BIGINT"/>
+
+        <addForeignKeyConstraint baseColumnNames="medal_id" baseTableName="medal_category" constraintName="medalCategory_medal_fk"
+                                 referencedColumnNames="id" referencedTableName="medal"/>
+
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="medal_category" constraintName="medalCategory_category_fk"
+                                 referencedColumnNames="id" referencedTableName="category"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-17-const">
+        <addPrimaryKey columnNames="id" tableName="student_medal" constraintName="student_medal_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="student_medal" columnDataType="BIGINT"/>
+
+        <addForeignKeyConstraint baseColumnNames="medal_id" baseTableName="student_medal" constraintName="studentMedal_medal_fk"
+                                 referencedColumnNames="id" referencedTableName="medal"/>
+
+        <addForeignKeyConstraint baseColumnNames="student_id" baseTableName="student_medal" constraintName="studentMedal_student_fk"
+                                 referencedColumnNames="id" referencedTableName="student"/>
+    </changeSet>
+
+</databaseChangeLog>
