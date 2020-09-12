@@ -93,6 +93,12 @@ public class TeamServiceImpl implements TeamService {
             if (studentTeam.getId() != null) {
                 studentTeamRepository.findById(studentTeam.getId()).ifPresent(studentTeams::add);
             } else {
+                StudentTeam studentTeamExists = studentTeamRepository.findByStudentId(studentTeam.getStudent().getId());
+
+                if (studentTeamExists != null) {
+                    throw new studentAlreadyInTeamException();
+                }
+
                 Student student = studentService.findById(studentTeam.getStudent().getId());
                 throwIfUserIsNull(student);
 

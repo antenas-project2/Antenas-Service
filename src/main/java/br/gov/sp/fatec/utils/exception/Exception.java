@@ -43,6 +43,13 @@ public class Exception extends Throwable {
         }
     }
 
+    @ResponseStatus(code = HttpStatus.CONFLICT)
+    public static class studentAlreadyInTeamException extends RuntimeException {
+        public studentAlreadyInTeamException() {
+            super(format("Student already resgistered in a team."));
+        }
+    }
+
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public static class projectNotFoundException extends RuntimeException {
         public projectNotFoundException(Long id) {
@@ -53,6 +60,9 @@ public class Exception extends Throwable {
             super("Project not found");
         }
     }
+
+
+
 
     public static void throwIfUserIsInactive(User user) throws userNotFoundException {
         if (!user.getActive()) {
@@ -71,6 +81,7 @@ public class Exception extends Throwable {
             throw new projectNotFoundException();
         }
     }
+
 
 }
 
