@@ -20,19 +20,18 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(this.informacoesApi().build());
+                .apiInfo(this.ApiInfo().build());
                 return docket;
     }
-    private ApiInfoBuilder informacoesApi() {
 
+    private ApiInfoBuilder ApiInfo() {
         ApiInfoBuilder apiInfoBuilder = new ApiInfoBuilder();
 
         apiInfoBuilder.title("Antenas");
         apiInfoBuilder.description("Projeto idealizado pela FATEC de São José dos Campos.");
-        apiInfoBuilder.version("2.0");
+        apiInfoBuilder.version("3.0");
 
         return apiInfoBuilder;
-
     }
 
 }
