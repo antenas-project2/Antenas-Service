@@ -159,4 +159,15 @@ public class ProjectServiceImpl implements ProjectService {
             return project.getProgress();
         }
     }
+
+    public void delete(Long projectId) {
+        Project project = findById(projectId);
+        throwIfProjectIsNull(project);
+
+        if (project.getRefused()) {
+            repository.delete(project);
+        } else {
+            throw new projectCannotBeDeletedException();
+        }
+    }
 }

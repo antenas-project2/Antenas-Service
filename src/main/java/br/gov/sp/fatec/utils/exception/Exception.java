@@ -61,6 +61,13 @@ public class Exception extends Throwable {
         }
     }
 
+    @ResponseStatus(code = HttpStatus.METHOD_NOT_ALLOWED)
+    public static class projectCannotBeDeletedException extends RuntimeException {
+        public projectCannotBeDeletedException() {
+            super("This project can1t be deleted.");
+        }
+    }
+
 
 
 

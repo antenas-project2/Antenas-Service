@@ -39,4 +39,9 @@ public class ProjectController {
     public Project getById(@PathVariable("id") Long id) {
         return service.findById(id);
     }
+
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        service.delete(id);
+    }
 }

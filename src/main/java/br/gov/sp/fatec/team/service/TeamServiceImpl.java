@@ -56,10 +56,6 @@ public class TeamServiceImpl implements TeamService {
         return repository.findAllByProjectId(projectId);
     }
 
-//    public List<Team> findStudentTeam(Long projectId) {
-//        return repository.findAllByProjectId(projectId);
-//    }
-
     public Team save(Team team, String role) {
         Project project = projectService.findById(team.getProject().getId());
         throwIfProjectIsNull(project);
