@@ -148,9 +148,9 @@ public class ProjectServiceImpl implements ProjectService {
         } else if (project.getCompleteDescription() != null && project.getTechnologyDescription() != null && project.getProgress() == 3) {
             return 4;
         } if (project.getProgress() == 4 && project.getCompleteDescription() != null && project.getTechnologyDescription() != null) {
-            return 5; // todo - criar o 5.1, 5.2,
+            return 5;
         } else if (project.getProgress() == 5 && project.getMeeting() != null && project.getMeeting().getPossibleDate().size() > 0 && project.getMeeting().getChosenDate() != null) {
-            return 6; // todo - criar o 6.1
+            return 6;
         } else if (project.getProgress() == 6 ) { // todo - verificar se tem a url
             return 7;
         } else if (project.getProgress() == 7 && !project.getOpen() ) {

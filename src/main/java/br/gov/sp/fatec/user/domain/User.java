@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.sql.Blob;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,6 +29,11 @@ public class User implements UserDetails {
     protected String name;
 
     protected Boolean active;
+
+    @Lob
+    protected Blob photo;
+
+    protected String cpf;
 
     @Transient
     private String token;
