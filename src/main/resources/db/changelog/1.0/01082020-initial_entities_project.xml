@@ -15,10 +15,10 @@
     <changeSet id="01082020-19" author="danielly">
         <createTable tableName="address">
             <column name="id" type="BIGINT"/>
-            <column name="place" type="VARCHAR(50)"/>
+            <column name="place" type="VARCHAR(100)"/>
             <column name="number" type="INTEGER"/>
-            <column name="street" type="VARCHAR(50)"/>
-            <column name="neighborhood" type="VARCHAR(50)"/>
+            <column name="street" type="VARCHAR(200)"/>
+            <column name="neighborhood" type="VARCHAR(200)"/>
             <column name="city" type="VARCHAR(50)"/>
             <column name="zip_code" type="VARCHAR(8)"/>
         </createTable>
@@ -47,9 +47,9 @@
             <column name="teacher_id" type="BIGINT"/>
             <column name="meeting_id" type="BIGINT"/>
             <column name="title" type="VARCHAR(30)"/>
-            <column name="short_description" type="VARCHAR(200)"/>
-            <column name="complete_description" type="VARCHAR(500)"/>
-            <column name="technology_description" type="VARCHAR(300)"/>
+            <column name="short_description" type="VARCHAR(1000)"/>
+            <column name="complete_description" type="VARCHAR(1000)"/>
+            <column name="technology_description" type="VARCHAR(1000)"/>
             <column name="notes" type="VARCHAR(300)"/>
             <column name="updated_at" type="DATETIME"/>
             <column name="created_at" type="DATETIME"/>
@@ -106,46 +106,44 @@
 
     <!--  CONSTRAINTS  -->
 
-    <changeSet author="danielly" id="01082020-18-const">
+    <changeSet author="danielly" id="01082020-18-pk">
         <addPrimaryKey columnNames="id" tableName="date" constraintName="date_pk"/>
         <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="date" columnDataType="BIGINT"/>
-    </changeSet>
 
-    <changeSet author="danielly" id="01082020-19-const">
         <addPrimaryKey columnNames="id" tableName="address" constraintName="address_pk"/>
         <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="address" columnDataType="BIGINT"/>
-    </changeSet>
 
-    <changeSet author="danielly" id="01082020-20-const">
         <addPrimaryKey columnNames="id" tableName="meeting" constraintName="meeting_pk"/>
         <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="meeting" columnDataType="BIGINT"/>
 
-        <addForeignKeyConstraint baseColumnNames="address_id" baseTableName="meeting" constraintName="meeting_address_fk"
-                                 referencedColumnNames="id" referencedTableName="address"/>
-
-        <addForeignKeyConstraint baseColumnNames="address_project" baseTableName="meeting" constraintName="meeting_project_fk"
-                                 referencedColumnNames="id" referencedTableName="project"/>
-    </changeSet>
-
-    <changeSet author="danielly" id="01082020-21-const">
-        <addPrimaryKey columnNames="id" tableName="meeting_date" constraintName="user_notification_pk"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="meeting_date" columnDataType="BIGINT"/>
-
-        <addForeignKeyConstraint baseColumnNames="meeting_id" baseTableName="meeting_date" constraintName="meetingDate_meeting_fk"
-                                 referencedColumnNames="id" referencedTableName="meeting"/>
-
-        <addForeignKeyConstraint baseColumnNames="date_id" baseTableName="meeting_date" constraintName="meetingDate_date_fk"
-                                 referencedColumnNames="id" referencedTableName="date"/>
-    </changeSet>
-
-
-    <changeSet author="danielly" id="01082020-22-const">
         <addPrimaryKey columnNames="id" tableName="project" constraintName="project_pk"/>
         <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="project" columnDataType="BIGINT"/>
 
-        <addForeignKeyConstraint baseColumnNames="meeting_id" baseTableName="project" constraintName="project_meeting_fk"
-                                 referencedColumnNames="id" referencedTableName="meeting"/>
+        <addPrimaryKey columnNames="id" tableName="meeting_date" constraintName="user_notification_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="meeting_date" columnDataType="BIGINT"/>
 
+        <addPrimaryKey columnNames="id" tableName="evaluation" constraintName="evaluation_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="evaluation" columnDataType="BIGINT"/>
+
+        <addPrimaryKey columnNames="id" tableName="team" constraintName="team_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="team" columnDataType="BIGINT"/>
+
+        <addPrimaryKey columnNames="id" tableName="student_team" constraintName="student_team_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="student_team" columnDataType="BIGINT"/>
+
+        <addPrimaryKey columnNames="id" tableName="student_team_evaluation" constraintName="student_team_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="student_team_evaluation" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-20-const">
+        <addForeignKeyConstraint baseColumnNames="address_id" baseTableName="meeting" constraintName="meeting_address_fk"
+                                 referencedColumnNames="id" referencedTableName="address"/>
+
+        <addForeignKeyConstraint baseColumnNames="project_id" baseTableName="meeting" constraintName="meeting_project_fk"
+                                 referencedColumnNames="id" referencedTableName="project"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="01082020-22-const">
         <addForeignKeyConstraint baseColumnNames="teacher_id" baseTableName="project" constraintName="project_teacher_fk"
                                  referencedColumnNames="id" referencedTableName="teacher"/>
 
@@ -157,25 +155,25 @@
 
         <addForeignKeyConstraint baseColumnNames="finished_by" baseTableName="project" constraintName="project_representative_finish_fk"
                                  referencedColumnNames="id" referencedTableName="cadi"/>
+
+        <addForeignKeyConstraint baseColumnNames="meeting_id" baseTableName="project" constraintName="project_meeting_fk"
+                                 referencedColumnNames="id" referencedTableName="meeting"/>
     </changeSet>
 
-    <changeSet author="danielly" id="01082020-23-const">
-        <addPrimaryKey columnNames="id" tableName="evaluation" constraintName="evaluation_pk"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="evaluation" columnDataType="BIGINT"/>
+    <changeSet author="danielly" id="01082020-21-const">
+        <addForeignKeyConstraint baseColumnNames="meeting_id" baseTableName="meeting_date" constraintName="meetingDate_meeting_fk"
+                                 referencedColumnNames="id" referencedTableName="meeting"/>
+
+        <addForeignKeyConstraint baseColumnNames="date_id" baseTableName="meeting_date" constraintName="meetingDate_date_fk"
+                                 referencedColumnNames="id" referencedTableName="date"/>
     </changeSet>
 
     <changeSet author="danielly" id="01082020-24-const">
-        <addPrimaryKey columnNames="id" tableName="team" constraintName="team_pk"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="team" columnDataType="BIGINT"/>
-
         <addForeignKeyConstraint baseColumnNames="project_id" baseTableName="team" constraintName="team_project_fk"
                                  referencedColumnNames="id" referencedTableName="project"/>
     </changeSet>
 
     <changeSet author="danielly" id="01082020-25-const">
-        <addPrimaryKey columnNames="id" tableName="student_team" constraintName="student_team_pk"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="student_team" columnDataType="BIGINT"/>
-
         <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="student_team" constraintName="studentTeam_team_fk"
                                  referencedColumnNames="id" referencedTableName="team"/>
 
@@ -184,9 +182,6 @@
     </changeSet>
 
     <changeSet author="danielly" id="01082020-26-const">
-        <addPrimaryKey columnNames="id" tableName="student_team_evaluation" constraintName="student_team_pk"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="student_team_evaluation" columnDataType="BIGINT"/>
-
         <addForeignKeyConstraint baseColumnNames="student_team_id" baseTableName="student_team_evaluation" constraintName="studentTeamEvaluation_student_team_fk"
                                  referencedColumnNames="id" referencedTableName="student_team"/>
 
