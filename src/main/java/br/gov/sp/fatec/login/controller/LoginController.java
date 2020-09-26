@@ -33,7 +33,7 @@ public class LoginController {
         login.setName(user.getName());
         login.setId(user.getId());
         login.setAuthorizations(user.getAuthorizations());
-
+        login.setPhoto(user.getPhoto());
 
         return login;
     }
