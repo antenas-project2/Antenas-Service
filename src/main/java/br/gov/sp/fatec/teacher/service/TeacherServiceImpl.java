@@ -35,8 +35,8 @@ public class TeacherServiceImpl implements TeacherService{
 
         List<Authorization> authorizations = new ArrayList<>();
         Authorization authorization = new Authorization();
-        authorization.setName("REPRESENTATIVE");
-        authorization.setAuthority("REPRESENTATIVE");
+        authorization.setName("TEACHER");
+        authorization.setAuthority("TEACHER");
         authorizations.add(authorization);
 
         teacher.setAuthorizations(authorizations);

@@ -30,8 +30,7 @@ public class User implements UserDetails {
 
     protected Boolean active;
 
-    @Lob
-    protected Blob photo;
+    protected String photo;
 
     protected String cpf;
 

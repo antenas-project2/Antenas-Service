@@ -118,9 +118,9 @@
     <changeSet id="01082020-14" author="danielly">
         <createTable tableName="medal">
             <column name="id" type="BIGINT"/>
-            <column name="name" type="VARCHAR(10)"/>
-            <column name="description" type="VARCHAR(20)"/>
-            <column name="picture" type="VARCHAR(5000)"/>
+            <column name="name" type="VARCHAR(15)"/>
+            <column name="description" type="VARCHAR(30)"/>
+            <column name="picture" type="blob"/>
             <column name="creation_date" type="DATE"/>
         </createTable>
     </changeSet>

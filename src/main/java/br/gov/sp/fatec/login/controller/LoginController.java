@@ -3,6 +3,7 @@ package br.gov.sp.fatec.login.controller;
 import br.gov.sp.fatec.security.JwtUtils;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.user.dto.UserDTO;
+import br.gov.sp.fatec.utils.exception.Exception;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,11 +23,17 @@ public class LoginController {
     public UserDTO login(@RequestBody UserDTO login) throws JsonProcessingException {
         Authentication credentials = new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword());
         User user = (User) auth.authenticate(credentials).getPrincipal();
+
+        if (!user.getActive()) {
+            throw new Exception.userInactiveException(user.getId());
+        }
+
         login.setPassword(null);
         login.setToken(JwtUtils.generateToken(user));
         login.setName(user.getName());
         login.setId(user.getId());
         login.setAuthorizations(user.getAuthorizations());
+
 
         return login;
     }

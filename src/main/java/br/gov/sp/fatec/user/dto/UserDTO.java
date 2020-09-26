@@ -16,4 +16,5 @@ public class UserDTO {
     private List<Authorization> authorizations;
     private String token;
     private Long id;
+    private String photo;
 }
