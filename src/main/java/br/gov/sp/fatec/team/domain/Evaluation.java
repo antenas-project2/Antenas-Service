@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.team.domain;
 
+import br.gov.sp.fatec.user.domain.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,7 +20,9 @@ public class Evaluation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String evaluatedBy;
+    @OneToOne
+    @JoinColumn(name = "evaluated_by")
+    private User evaluatedBy;
 
     private int proactivity;
 

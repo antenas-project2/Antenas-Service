@@ -32,7 +32,7 @@ public class StudentTeam {
     @JoinColumn(name = "student_id")
     private Student student;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "student_team_evaluation",
             joinColumns = @JoinColumn(name = "evaluation_id"),
             inverseJoinColumns = @JoinColumn(name = "student_team_id"))

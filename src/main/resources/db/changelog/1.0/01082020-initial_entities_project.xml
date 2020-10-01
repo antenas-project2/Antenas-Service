@@ -69,7 +69,7 @@
     <changeSet id="01082020-23" author="danielly">
         <createTable tableName="evaluation">
             <column name="id" type="BIGINT"/>
-            <column name="evaluated_by" type="VARCHAR(7)"/>
+            <column name="evaluated_by" type="BIGINT"/>
             <column name="proactivity" type="INTEGER"/>
             <column name="collaboration" type="INTEGER"/>
             <column name="autonomy" type="INTEGER"/>
@@ -187,6 +187,11 @@
 
         <addForeignKeyConstraint baseColumnNames="evaluation_id" baseTableName="student_team_evaluation" constraintName="studentTeamEvaluation_evaluation_fk"
                                  referencedColumnNames="id" referencedTableName="evaluation"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="26092020-1-const">
+        <addForeignKeyConstraint baseColumnNames="evaluated_by" baseTableName="evaluation" constraintName="evaluatedBy_fk"
+                                 referencedColumnNames="id" referencedTableName="User"/>
     </changeSet>
 
 </databaseChangeLog>

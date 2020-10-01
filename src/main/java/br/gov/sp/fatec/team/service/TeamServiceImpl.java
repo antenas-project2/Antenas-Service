@@ -78,14 +78,15 @@ public class TeamServiceImpl implements TeamService {
             studentTeamRepository.delete(studentTeam);
         }
     }
-    
+
     public Team update(Team team) { // todo - verificar se não veio null
         Team found = repository.findById(team.getId()).orElse(null);
         assert found != null; // todo - criar exception para team
+        User user = userService.getUserLoggedIn();
 
         List<StudentTeam> studentTeams = new LinkedList<>();
 
-        for (StudentTeam studentTeam : team.getStudentTeamList()) { // todo - não deixar cargos iguais ?
+        for (StudentTeam studentTeam : team.getStudentTeamList()) {
             if (studentTeam.getId() != null) {
                 studentTeamRepository.findById(studentTeam.getId()).ifPresent(studentTeams::add);
             } else {
@@ -111,6 +112,16 @@ public class TeamServiceImpl implements TeamService {
         found.setProjectUrl(team.getProjectUrl());
         found.setCommunicationLink(team.getCommunicationLink());
 
+        for (StudentTeam studentTeamFound : found.getStudentTeamList()) {
+            for (StudentTeam studentTeam : team.getStudentTeamList()) {
+                if (studentTeamFound.getId().equals(studentTeam.getId()) && studentTeam.getEvaluations().size() > 0) {
+                    studentTeam.getEvaluations().get(0).setEvaluatedBy(userService.getUserLoggedIn());
+                    studentTeamFound.getEvaluations().add(studentTeam.getEvaluations().get(0));
+                }
+            }
+        }
+
         return repository.save(found);
     }
 }
+

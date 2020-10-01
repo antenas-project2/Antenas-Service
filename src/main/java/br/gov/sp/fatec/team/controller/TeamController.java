@@ -26,13 +26,6 @@ public class TeamController {
         return service.findAll(projectId);
     }
 
-//    @GetMapping(path = "/{projectId}", produces = APPLICATION_JSON_VALUE)
-//    @CrossOrigin
-//    public List<StudentTeam> findStudentTeam(@PathVariable("projectId") Long projectId) {
-//        return service.findAll(projectId);
-//    }
-
-
 
     @PostMapping(path = "/{role}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
