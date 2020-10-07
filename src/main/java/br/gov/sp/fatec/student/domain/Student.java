@@ -57,6 +57,7 @@ public class Student extends User {
     private List<AcademicInfo> academicInfos = new ArrayList<>();
 
     @OneToMany(mappedBy = "student")
+    @JsonIgnore
     private List<StudentTeam> studentTeamList;
 
     @OneToMany(mappedBy = "student")

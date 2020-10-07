@@ -16,24 +16,24 @@ import javax.persistence.*;
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private Long id;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private String place;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private int number;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private String street;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private String neighborhood;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private String city;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private String zipCode;
 }

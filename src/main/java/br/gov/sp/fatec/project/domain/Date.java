@@ -16,11 +16,11 @@ import javax.persistence.*;
 public class Date {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private Long id;
 
     @Column(name = "date")
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private java.util.Date dateTime;
 }
 

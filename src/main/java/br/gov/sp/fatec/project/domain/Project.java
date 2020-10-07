@@ -22,74 +22,74 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "meeting_id", referencedColumnName = "id")
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private Meeting meeting;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private String title;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private String shortDescription;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private String completeDescription;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private String technologyDescription;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private String notes;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private int progress;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private java.util.Date updatedAt;
 
     @CreatedDate
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private ZonedDateTime createdAt;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private Boolean refused;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private String reason;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private Boolean finished;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private Boolean open;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private String course;
 
     @OneToOne
     @JoinColumn(name = "approved_by", referencedColumnName = "id")
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private Cadi approvedBy;
 
     @OneToOne
     @JoinColumn(name = "finished_by", referencedColumnName = "id")
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private Cadi finishedBy;
 
     @OneToOne
     @JoinColumn(name = "created_by", referencedColumnName = "id")
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private Representative createdBy;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private Teacher teacher;
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Project.class })
     private int semester;
 }

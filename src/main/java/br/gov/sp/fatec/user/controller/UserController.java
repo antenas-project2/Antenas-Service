@@ -19,7 +19,6 @@ public class UserController {
     private UserService service;
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     public User getLoggedInfo() {
         return service.getLoggedInfo();
     }

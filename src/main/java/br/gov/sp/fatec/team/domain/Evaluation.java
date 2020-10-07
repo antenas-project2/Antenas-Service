@@ -20,23 +20,23 @@ public class Evaluation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.Student.class, View.Teacher.class })
+    @JsonView({ View.Team.class })
     private Long id;
 
     @OneToOne
     @JoinColumn(name = "evaluated_by")
-    @JsonView({ View.Student.class, View.Teacher.class })
+    @JsonView({ View.Team.class })
     private User evaluatedBy;
 
-    @JsonView({ View.Student.class, View.Teacher.class })
+    @JsonView({ View.Team.class })
     private int proactivity;
 
-    @JsonView({ View.Student.class, View.Teacher.class })
+    @JsonView({ View.Team.class })
     private int collaboration;
 
-    @JsonView({ View.Student.class, View.Teacher.class })
+    @JsonView({ View.Team.class })
     private int autonomy;
 
-    @JsonView({ View.Student.class, View.Teacher.class })
+    @JsonView({ View.Team.class })
     private int resultsDeliver;
 }

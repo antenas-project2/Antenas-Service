@@ -20,24 +20,24 @@ public class Team {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Team.class })
     private Long id;
 
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Team.class })
     private String name;
 
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Team.class })
     private String projectUrl;
 
     @ManyToOne
     @JoinColumn(name = "project_id", referencedColumnName = "id")
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Team.class })
     private Project project;
 
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Team.class })
     private String communicationLink;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.PERSIST)
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Team.class })
     private List<StudentTeam> studentTeamList;
 }

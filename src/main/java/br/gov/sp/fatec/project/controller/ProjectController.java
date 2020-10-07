@@ -23,31 +23,31 @@ public class ProjectController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Project.class })
     public Project create(@RequestBody Project project) {
         return service.save(project);
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Project.class })
     public List<Project> findAll() {
         return service.findAll();
     }
 
     @PostMapping(value = "/update")
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Project.class })
     public Project update(@RequestBody Project project) {
         return service.update(project);
     }
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Project.class })
     public Project getById(@PathVariable("id") Long id) {
         return service.findById(id);
     }
 
     @DeleteMapping(value = "/{id}")
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Project.class })
     public void delete(@PathVariable("id") Long id) {
         service.delete(id);
     }
