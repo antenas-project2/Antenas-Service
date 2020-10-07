@@ -1,7 +1,9 @@
 package br.gov.sp.fatec.user.domain;
 
 import br.gov.sp.fatec.security.domain.Authorization;
+import br.gov.sp.fatec.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,27 +22,36 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     private Long id;
 
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     protected String email;
 
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     protected String password;
 
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     protected String name;
 
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     protected Boolean active;
 
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     protected String photo;
 
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     protected String cpf;
 
     @Transient
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     private String token;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_authorization",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "authorization_id") })
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     private List<Authorization> authorizations;
 
     @Override

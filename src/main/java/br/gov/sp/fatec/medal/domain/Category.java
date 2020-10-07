@@ -1,5 +1,7 @@
 package br.gov.sp.fatec.medal.domain;
 
+import br.gov.sp.fatec.utils.view.View;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,10 +19,12 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({ View.Cadi.class })
     private Long id;
 
     String name;
 
     @ManyToMany(mappedBy = "categories")
+    @JsonView({ View.Cadi.class })
     private List<Medal> projects = new LinkedList<>();
 }

@@ -20,7 +20,7 @@
             <column name="street" type="VARCHAR(200)"/>
             <column name="neighborhood" type="VARCHAR(200)"/>
             <column name="city" type="VARCHAR(50)"/>
-            <column name="zip_code" type="VARCHAR(8)"/>
+            <column name="zip_code" type="VARCHAR(9)"/>
         </createTable>
     </changeSet>
 

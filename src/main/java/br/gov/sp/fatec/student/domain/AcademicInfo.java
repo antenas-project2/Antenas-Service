@@ -1,6 +1,8 @@
 package br.gov.sp.fatec.student.domain;
 
 import br.gov.sp.fatec.project.domain.Project;
+import br.gov.sp.fatec.utils.view.View;
+import com.fasterxml.jackson.annotation.JsonView;
 import liquibase.pro.packaged.D;
 import lombok.*;
 
@@ -19,16 +21,22 @@ import java.util.List;
 public class AcademicInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({ View.Student.class })
     private Long id;
 
+    @JsonView({ View.Student.class })
     private String course;
 
+    @JsonView({ View.Student.class })
     private String institution;
 
+    @JsonView({ View.Student.class })
     private Date start;
 
+    @JsonView({ View.Student.class })
     private Date end;
 
     @ManyToMany(mappedBy = "academicInfos")
+    @JsonView({ View.Student.class })
     private List<Student> students = new LinkedList<>();
 }

@@ -2,6 +2,8 @@ package br.gov.sp.fatec.project.controller;
 
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
+import br.gov.sp.fatec.utils.view.View;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,26 +23,31 @@ public class ProjectController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     public Project create(@RequestBody Project project) {
         return service.save(project);
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     public List<Project> findAll() {
         return service.findAll();
     }
 
     @PostMapping(value = "/update")
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     public Project update(@RequestBody Project project) {
         return service.update(project);
     }
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     public Project getById(@PathVariable("id") Long id) {
         return service.findById(id);
     }
 
     @DeleteMapping(value = "/{id}")
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     public void delete(@PathVariable("id") Long id) {
         service.delete(id);
     }

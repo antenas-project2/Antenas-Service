@@ -1,5 +1,7 @@
 package br.gov.sp.fatec.security.domain;
 
+import br.gov.sp.fatec.utils.view.View;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,9 +18,11 @@ public class Authorization implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     private Long id;
 
     @Column(unique=true, length = 20, nullable = false)
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     private String name;
 
     public Long getId() {

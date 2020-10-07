@@ -1,4 +1,4 @@
-package br.gov.sp.fatec.view;
+package br.gov.sp.fatec.utils.view;
 
 public class View {
 
