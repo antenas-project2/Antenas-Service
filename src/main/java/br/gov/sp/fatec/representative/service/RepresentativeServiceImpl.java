@@ -3,6 +3,8 @@ package br.gov.sp.fatec.representative.service;
 import br.gov.sp.fatec.representative.domain.Representative;
 import br.gov.sp.fatec.representative.repository.RepresentativeRepository;
 import br.gov.sp.fatec.security.domain.Authorization;
+import br.gov.sp.fatec.security.repository.AuthorizationRepository;
+import br.gov.sp.fatec.security.service.AuthorizationService;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.repository.TeacherRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
@@ -27,6 +29,9 @@ public class RepresentativeServiceImpl implements RepresentativeService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AuthorizationService authorizationService;
+
     public Representative save(Representative representative, String url) {
         if (repository.findByEmail(representative.getEmail()) != null) {
             throw new Exception.CreateUserException();
@@ -34,14 +39,9 @@ public class RepresentativeServiceImpl implements RepresentativeService{
 
         representative.setActive(false);
         representative.setPassword(passwordEncoder.encode(representative.getPassword()));
+        representative.setAuthorizations(new ArrayList<>());
 
-        List<Authorization> authorizations = new ArrayList<>();
-        Authorization authorization = new Authorization();
-        authorization.setName("REPRESENTATIVE");
-        authorization.setAuthority("REPRESENTATIVE");
-        authorizations.add(authorization);
-
-        representative.setAuthorizations(authorizations);
+        representative.getAuthorizations().add(authorizationService.create("REPRESENTATIVE"));
 
 //        sendEmail.sendMail(representative.getEmail(), url); todo
 

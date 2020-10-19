@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface AuthorizationRepository extends CrudRepository<Authorization, Long> {
 
-    public Authorization findByName(String name);
-
-    public List<Authorization> findByNameContainsIgnoreCase(String name);
+    Authorization findByName(String name);
 
 }

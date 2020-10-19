@@ -12,6 +12,7 @@ import br.gov.sp.fatec.teacher.service.TeacherService;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

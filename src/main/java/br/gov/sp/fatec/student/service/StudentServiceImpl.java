@@ -1,6 +1,8 @@
 package br.gov.sp.fatec.student.service;
 
 import br.gov.sp.fatec.security.domain.Authorization;
+import br.gov.sp.fatec.security.repository.AuthorizationRepository;
+import br.gov.sp.fatec.security.service.AuthorizationService;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.repository.StudentRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
@@ -28,6 +30,9 @@ public class StudentServiceImpl implements  StudentService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AuthorizationService authorizationService;
+
     public Student save(Student student) {
         if (repository.findByEmail(student.getEmail()) != null) {
             throw new Exception.CreateUserException();
@@ -35,14 +40,9 @@ public class StudentServiceImpl implements  StudentService{
 
         student.setActive(false);
         student.setPassword(passwordEncoder.encode(student.getPassword()));
+        student.setAuthorizations(new ArrayList<>());
 
-        List<Authorization> authorizations = new ArrayList<>();
-        Authorization authorization = new Authorization();
-        authorization.setName("STUDENT");
-        authorization.setAuthority("STUDENT");
-        authorizations.add(authorization);
-
-        student.setAuthorizations(authorizations);
+        student.getAuthorizations().add(authorizationService.create("CADI"));
 
 //        sendEmail.sendMail(student.getEmail(), "student"); todo - descomentar
         return repository.save(student);

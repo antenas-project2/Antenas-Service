@@ -8,6 +8,7 @@ import br.gov.sp.fatec.student.service.StudentService;
 import br.gov.sp.fatec.teacher.service.TeacherService;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.user.repository.UserRepository;
+import br.gov.sp.fatec.utils.exception.Exception;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -23,13 +24,11 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository repository;
 
     @Autowired
     private AuthorizationRepository authorizationRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private StudentService studentService;
@@ -43,47 +42,30 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private TeacherService teacherService;
 
-    @Transactional
-    public User addUser (String login, String password, String authorizationName) {
-        Authorization authorization = authorizationRepository.findByName(authorizationName);
-        if(authorization == null) {
-            // Cria nova
-            authorization.setName(authorizationName);
-            authorizationRepository.save(authorization);
-        }
-        User user = new User();
-        user.setEmail(login);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setAuthorizations(new ArrayList<>());
-        user.getAuthorizations().add(authorization);
-        userRepository.save(user);
-        return user;
-    }
-
     public List<User> search(String login) {
-        return userRepository.findByNameContainsIgnoreCase(login);
+        return repository.findByNameContainsIgnoreCase(login);
     }
 
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return repository.findByEmail(email);
     }
 
     @PreAuthorize("isAuthenticated()")
     public User search(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return repository.findById(id).orElse(null);
     }
 
     @PreAuthorize("isAuthenticated()")
     public List<User> all() {
         List<User> retorno = new ArrayList<User>();
-        for(User user: userRepository.findAll()) {
+        for(User user: repository.findAll()) {
             retorno.add(user);
         }
         return retorno;
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return repository.findById(id).orElse(null);
     }
 
     public User getLoggedInfo() {
@@ -115,7 +97,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         user.setPassword(user.getPassword());
-        return userRepository.save(user);
+        return repository.save(user);
     }
 
     public User getUserLoggedIn() {

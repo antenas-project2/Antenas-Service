@@ -1,6 +1,8 @@
 package br.gov.sp.fatec.teacher.service;
 
 import br.gov.sp.fatec.security.domain.Authorization;
+import br.gov.sp.fatec.security.repository.AuthorizationRepository;
+import br.gov.sp.fatec.security.service.AuthorizationService;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.repository.TeacherRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
@@ -25,6 +27,9 @@ public class TeacherServiceImpl implements TeacherService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AuthorizationService authorizationService;
+
     public Teacher save(Teacher teacher, String url) {
         if (repository.findByEmail(teacher.getEmail()) != null) {
             throw new Exception.CreateUserException();
@@ -32,14 +37,9 @@ public class TeacherServiceImpl implements TeacherService{
 
         teacher.setActive(false);
         teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
+        teacher.setAuthorizations(new ArrayList<>());
 
-        List<Authorization> authorizations = new ArrayList<>();
-        Authorization authorization = new Authorization();
-        authorization.setName("TEACHER");
-        authorization.setAuthority("TEACHER");
-        authorizations.add(authorization);
-
-        teacher.setAuthorizations(authorizations);
+        teacher.getAuthorizations().add(authorizationService.create("TEACHER"));
 
 //        sendEmail.sendMail(teacher.getEmail(), url); todo
         return repository.save(teacher);

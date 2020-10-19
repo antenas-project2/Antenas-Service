@@ -9,23 +9,21 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service("authorizationService")
+@Service
 @Transactional
 public class AuthorizationService {
 
     @Autowired
     private AuthorizationRepository authorizationRepository;
 
-    public void setAuthorizationRepository(AuthorizationRepository authorizationRepository) {
-        this.authorizationRepository = authorizationRepository;
-    }
-
-    public void delete(Long authorizationId) {
-        authorizationRepository.deleteById(authorizationId);
-    }
-
-    public Authorization create(Authorization authorization) {
-        return authorizationRepository.save(authorization);
+    public Authorization create(String name) {
+        Authorization authorization = authorizationRepository.findByName(name);
+        if(authorization == null) {
+            authorization = new Authorization();
+            authorization.setName(name);
+            return authorizationRepository.save(authorization);
+        }
+        return authorization;
     }
 
     public List<Authorization> list() {
@@ -34,13 +32,6 @@ public class AuthorizationService {
             authorizations.add(authorization);
         }
         return authorizations;
-    }
-
-    public List<Authorization> search(String name) {
-        if (name == null || name.isEmpty()) {
-            return list();
-        }
-        return authorizationRepository.findByNameContainsIgnoreCase(name);
     }
 
     public Authorization findById(Long authorizationId) {

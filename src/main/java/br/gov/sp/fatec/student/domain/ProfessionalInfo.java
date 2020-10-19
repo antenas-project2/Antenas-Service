@@ -29,6 +29,9 @@ public class ProfessionalInfo {
     private String activitiesPerformed;
 
     @JsonView({ View.Student.class })
+    private String company;
+
+    @JsonView({ View.Student.class })
     private Date start;
 
     @JsonView({ View.Student.class })

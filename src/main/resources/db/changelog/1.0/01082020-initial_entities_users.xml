@@ -84,6 +84,7 @@
         <createTable tableName="professional_info">
             <column name="id" type="BIGINT"/>
             <column name="role" type="VARCHAR(20)"/>
+            <column name="company" type="VARCHAR(60)"/>
             <column name="activities_performed" type="VARCHAR(150)"/>
             <column name="start" type="DATE"/>
             <column name="end" type="DATE"/>
