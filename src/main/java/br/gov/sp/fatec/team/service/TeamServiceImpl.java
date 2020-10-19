@@ -12,6 +12,7 @@ import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.user.service.UserService;
 import liquibase.pro.packaged.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.PreRemove;
@@ -41,10 +42,11 @@ public class TeamServiceImpl implements TeamService {
     @Autowired
     private ProjectService projectService;
 
+    @PreAuthorize("isAuthenticated()")
     public List<Team> findAll(Long projectId) {
         User user = userService.getUserLoggedIn();
 
-        if (user.getAuthorizations().get(0).getName().equals("STUDENT")) {
+        if (user.getAuthorizations().get(0).getName().equals("ROLE_STUDENT")) {
             Team team = repository.findBystudentAndProject(projectId, userService.getUserLoggedIn().getId());
             List<Team> teamList = new ArrayList<>();
             if (team != null) {
@@ -56,6 +58,7 @@ public class TeamServiceImpl implements TeamService {
         return repository.findAllByProjectId(projectId);
     }
 
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
     public Team save(Team team, String role) {
         Project project = projectService.findById(team.getProject().getId());
         throwIfProjectIsNull(project);
@@ -70,7 +73,7 @@ public class TeamServiceImpl implements TeamService {
         return studentTeamRepository.save(studentTeam).getTeam();
     }
 
-
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
     public void removeStudent(Long studentId) {
         StudentTeam studentTeam = studentTeamRepository.findByStudentId(studentId);
 
@@ -79,6 +82,7 @@ public class TeamServiceImpl implements TeamService {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT')")
     public Team update(Team team) { // todo - verificar se não veio null
         Team found = repository.findById(team.getId()).orElse(null);
         assert found != null; // todo - criar exception para team

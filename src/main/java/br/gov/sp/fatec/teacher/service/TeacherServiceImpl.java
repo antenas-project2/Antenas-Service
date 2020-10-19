@@ -8,6 +8,7 @@ import br.gov.sp.fatec.teacher.repository.TeacherRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.Exception;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,12 +40,13 @@ public class TeacherServiceImpl implements TeacherService{
         teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
         teacher.setAuthorizations(new ArrayList<>());
 
-        teacher.getAuthorizations().add(authorizationService.create("TEACHER"));
+        teacher.getAuthorizations().add(authorizationService.create("ROLE_TEACHER"));
 
 //        sendEmail.sendMail(teacher.getEmail(), url); todo
         return repository.save(teacher);
     }
 
+    @PreAuthorize("isAuthenticated()")
     public List<Teacher> findActive() {
         return repository.findAllByActive(true);
     }
@@ -53,10 +55,12 @@ public class TeacherServiceImpl implements TeacherService{
         return repository.save(teacher);
     }
 
+    @PreAuthorize("isAuthenticated()")
     public List<Teacher> findAll() {
         return repository.findAll();
     }
 
+    @PreAuthorize("isAuthenticated()")
     public Teacher findById(Long id) {
         Teacher teacher = repository.findById(id).orElse(null);
 //        throwIfTeacherIsNull(teacher, id); todo

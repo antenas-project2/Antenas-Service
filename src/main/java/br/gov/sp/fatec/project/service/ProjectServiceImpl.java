@@ -45,6 +45,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private CadiService cadiService;
 
+    @PreAuthorize("hasRole('ROLE_REPRESENTATIVE')")
     public Project save(Project project) {
         Representative found = representativeService.findById(userService.getUserLoggedIn().getId());
         throwIfUserIsNull(found);
@@ -57,19 +58,21 @@ public class ProjectServiceImpl implements ProjectService {
         return repository.save(project);
     }
 
+    @PreAuthorize("isAuthenticated()")
     public Project findById(Long id) {
         return repository.findById(id).orElse(null);
     }
 
+    @PreAuthorize("isAuthenticated()")
     public List<Project> findAll() {
         Long id = userService.getUserLoggedIn().getId();
         String authorization = userService.search(id).getAuthorizations().get(0).getName();
 
         List<Project> projects = new ArrayList<>();
 
-        if (authorization.equals("REPRESENTATIVE")) {
+        if (authorization.equals("ROLE_REPRESENTATIVE")) {
             projects = repository.findByCreatedById(id);
-        } else if (authorization.equals("STUDENT")) {
+        } else if (authorization.equals("ROLE_STUDENT")) {
             projects = repository.findAllByOpen(true);
 
             for (Project project : repository.findByStudentId(id)) {
@@ -77,14 +80,15 @@ public class ProjectServiceImpl implements ProjectService {
                     projects.add(project);
                 }
             }
-        } else if (authorization.equals("CADI")) {
+        } else if (authorization.equals("ROLE_CADI")) {
             projects = repository.findAll();
-        } else if (authorization.equals("TEACHER")) {
+        } else if (authorization.equals("ROLE_TEACHER")) {
             projects = repository.findByTeacherId(id);
         }
         return projects;
     }
 
+    @PreAuthorize("isAuthenticated()")
     public Project update(Project project) {
         Project projectFound = projectRepository.findById(project.getId()).orElse(null);
         throwIfProjectIsNull(projectFound);
@@ -94,7 +98,7 @@ public class ProjectServiceImpl implements ProjectService {
         throwIfUserIsNull(user);
 
         switch (user.getAuthorizations().get(0).getName()) {
-            case "REPRESENTATIVE":
+            case "ROLE_REPRESENTATIVE":
                 projectFound.setTitle(project.getTitle());
                 projectFound.setShortDescription(project.getShortDescription());
                 projectFound.setCompleteDescription(project.getCompleteDescription());
@@ -103,7 +107,7 @@ public class ProjectServiceImpl implements ProjectService {
                 projectFound.getMeeting().setChosenDate(project.getMeeting().getChosenDate());
                 break;
 
-            case "CADI":
+            case "ROLE_CADI":
                 projectFound.setMeeting(project.getMeeting());
                 projectFound.setRefused(project.getRefused());
                 projectFound.setReason(project.getReason());
@@ -132,7 +136,7 @@ public class ProjectServiceImpl implements ProjectService {
 
                 break;
 
-            case "TEACHER":
+            case "ROLE_TEACHER":
                 projectFound.setOpen(project.getOpen());
                 break;
         }
@@ -161,6 +165,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_REPRESENTATIVE')")
     public void delete(Long projectId) {
         Project project = findById(projectId);
         throwIfProjectIsNull(project);

@@ -10,6 +10,7 @@ import br.gov.sp.fatec.teacher.repository.TeacherRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.Exception;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,7 @@ public class RepresentativeServiceImpl implements RepresentativeService{
         representative.setPassword(passwordEncoder.encode(representative.getPassword()));
         representative.setAuthorizations(new ArrayList<>());
 
-        representative.getAuthorizations().add(authorizationService.create("REPRESENTATIVE"));
+        representative.getAuthorizations().add(authorizationService.create("ROLE_REPRESENTATIVE"));
 
 //        sendEmail.sendMail(representative.getEmail(), url); todo
 
@@ -52,6 +53,7 @@ public class RepresentativeServiceImpl implements RepresentativeService{
         return repository.save(entrepreneur);
     }
 
+    @PreAuthorize("isAuthenticated()")
     public Representative findById(Long id) {
         Representative found = repository.findById(id).orElse(null);
 //        throwIfRepresentativeIsNull(found, id); todo

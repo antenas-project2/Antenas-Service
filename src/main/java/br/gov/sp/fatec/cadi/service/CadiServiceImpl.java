@@ -9,6 +9,7 @@ import br.gov.sp.fatec.security.service.AuthorizationService;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.Exception;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,12 +43,13 @@ public class CadiServiceImpl implements CadiService {
         cadi.setPassword(passwordEncoder.encode(cadi.getPassword()));
         cadi.setAuthorizations(new ArrayList<>());
 
-        cadi.getAuthorizations().add(authorizationService.create("CADI"));
+        cadi.getAuthorizations().add(authorizationService.create("ROLE_CADI"));
 
 //        sendEmail.sendMail(cadi.getEmail(), url); todo
         return repository.save(cadi);
     }
 
+    @PreAuthorize("isAuthenticated()")
     public Cadi findById(Long id) {
         return repository.findById(id).orElse(null);
     }

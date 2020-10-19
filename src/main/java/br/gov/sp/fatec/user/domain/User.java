@@ -31,7 +31,7 @@ public class User implements UserDetails {
     @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class })
     protected String password;
 
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class })
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class, View.Project.class })
     protected String name;
 
     @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class })
@@ -98,7 +98,7 @@ public class User implements UserDetails {
     @Transient
     public Boolean isStudent() {
         for (Authorization authorization : this.getAuthorizations()) {
-            if (authorization.getName().equals("STUDENT")) {
+            if (authorization.getName().equals("ROLE_STUDENT")) {
                 return true;
             }
         }
@@ -108,7 +108,7 @@ public class User implements UserDetails {
     @Transient
     public Boolean isTeacher() {
         for (Authorization authorization : this.getAuthorizations()) {
-            if (authorization.getName().equals("TEACHER")) {
+            if (authorization.getName().equals("ROLE_TEACHER")) {
                 return true;
             }
         }
@@ -118,7 +118,7 @@ public class User implements UserDetails {
     @Transient
     public Boolean isRepresentative() {
         for (Authorization authorization : this.getAuthorizations()) {
-            if (authorization.getName().equals("REPRESENTATIVE")) {
+            if (authorization.getName().equals("ROLE_REPRESENTATIVE")) {
                 return true;
             }
         }
@@ -128,7 +128,7 @@ public class User implements UserDetails {
     @Transient
     public Boolean isCadi() {
         for (Authorization authorization : this.getAuthorizations()) {
-            if (authorization.getName().equals("CADI")) {
+            if (authorization.getName().equals("ROLE_CADI")) {
                 return true;
             }
         }

@@ -8,6 +8,7 @@ import br.gov.sp.fatec.student.repository.StudentRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.Exception;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,18 +43,20 @@ public class StudentServiceImpl implements  StudentService{
         student.setPassword(passwordEncoder.encode(student.getPassword()));
         student.setAuthorizations(new ArrayList<>());
 
-        student.getAuthorizations().add(authorizationService.create("CADI"));
+        student.getAuthorizations().add(authorizationService.create("ROLE_CADI"));
 
 //        sendEmail.sendMail(student.getEmail(), "student"); todo - descomentar
         return repository.save(student);
     }
 
+    @PreAuthorize("isAuthenticated()")
     public Student findById(Long id) {
         Student found = repository.findById(id).orElse(null);
         throwIfUserIsNull(found);
         return found;
     }
 
+    @PreAuthorize("isAuthenticated()")
     public List<Student> findAll() {
         return repository.findAll();
     }
