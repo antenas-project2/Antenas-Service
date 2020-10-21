@@ -12,18 +12,18 @@ services:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_USER=root
       - MYSQL_PASSWORD=root
-      - MYSQL_DATABASE=AccountSystem
+      - MYSQL_DATABASE=antenas
 
     restart: on-failure
 
   springbootapp:
     build: .
     network_mode: bridge
-    container_name: vanbora-application
+    container_name: antenas-backend
     environment:
       - DB_USERNAME=root
       - DB_PASSWORD=root
-      - DB_HOST=jdbc:mysql://mysql:3306/AccountSystem?useTimezone=true&serverTimezone=UTC&useSSL=false
+      - DB_HOST=jdbc:mysql://mysql:3306/antenas?useTimezone=true&serverTimezone=UTC&useSSL=false
     expose:
       - 8080
     ports:
