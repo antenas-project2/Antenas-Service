@@ -24,7 +24,7 @@ public class RepresentativeController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView({ View.Representative.class })
     public Representative save (@RequestBody Representative representative, UriComponentsBuilder uriComponentsBuilder) {
-        String url = uriComponentsBuilder.path("/dev/representative/activate/").build().toUriString();
+        String url = uriComponentsBuilder.build().toUriString();
         return service.save(representative, url);
     }
 

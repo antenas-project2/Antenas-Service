@@ -25,7 +25,7 @@ public class TeacherController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView({ View.Teacher.class })
     public Teacher create (@RequestBody Teacher teacher, UriComponentsBuilder uriComponentsBuilder) {
-        String url = uriComponentsBuilder.path("/dev/cadi/activate/").build().toUriString();
+        String url = uriComponentsBuilder.build().toUriString();
         return service.save(teacher, url);
     }
 

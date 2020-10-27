@@ -9,6 +9,8 @@ import br.gov.sp.fatec.teacher.service.TeacherService;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.user.repository.UserRepository;
 import br.gov.sp.fatec.utils.exception.Exception;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -19,7 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+
+import static br.gov.sp.fatec.utils.exception.Exception.throwIfUserIsNull;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -106,6 +111,22 @@ public class UserServiceImpl implements UserService {
             User user = findByEmail(authentication.getName());
             return user;
         }
+        return null;
+    }
+
+    public User activate(String b64) {
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
+            User found = repository.findByEmail(jsonObject.get("email").toString());
+            throwIfUserIsNull(found);
+
+            found.setActive(true);
+            return repository.save(found);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 }

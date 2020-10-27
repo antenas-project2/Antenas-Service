@@ -15,4 +15,6 @@ public interface UserService {
     User save(User user);
 
     User getUserLoggedIn();
+
+    User activate(String b64);
 }

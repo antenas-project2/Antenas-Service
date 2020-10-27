@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -24,8 +25,9 @@ public class StudentController {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView({ View.Student.class })
-    public Student save (@RequestBody Student student) {
-        return service.save(student);
+    public Student save (@RequestBody Student student, UriComponentsBuilder uriComponentsBuilder) {
+        String url = uriComponentsBuilder.build().toUriString();
+        return service.save(student, url);
     }
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)

@@ -45,7 +45,7 @@ public class CadiServiceImpl implements CadiService {
 
         cadi.getAuthorizations().add(authorizationService.create("ROLE_CADI"));
 
-//        sendEmail.sendMail(cadi.getEmail(), url); todo
+        sendEmail.sendMail(cadi.getEmail(), url);
         return repository.save(cadi);
     }
 

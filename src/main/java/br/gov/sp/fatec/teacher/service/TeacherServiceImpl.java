@@ -42,7 +42,7 @@ public class TeacherServiceImpl implements TeacherService{
 
         teacher.getAuthorizations().add(authorizationService.create("ROLE_TEACHER"));
 
-//        sendEmail.sendMail(teacher.getEmail(), url); todo
+        sendEmail.sendMail(teacher.getEmail(), url);
         return repository.save(teacher);
     }
 

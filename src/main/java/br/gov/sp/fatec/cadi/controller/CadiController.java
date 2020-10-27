@@ -24,7 +24,7 @@ public class CadiController {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
     private Cadi create (@RequestBody Cadi cadi, UriComponentsBuilder uriComponentsBuilder) {
-        String url = uriComponentsBuilder.path("/dev/cadi/activate/").build().toUriString();
+        String url = uriComponentsBuilder.build().toUriString();
         return service.save(cadi, url);
     }
 

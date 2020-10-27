@@ -34,7 +34,7 @@ public class StudentServiceImpl implements  StudentService{
     @Autowired
     private AuthorizationService authorizationService;
 
-    public Student save(Student student) {
+    public Student save(Student student, String url) {
         if (repository.findByEmail(student.getEmail()) != null) {
             throw new Exception.CreateUserException();
         }
@@ -43,9 +43,9 @@ public class StudentServiceImpl implements  StudentService{
         student.setPassword(passwordEncoder.encode(student.getPassword()));
         student.setAuthorizations(new ArrayList<>());
 
-        student.getAuthorizations().add(authorizationService.create("ROLE_CADI"));
+        student.getAuthorizations().add(authorizationService.create("ROLE_STUDENT"));
 
-//        sendEmail.sendMail(student.getEmail(), "student"); todo - descomentar
+        sendEmail.sendMail(student.getEmail(), url);
         return repository.save(student);
     }
 

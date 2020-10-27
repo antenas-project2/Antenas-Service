@@ -20,7 +20,7 @@ public class SendEmail {
     private JavaMailSender javaMailSender;
 
     @Async
-    public void sendMail(String email,String url) {
+    public void sendMail(String email, String url) {
 
         try {
             JSONObject base64 = new JSONObject();
@@ -28,14 +28,14 @@ public class SendEmail {
             base64.put("email", email);
 
             String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
-            String link = url + b64;
+            String link = url + "/dev/user/activate/" + b64;
             SimpleMailMessage mailMessage = new SimpleMailMessage();
 
             mailMessage.setTo(email);
             mailMessage.setSubject("Antenas - Confirmação de conta");
             mailMessage.setText("Para confirmar sua conta, clique no link: " + link);
 
-            mailMessage.setFrom("sendEmailMD@gmail.com");
+            mailMessage.setFrom("fatec.antenas@gmail.com");
 
             javaMailSender.send(mailMessage);
         } catch (Exception ex) {

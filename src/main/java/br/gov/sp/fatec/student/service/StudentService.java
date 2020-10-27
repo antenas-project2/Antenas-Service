@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface StudentService {
 
-    Student save(Student student);
+    Student save(Student student, String url);
 
     Student findById(Long id);
 
