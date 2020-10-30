@@ -1,6 +1,8 @@
 package br.gov.sp.fatec.utils.commons;
 
 import br.gov.sp.fatec.utils.exception.Exception.SendEmailFailedException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -18,6 +20,8 @@ public class SendEmail {
 
     @Autowired
     private JavaMailSender javaMailSender;
+
+    private static final Logger logger = LogManager.getLogger(SendEmail.class);
 
     @Async
     public void sendMail(String email, String url) {
@@ -38,6 +42,7 @@ public class SendEmail {
             mailMessage.setFrom("fatec.antenas@gmail.com");
 
             javaMailSender.send(mailMessage);
+            logger.info("Email sent to: " + email);
         } catch (Exception ex) {
             throw new SendEmailFailedException();
         }
