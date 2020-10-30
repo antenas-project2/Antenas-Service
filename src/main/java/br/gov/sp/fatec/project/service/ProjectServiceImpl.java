@@ -4,7 +4,6 @@ import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.service.CadiService;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
-import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.representative.domain.Representative;
 import br.gov.sp.fatec.representative.service.RepresentativeService;
 import br.gov.sp.fatec.teacher.domain.Teacher;
