@@ -2,6 +2,7 @@ package br.gov.sp.fatec.student.controller;
 
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.service.StudentService;
+import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,11 @@ public class StudentController {
     @JsonView({ View.Student.class })
     public List<Student> findAll() {
         return service.findAll();
+    }
+
+    @PostMapping(value = "/update", produces = APPLICATION_JSON_VALUE)
+    public Student update(@RequestBody Student student, UriComponentsBuilder uriComponentsBuilder) {
+        String url = uriComponentsBuilder.build().toUriString();
+        return service.update(student, url);
     }
 }

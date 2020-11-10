@@ -11,4 +11,6 @@ public interface StudentService {
     Student findById(Long id);
 
     List<Student> findAll();
+
+    Student update(Student user, String url);
 }

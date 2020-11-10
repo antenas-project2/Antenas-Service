@@ -24,25 +24,31 @@ public class SendEmail {
     private static final Logger logger = LogManager.getLogger(SendEmail.class);
 
     @Async
-    public void sendMail(String email, String url) {
-
+    public void sendEmail(String email, String url, String oldEmail) {
         try {
             JSONObject base64 = new JSONObject();
             base64.put("dateTime", new Date());
             base64.put("email", email);
+            base64.put("oldEmail", oldEmail);
 
             String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
             String link = url + "/dev/user/activate/" + b64;
             SimpleMailMessage mailMessage = new SimpleMailMessage();
 
             mailMessage.setTo(email);
-            mailMessage.setSubject("Antenas - Confirmação de conta");
-            mailMessage.setText("Para confirmar sua conta, clique no link: " + link);
+
+            if (oldEmail != null) {
+                mailMessage.setSubject("Antenas - Alteração de email");
+                mailMessage.setText("Para alterar seu email é necessário clicar link para confirma-lo: " + link);
+            } else {
+                mailMessage.setSubject("Antenas - Confirmação de conta");
+                mailMessage.setText("Para confirmar sua conta, clique no link: " + link);
+            }
 
             mailMessage.setFrom("fatec.antenas@gmail.com");
 
             javaMailSender.send(mailMessage);
-            logger.info("Email sent to: " + email);
+            logger.info(String.format("Email sent to: %s  Change email: %s", email, oldEmail != null));
         } catch (Exception ex) {
             throw new SendEmailFailedException();
         }

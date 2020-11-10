@@ -7,4 +7,6 @@ public interface CadiService {
     Cadi save(Cadi cadi, String url);
 
     Cadi findById(Long id);
+
+    Cadi update(Cadi user, String url);
 }

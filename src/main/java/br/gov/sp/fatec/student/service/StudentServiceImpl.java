@@ -1,7 +1,5 @@
 package br.gov.sp.fatec.student.service;
 
-import br.gov.sp.fatec.security.domain.Authorization;
-import br.gov.sp.fatec.security.repository.AuthorizationRepository;
 import br.gov.sp.fatec.security.service.AuthorizationService;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.repository.StudentRepository;
@@ -45,7 +43,7 @@ public class StudentServiceImpl implements  StudentService{
 
         student.getAuthorizations().add(authorizationService.create("ROLE_STUDENT"));
 
-        sendEmail.sendMail(student.getEmail(), url);
+        sendEmail.sendEmail(student.getEmail(), url, null);
         return repository.save(student);
     }
 
@@ -59,5 +57,23 @@ public class StudentServiceImpl implements  StudentService{
     @PreAuthorize("isAuthenticated()")
     public List<Student> findAll() {
         return repository.findAll();
+    }
+
+    public Student update(Student user, String url) {
+        Student found = repository.findByEmail(user.getEmail());
+
+        found.setName(user.getName());
+        found.setPhoto(user.getPhoto());
+        found.setRa(user.getRa());
+        found.setAcademicInfos(user.getAcademicInfos());
+        found.setBiography(user.getBiography());
+        found.setCity(user.getCity());
+        found.setLinkedin(user.getLinkedin());
+
+        if (!user.getEmail().equals(found.getEmail())) {
+            sendEmail.sendEmail(user.getEmail(), url, found.getEmail());
+        }
+
+        return repository.save(found);
     }
 }

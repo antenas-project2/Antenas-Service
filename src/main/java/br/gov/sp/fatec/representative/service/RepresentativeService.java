@@ -9,4 +9,6 @@ public interface RepresentativeService {
     Representative save(Representative entrepreneur);
 
     Representative findById(Long id);
+
+    Representative update(Representative user, String url);
 }

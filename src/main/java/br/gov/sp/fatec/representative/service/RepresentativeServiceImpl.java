@@ -2,11 +2,7 @@ package br.gov.sp.fatec.representative.service;
 
 import br.gov.sp.fatec.representative.domain.Representative;
 import br.gov.sp.fatec.representative.repository.RepresentativeRepository;
-import br.gov.sp.fatec.security.domain.Authorization;
-import br.gov.sp.fatec.security.repository.AuthorizationRepository;
 import br.gov.sp.fatec.security.service.AuthorizationService;
-import br.gov.sp.fatec.teacher.domain.Teacher;
-import br.gov.sp.fatec.teacher.repository.TeacherRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.Exception;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Transactional
@@ -44,7 +39,7 @@ public class RepresentativeServiceImpl implements RepresentativeService{
 
         representative.getAuthorizations().add(authorizationService.create("ROLE_REPRESENTATIVE"));
 
-        sendEmail.sendMail(representative.getEmail(), url);
+        sendEmail.sendEmail(representative.getEmail(), url, null);
 
         return repository.save(representative);
     }
@@ -59,5 +54,20 @@ public class RepresentativeServiceImpl implements RepresentativeService{
 //        throwIfRepresentativeIsNull(found, id); todo
 
         return found;
+    }
+
+    public Representative update(Representative user, String url) {
+        Representative found = repository.findByEmail(user.getEmail());
+
+        found.setName(user.getName());
+        found.setPhoto(user.getPhoto());
+        found.setCompany(user.getCompany());
+        found.setTelephone(user.getTelephone());
+
+        if (!user.getEmail().equals(found.getEmail())) {
+            sendEmail.sendEmail(user.getEmail(), url, found.getEmail());
+        }
+
+        return repository.save(found);
     }
 }

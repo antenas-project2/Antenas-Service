@@ -2,9 +2,6 @@ package br.gov.sp.fatec.cadi.service;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
-import br.gov.sp.fatec.cadi.service.CadiService;
-import br.gov.sp.fatec.security.domain.Authorization;
-import br.gov.sp.fatec.security.repository.AuthorizationRepository;
 import br.gov.sp.fatec.security.service.AuthorizationService;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.Exception;
@@ -15,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Transactional
@@ -33,20 +29,33 @@ public class CadiServiceImpl implements CadiService {
     @Autowired
     private AuthorizationService authorizationService;
 
-    public Cadi save(Cadi cadi, String url) {
+    public Cadi save(Cadi user, String url) {
 
-        if (repository.findByEmail(cadi.getEmail()) != null) {
+        if (repository.findByEmail(user.getEmail()) != null) {
             throw new Exception.CreateUserException();
         }
 
-        cadi.setActive(false);
-        cadi.setPassword(passwordEncoder.encode(cadi.getPassword()));
-        cadi.setAuthorizations(new ArrayList<>());
+        user.setActive(false);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setAuthorizations(new ArrayList<>());
 
-        cadi.getAuthorizations().add(authorizationService.create("ROLE_CADI"));
+        user.getAuthorizations().add(authorizationService.create("ROLE_CADI"));
 
-        sendEmail.sendMail(cadi.getEmail(), url);
-        return repository.save(cadi);
+        sendEmail.sendEmail(user.getEmail(), url, null);
+        return repository.save(user);
+    }
+
+    public Cadi update(Cadi user, String url) {
+        Cadi found = repository.findByEmail(user.getEmail());
+
+        found.setName(user.getName());
+        found.setPhoto(user.getPhoto());
+
+        if (!user.getEmail().equals(found.getEmail())) {
+            sendEmail.sendEmail(user.getEmail(), url, found.getEmail());
+        }
+
+        return repository.save(found);
     }
 
     @PreAuthorize("isAuthenticated()")

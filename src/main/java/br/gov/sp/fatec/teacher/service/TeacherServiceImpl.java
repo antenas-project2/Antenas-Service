@@ -1,7 +1,5 @@
 package br.gov.sp.fatec.teacher.service;
 
-import br.gov.sp.fatec.security.domain.Authorization;
-import br.gov.sp.fatec.security.repository.AuthorizationRepository;
 import br.gov.sp.fatec.security.service.AuthorizationService;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.repository.TeacherRepository;
@@ -42,7 +40,7 @@ public class TeacherServiceImpl implements TeacherService{
 
         teacher.getAuthorizations().add(authorizationService.create("ROLE_TEACHER"));
 
-        sendEmail.sendMail(teacher.getEmail(), url);
+        sendEmail.sendEmail(teacher.getEmail(), url, null);
         return repository.save(teacher);
     }
 
@@ -65,5 +63,18 @@ public class TeacherServiceImpl implements TeacherService{
         Teacher teacher = repository.findById(id).orElse(null);
 //        throwIfTeacherIsNull(teacher, id); todo
         return teacher;
+    }
+
+    public Teacher update(Teacher user, String url) {
+        Teacher found = repository.findByEmail(user.getEmail());
+
+        found.setName(user.getName());
+        found.setPhoto(user.getPhoto());
+
+        if (!user.getEmail().equals(found.getEmail())) {
+            sendEmail.sendEmail(user.getEmail(), url, found.getEmail());
+        }
+
+        return repository.save(found);
     }
 }

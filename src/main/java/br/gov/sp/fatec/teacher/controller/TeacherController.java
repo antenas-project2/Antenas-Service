@@ -47,4 +47,10 @@ public class TeacherController {
         return service.findById(id);
     }
 
+    @PostMapping(value = "/update", produces = APPLICATION_JSON_VALUE)
+    public Teacher update(@RequestBody Teacher teacher, UriComponentsBuilder uriComponentsBuilder) {
+        String url = uriComponentsBuilder.build().toUriString();
+        return service.update(teacher, url);
+    }
+
 }

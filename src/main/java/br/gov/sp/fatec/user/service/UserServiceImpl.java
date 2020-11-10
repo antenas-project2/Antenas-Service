@@ -121,6 +121,10 @@ public class UserServiceImpl implements UserService {
             User found = repository.findByEmail(jsonObject.get("email").toString());
             throwIfUserIsNull(found);
 
+            if (jsonObject.get("oldEmail") != null) {
+                found.setEmail(jsonObject.get("oldEmail").toString());
+            }
+
             found.setActive(true);
             return repository.save(found);
         } catch (JSONException e) {

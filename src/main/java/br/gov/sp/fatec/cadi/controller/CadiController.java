@@ -32,4 +32,10 @@ public class CadiController {
     public Cadi findById(@PathVariable("id") Long id) {
         return service.findById(id);
     }
+
+    @PostMapping(value = "/update", produces = APPLICATION_JSON_VALUE)
+    public Cadi update(@RequestBody Cadi cadi, UriComponentsBuilder uriComponentsBuilder) {
+        String url = uriComponentsBuilder.build().toUriString();
+        return service.update(cadi, url);
+    }
 }

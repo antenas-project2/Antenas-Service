@@ -15,4 +15,6 @@ public interface TeacherService {
     Teacher findById(Long id);
 
     List<Teacher> findActive();
+
+    Teacher update(Teacher user, String url);
 }
