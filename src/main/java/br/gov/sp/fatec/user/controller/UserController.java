@@ -24,7 +24,9 @@ public class UserController {
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public User getLoggedInfo() {
         User user = service.getLoggedInfo();
+        logger.info("[");
         logger.info(user);
+        logger.info("]");
         return user;
     }
 
