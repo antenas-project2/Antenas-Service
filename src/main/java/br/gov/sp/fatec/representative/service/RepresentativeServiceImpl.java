@@ -57,7 +57,7 @@ public class RepresentativeServiceImpl implements RepresentativeService{
     }
 
     public Representative update(Representative user, String url) {
-        Representative found = repository.findByEmail(user.getEmail());
+        Representative found = repository.findById(user.getId()).orElse(null);
 
         found.setName(user.getName());
         found.setPhoto(user.getPhoto());

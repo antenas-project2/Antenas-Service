@@ -46,7 +46,7 @@ public class CadiServiceImpl implements CadiService {
     }
 
     public Cadi update(Cadi user, String url) {
-        Cadi found = repository.findByEmail(user.getEmail());
+        Cadi found = repository.findById(user.getId()).orElse(null);
 
         found.setName(user.getName());
         found.setPhoto(user.getPhoto());

@@ -60,7 +60,7 @@ public class StudentServiceImpl implements  StudentService{
     }
 
     public Student update(Student user, String url) {
-        Student found = repository.findByEmail(user.getEmail());
+        Student found = repository.findById(user.getId()).orElse(null);
 
         found.setName(user.getName());
         found.setPhoto(user.getPhoto());

@@ -66,7 +66,7 @@ public class TeacherServiceImpl implements TeacherService{
     }
 
     public Teacher update(Teacher user, String url) {
-        Teacher found = repository.findByEmail(user.getEmail());
+        Teacher found = repository.findById(user.getId()).orElse(null);
 
         found.setName(user.getName());
         found.setPhoto(user.getPhoto());
