@@ -33,6 +33,7 @@ public class Exception extends Throwable {
         }
     }
 
+    @ResponseStatus(code = HttpStatus.FORBIDDEN)
     public static class userInactiveException extends RuntimeException {
         public userInactiveException(Long id) {
             super(format("User with id '%d' is inactive", id));
@@ -64,7 +65,7 @@ public class Exception extends Throwable {
     @ResponseStatus(code = HttpStatus.METHOD_NOT_ALLOWED)
     public static class projectCannotBeDeletedException extends RuntimeException {
         public projectCannotBeDeletedException() {
-            super("This project can1t be deleted.");
+            super("This project canot be deleted.");
         }
     }
 
