@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
             throwIfUserIsNull(found);
 
             if (jsonObject.get("oldEmail") != null) {
-                found.setEmail(jsonObject.get("emailtela edição de cadastro").toString());
+                found.setEmail(jsonObject.get("email").toString());
             }
 
             found.setActive(true);

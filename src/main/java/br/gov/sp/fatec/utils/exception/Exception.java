@@ -76,8 +76,6 @@ public class Exception extends Throwable {
         }
     }
 
-
-
     public static void throwIfUserIsInactive(User user) throws userNotFoundException {
         if (!user.getActive()) {
             throw new userInactiveException(user.getId());
