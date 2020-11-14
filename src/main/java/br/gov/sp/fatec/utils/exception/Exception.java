@@ -68,6 +68,12 @@ public class Exception extends Throwable {
         }
     }
 
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public static class userInvalidException extends RuntimeException {
+        public userInvalidException() {
+            super("You cannot change another user's information.");
+        }
+    }
 
 
 

@@ -1,10 +1,16 @@
 package br.gov.sp.fatec.student.service;
 
 import br.gov.sp.fatec.security.service.AuthorizationService;
+import br.gov.sp.fatec.student.domain.AcademicInfo;
+import br.gov.sp.fatec.student.domain.ProfessionalInfo;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.repository.StudentRepository;
+import br.gov.sp.fatec.user.domain.User;
+import br.gov.sp.fatec.user.service.UserService;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.Exception;
+import br.gov.sp.fatec.utils.view.View;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +20,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static br.gov.sp.fatec.utils.exception.Exception.throwIfUserIsInactive;
 import static br.gov.sp.fatec.utils.exception.Exception.throwIfUserIsNull;
 
 @Service
@@ -31,6 +38,9 @@ public class StudentServiceImpl implements  StudentService{
 
     @Autowired
     private AuthorizationService authorizationService;
+
+    @Autowired
+    private UserService userService;
 
     public Student save(Student student, String url) {
         if (repository.findByEmail(student.getEmail()) != null) {
@@ -59,16 +69,34 @@ public class StudentServiceImpl implements  StudentService{
         return repository.findAll();
     }
 
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @JsonView({ View.Student.class })
     public Student update(Student user, String url) {
-        Student found = repository.findById(user.getId()).orElse(null);
+        Student found = (Student) userService.getUserLoggedIn();
+        if (!found.getEmail().equals(user.getEmail())) {
+            throw new Exception.userInvalidException();
+        }
+
+        throwIfUserIsNull(found);
+        throwIfUserIsInactive(found);
 
         found.setName(user.getName());
         found.setPhoto(user.getPhoto());
         found.setRa(user.getRa());
-        found.setAcademicInfos(user.getAcademicInfos());
         found.setBiography(user.getBiography());
         found.setCity(user.getCity());
         found.setLinkedin(user.getLinkedin());
+
+        for (AcademicInfo academicInfo : user.getAcademicInfos()) {
+            academicInfo.getStudents().add(found);
+        }
+
+        for (ProfessionalInfo professionalInfo : user.getProfessionalInfos()) {
+            professionalInfo.getStudents().add(found);
+        }
+
+        found.setAcademicInfos(user.getAcademicInfos());
+        found.setProfessionalInfos(user.getProfessionalInfos());
 
         if (!user.getEmail().equals(found.getEmail())) {
             sendEmail.sendEmail(user.getEmail(), url, found.getEmail());

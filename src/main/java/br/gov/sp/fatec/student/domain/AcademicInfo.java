@@ -37,6 +37,6 @@ public class AcademicInfo {
     private Date end;
 
     @ManyToMany(mappedBy = "academicInfos")
-    @JsonView({ View.Student.class })
+//    @JsonView({ View.Student.class })
     private List<Student> students = new LinkedList<>();
 }

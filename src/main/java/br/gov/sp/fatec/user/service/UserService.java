@@ -10,8 +10,6 @@ public interface UserService {
 
     User findById(Long id);
 
-    User getLoggedInfo();
-
     User save(User user);
 
     User getUserLoggedIn();

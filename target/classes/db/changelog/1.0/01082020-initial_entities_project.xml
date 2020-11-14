@@ -29,7 +29,6 @@
             <column name="id" type="BIGINT"/>
             <column name="address_id" type="BIGINT"/>
             <column name="date" type="DATETIME"/>
-            <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
 
@@ -138,9 +137,6 @@
     <changeSet author="danielly" id="01082020-20-const">
         <addForeignKeyConstraint baseColumnNames="address_id" baseTableName="meeting" constraintName="meeting_address_fk"
                                  referencedColumnNames="id" referencedTableName="address"/>
-
-        <addForeignKeyConstraint baseColumnNames="project_id" baseTableName="meeting" constraintName="meeting_project_fk"
-                                 referencedColumnNames="id" referencedTableName="project"/>
     </changeSet>
 
     <changeSet author="danielly" id="01082020-22-const">

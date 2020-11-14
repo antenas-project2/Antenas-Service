@@ -73,21 +73,6 @@ public class UserServiceImpl implements UserService {
         return repository.findById(id).orElse(null);
     }
 
-    public User getLoggedInfo() {
-        User user = getUserLoggedIn();
-
-        if (user.isStudent()) {
-            return studentService.findById(user.getId());
-        } else if (user.isTeacher()) {
-            return teacherService.findById(user.getId());
-        } else if (user.isCadi()) {
-            return cadiService.findById(user.getId());
-        } else if (user.isRepresentative()) {
-            return representativeService.findById(user.getId());
-        }
-        return null;
-    }
-
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public User save(User user) {
@@ -95,7 +80,6 @@ public class UserServiceImpl implements UserService {
 
         if(!authorizations.isEmpty()) {
             for(Authorization aut: authorizations) {
-                // Se nao existe, cria
                 if(aut.getId() == null && authorizationRepository.findByName(aut.getName()) == null) {
                     authorizationRepository.save(aut);
                 }
@@ -122,7 +106,7 @@ public class UserServiceImpl implements UserService {
             throwIfUserIsNull(found);
 
             if (jsonObject.get("oldEmail") != null) {
-                found.setEmail(jsonObject.get("email").toString());
+                found.setEmail(jsonObject.get("emailtela edição de cadastro").toString());
             }
 
             found.setActive(true);

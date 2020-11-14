@@ -11,7 +11,7 @@
             <column name="email" type="VARCHAR(50)"/>
             <column name="password" type="VARCHAR(300)"/>
             <column name="name" type="VARCHAR(100)"/>
-            <column name="cpf" type="VARCHAR(11)"/>
+            <column name="cpf" type="VARCHAR(14)"/>
             <column name="active" type="BOOLEAN"/>
             <column name="photo" type="blob"/>
         </createTable>

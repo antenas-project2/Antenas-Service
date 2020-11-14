@@ -36,8 +36,4 @@ public class Meeting {
             inverseJoinColumns=@JoinColumn(name="date_id"))
     @JsonView({ View.Project.class })
     private List<Date> possibleDate;
-
-    @OneToOne
-    @JsonView({ View.Project.class })
-    private Project project;
 }
