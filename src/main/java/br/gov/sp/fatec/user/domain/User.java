@@ -95,6 +95,7 @@ public class User implements UserDetails {
     }
 
     @Transient
+    @JsonIgnore
     public Boolean isStudent() {
         for (Authorization authorization : this.getAuthorizations()) {
             if (authorization.getName().equals("ROLE_STUDENT")) {
@@ -105,6 +106,7 @@ public class User implements UserDetails {
     }
 
     @Transient
+    @JsonIgnore
     public Boolean isTeacher() {
         for (Authorization authorization : this.getAuthorizations()) {
             if (authorization.getName().equals("ROLE_TEACHER")) {
@@ -115,6 +117,7 @@ public class User implements UserDetails {
     }
 
     @Transient
+    @JsonIgnore
     public Boolean isRepresentative() {
         for (Authorization authorization : this.getAuthorizations()) {
             if (authorization.getName().equals("ROLE_REPRESENTATIVE")) {
@@ -125,6 +128,7 @@ public class User implements UserDetails {
     }
 
     @Transient
+    @JsonIgnore
     public Boolean isCadi() {
         for (Authorization authorization : this.getAuthorizations()) {
             if (authorization.getName().equals("ROLE_CADI")) {
