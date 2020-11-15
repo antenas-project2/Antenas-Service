@@ -40,7 +40,7 @@ public class RepresentativeController {
         return  service.save(representative);
     }
 
-    @PostMapping(value = "/update", produces = APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/update", produces = APPLICATION_JSON_VALUE)
     public Representative update(@RequestBody Representative representative, UriComponentsBuilder uriComponentsBuilder) {
         String url = uriComponentsBuilder.build().toUriString();
         return service.update(representative, url);
