@@ -42,14 +42,14 @@ public class Student extends User {
     @JsonView({ View.Student.class })
     private List<Category> categories = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "student_professional_info",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "professional_info_id"))
     @JsonView({ View.Student.class })
     private List<ProfessionalInfo> professionalInfos = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "student_academic_info",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "academic_info_id"))

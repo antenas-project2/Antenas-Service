@@ -88,11 +88,15 @@ public class StudentServiceImpl implements  StudentService{
         found.setLinkedin(user.getLinkedin());
 
         for (AcademicInfo academicInfo : user.getAcademicInfos()) {
-            academicInfo.getStudents().add(found);
+            if (academicInfo.getStudents() != null && !academicInfo.getStudents().isEmpty()) {
+                academicInfo.getStudents().add(found);
+            }
         }
 
         for (ProfessionalInfo professionalInfo : user.getProfessionalInfos()) {
-            professionalInfo.getStudents().add(found);
+            if (professionalInfo.getStudents() != null && !professionalInfo.getStudents().isEmpty()) {
+                professionalInfo.getStudents().add(found);
+            }
         }
 
         found.setAcademicInfos(user.getAcademicInfos());
