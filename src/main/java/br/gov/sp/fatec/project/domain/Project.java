@@ -3,6 +3,7 @@ package br.gov.sp.fatec.project.domain;
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.representative.domain.Representative;
 import br.gov.sp.fatec.teacher.domain.Teacher;
+import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
@@ -73,7 +74,7 @@ public class Project {
     @OneToOne
     @JoinColumn(name = "approved_by", referencedColumnName = "id")
     @JsonView({ View.Project.class })
-    private Cadi approvedBy;
+    private User approvedBy;
 
     @OneToOne
     @JoinColumn(name = "finished_by", referencedColumnName = "id")

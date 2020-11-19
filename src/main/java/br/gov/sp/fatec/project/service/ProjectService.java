@@ -15,4 +15,8 @@ public interface ProjectService {
     Project update(Project project);
 
     void delete(Long projectId);
+
+    Project initializeObject(Project project);
+
+    List<Project> initializeObjects(List<Project> projects);
 }

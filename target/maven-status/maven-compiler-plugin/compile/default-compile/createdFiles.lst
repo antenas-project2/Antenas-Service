@@ -46,6 +46,7 @@ br/gov/sp/fatec/utils/SwaggerConfig.class
 br/gov/sp/fatec/security/RestAuthenticationEntryPoint.class
 br/gov/sp/fatec/student/domain/AcademicInfo.class
 br/gov/sp/fatec/representative/controller/RepresentativeController.class
+br/gov/sp/fatec/socket/Socket.class
 br/gov/sp/fatec/utils/exception/Exception$SendEmailFailedException.class
 br/gov/sp/fatec/security/service/AuthorizationService.class
 br/gov/sp/fatec/medal/service/MedalService.class
@@ -66,6 +67,7 @@ br/gov/sp/fatec/user/controller/UserController.class
 br/gov/sp/fatec/utils/view/View$Team.class
 br/gov/sp/fatec/cadi/service/CadiService.class
 br/gov/sp/fatec/student/controller/StudentController.class
+br/gov/sp/fatec/utils/exception/Exception$userInvalidException.class
 br/gov/sp/fatec/utils/exception/Exception$projectCannotBeDeletedException.class
 br/gov/sp/fatec/login/controller/LoginController.class
 br/gov/sp/fatec/team/repository/StudentTeamRepository.class

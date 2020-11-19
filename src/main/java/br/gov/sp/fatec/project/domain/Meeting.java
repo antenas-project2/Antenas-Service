@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,4 +37,9 @@ public class Meeting {
             inverseJoinColumns=@JoinColumn(name="date_id"))
     @JsonView({ View.Project.class })
     private List<Date> possibleDate;
+
+    public Meeting(String initialize) {
+        this.address = new Address();
+        this.possibleDate = new ArrayList<>();
+    }
 }

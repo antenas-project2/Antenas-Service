@@ -54,6 +54,7 @@
 /home/daniellygj/Documents/git/TG - Antenas/Antenas-Service/src/main/java/br/gov/sp/fatec/notification/domain/Notification.java
 /home/daniellygj/Documents/git/TG - Antenas/Antenas-Service/src/main/java/br/gov/sp/fatec/project/domain/Address.java
 /home/daniellygj/Documents/git/TG - Antenas/Antenas-Service/src/main/java/br/gov/sp/fatec/user/dto/UserDTO.java
+/home/daniellygj/Documents/git/TG - Antenas/Antenas-Service/src/main/java/br/gov/sp/fatec/socket/Socket.java
 /home/daniellygj/Documents/git/TG - Antenas/Antenas-Service/src/main/java/br/gov/sp/fatec/user/service/UserServiceImpl.java
 /home/daniellygj/Documents/git/TG - Antenas/Antenas-Service/src/main/java/br/gov/sp/fatec/medal/controller/MedalController.java
 /home/daniellygj/Documents/git/TG - Antenas/Antenas-Service/src/main/java/br/gov/sp/fatec/medal/service/MedalService.java

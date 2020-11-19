@@ -2,6 +2,8 @@ package br.gov.sp.fatec.project.service;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.service.CadiService;
+import br.gov.sp.fatec.project.domain.Address;
+import br.gov.sp.fatec.project.domain.Meeting;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
 import br.gov.sp.fatec.representative.domain.Representative;
@@ -50,16 +52,17 @@ public class ProjectServiceImpl implements ProjectService {
         throwIfUserIsNull(found);
         throwIfUserIsInactive(found);
         project.setCreatedBy(found);
+        project.setUpdatedAt(new Date());
 
         project.setCreatedAt(ZonedDateTime.now());
         project.setProgress(2);
         project.setOpen(false);
-        return repository.save(project);
+        return initializeObject(repository.save(project));
     }
 
     @PreAuthorize("isAuthenticated()")
     public Project findById(Long id) {
-        return repository.findById(id).orElse(null);
+        return initializeObject(repository.findById(id).orElse(null));
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -84,7 +87,7 @@ public class ProjectServiceImpl implements ProjectService {
         } else if (authorization.equals("ROLE_TEACHER")) {
             projects = repository.findByTeacherId(id);
         }
-        return projects;
+        return initializeObjects(projects);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -103,11 +106,18 @@ public class ProjectServiceImpl implements ProjectService {
                 projectFound.setCompleteDescription(project.getCompleteDescription());
                 projectFound.setTechnologyDescription(project.getTechnologyDescription());
                 projectFound.setNotes(project.getNotes());
-                projectFound.getMeeting().setChosenDate(project.getMeeting().getChosenDate());
+                if (projectFound.getMeeting() != null) {
+                    projectFound.getMeeting().setChosenDate(project.getMeeting().getChosenDate());
+                }
                 break;
 
             case "ROLE_CADI":
-                projectFound.setMeeting(project.getMeeting());
+                if (project.getMeeting() != null && project.getMeeting().getAddress() != null) {
+                    projectFound.setMeeting(project.getMeeting());
+                }
+                if (!project.getRefused()) {
+                    project.setApprovedBy(user);
+                }
                 projectFound.setRefused(project.getRefused());
                 projectFound.setReason(project.getReason());
                 projectFound.setCourse(project.getCourse());
@@ -143,7 +153,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectFound.setProgress(getProgress(projectFound));
         projectFound.setUpdatedAt(new Date());
 
-        return repository.save(projectFound);
+        return initializeObject(repository.save(projectFound));
     }
 
     private int getProgress (Project project) {
@@ -162,6 +172,20 @@ public class ProjectServiceImpl implements ProjectService {
         } else {
             return project.getProgress();
         }
+    }
+
+    public List<Project> initializeObjects(List<Project> projects) {
+        for (Project project : projects) {
+            project = initializeObject(project);
+        }
+        return projects;
+    }
+
+    public Project initializeObject(Project project) {
+        if (project.getMeeting() == null) {
+            project.setMeeting(new Meeting("initialize"));
+        }
+        return project;
     }
 
     @PreAuthorize("hasAnyRole('ROLE_REPRESENTATIVE')")
