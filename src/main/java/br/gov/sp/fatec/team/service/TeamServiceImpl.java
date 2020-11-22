@@ -89,12 +89,8 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
-    public void removeStudent(Long studentId) {
-        StudentTeam studentTeam = studentTeamRepository.findByStudentId(studentId);
-
-        if (studentTeam != null) {
-            studentTeamRepository.delete(studentTeam);
-        }
+    public void removeStudent(Long studentTeamId) {
+        studentTeamRepository.findById(studentTeamId).ifPresent(studentTeam -> studentTeamRepository.delete(studentTeam));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_STUDENT')")
@@ -140,6 +136,16 @@ public class TeamServiceImpl implements TeamService {
         }
 
         return repository.save(found);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT')")
+    public Team updateStudentTeam(StudentTeam studentTeam) {
+        StudentTeam found = studentTeamRepository.findById(studentTeam.getId()).orElse(null);
+
+        assert found != null;
+        found.setRole(studentTeam.getRole());
+        return studentTeamRepository.save(found).getTeam();
+
     }
 }
 

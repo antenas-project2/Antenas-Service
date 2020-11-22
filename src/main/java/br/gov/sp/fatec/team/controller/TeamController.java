@@ -1,6 +1,7 @@
 package br.gov.sp.fatec.team.controller;
 
 import br.gov.sp.fatec.team.domain.Role;
+import br.gov.sp.fatec.team.domain.StudentTeam;
 import br.gov.sp.fatec.team.domain.Team;
 import br.gov.sp.fatec.team.service.TeamService;
 import br.gov.sp.fatec.utils.view.View;
@@ -51,4 +52,12 @@ public class TeamController {
     public List<Role> roles() {
         return service.getRoles();
     }
+
+    @PutMapping(path = "/studentTeam")
+    @JsonView({ View.Team.class })
+    public Team updateStudentTeam(@RequestBody StudentTeam studentTeam) {
+        return service.updateStudentTeam(studentTeam);
+    }
+
+
 }

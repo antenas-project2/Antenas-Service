@@ -144,11 +144,13 @@ public class ProjectServiceImpl implements ProjectService {
                         projectFound.setTeacher(teacher);
                     }
                 }
-
                 break;
 
             case "ROLE_TEACHER":
                 projectFound.setOpen(project.getOpen());
+                if (!project.getOpen()) {
+                    project.setFinished(true);
+                }
                 break;
         }
 
@@ -168,7 +170,7 @@ public class ProjectServiceImpl implements ProjectService {
                 return 5;
             } else if (project.getProgress() == 5 && project.getMeeting() != null && project.getMeeting().getPossibleDate().size() > 0 && project.getMeeting().getChosenDate() != null) {
                 return 6;
-            } else if (project.getProgress() == 6) { // todo - verificar se tem a url
+            } else if (project.getProgress() == 6) {
                 return 7;
             } else if (project.getProgress() == 7 && !project.getOpen() ) {
                 return 8;
