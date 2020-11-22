@@ -1,7 +1,6 @@
 package br.gov.sp.fatec.team.controller;
 
-import br.gov.sp.fatec.student.domain.Student;
-import br.gov.sp.fatec.team.domain.StudentTeam;
+import br.gov.sp.fatec.team.domain.Role;
 import br.gov.sp.fatec.team.domain.Team;
 import br.gov.sp.fatec.team.service.TeamService;
 import br.gov.sp.fatec.utils.view.View;
@@ -28,14 +27,12 @@ public class TeamController {
         return service.findAll(projectId);
     }
 
-
-    @PostMapping(path = "/{role}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView({ View.Team.class })
-    public Team save (@RequestBody Team team,
-                      @PathVariable("role") String role) {
-        return service.save(team, role);
+    public Team save (@RequestBody Team team) {
+        return service.save(team);
     }
 
     @PutMapping
@@ -48,5 +45,10 @@ public class TeamController {
     @JsonView({ View.Team.class })
     public void delete(@PathVariable("studentId") Long studentId) {
         service.removeStudent(studentId);
+    }
+
+    @GetMapping(path = "/roles")
+    public List<Role> roles() {
+        return service.getRoles();
     }
 }

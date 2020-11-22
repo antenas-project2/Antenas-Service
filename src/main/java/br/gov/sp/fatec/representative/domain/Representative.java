@@ -22,6 +22,6 @@ public class Representative extends User {
     @JsonView({ View.Representative.class })
     private String company;
 
-    @JsonView({ View.Representative.class })
+    @JsonView({ View.Representative.class, View.Project.class })
     private String telephone;
 }

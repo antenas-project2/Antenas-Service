@@ -24,7 +24,11 @@ public class StudentTeam {
     private Long id;
 
     @JsonView({ View.Team.class })
-    private String role;
+    @ManyToMany
+    @JoinTable(name = "student_role",
+            joinColumns = @JoinColumn(name = "student_team_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> role = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "team_id")
@@ -37,12 +41,12 @@ public class StudentTeam {
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "student_team_evaluation",
-            joinColumns = @JoinColumn(name = "evaluation_id"),
-            inverseJoinColumns = @JoinColumn(name = "student_team_id"))
+            joinColumns = @JoinColumn(name = "student_team_id"),
+            inverseJoinColumns = @JoinColumn(name = "evaluation_id"))
     @JsonView({ View.Team.class })
     private List<Evaluation> evaluations = new ArrayList<>();
 
-    public StudentTeam(String role, Team team, Student student) {
+    public StudentTeam(List<Role> role, Team team, Student student) {
         this.role = role;
         this.team = team;
         this.student = student;

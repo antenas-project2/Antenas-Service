@@ -40,4 +40,7 @@ public class Team {
     @OneToMany(mappedBy = "team", cascade = CascadeType.PERSIST)
     @JsonView({ View.Team.class })
     private List<StudentTeam> studentTeamList;
+
+    @Transient
+    private List<Role> roles;
 }

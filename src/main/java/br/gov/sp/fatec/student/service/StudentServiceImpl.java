@@ -66,7 +66,13 @@ public class StudentServiceImpl implements  StudentService{
 
     @PreAuthorize("isAuthenticated()")
     public List<Student> findAll() {
-        return repository.findAll();
+        User user = userService.getUserLoggedIn();
+
+        List<Student> students = repository.findAll();
+        if (user.getAuthorizations().get(0).getName().equals("ROLE_STUDENT")) {
+            students.remove(user);
+        }
+        return students;
     }
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")

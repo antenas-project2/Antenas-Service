@@ -2,7 +2,6 @@ package br.gov.sp.fatec.project.service;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.service.CadiService;
-import br.gov.sp.fatec.project.domain.Address;
 import br.gov.sp.fatec.project.domain.Meeting;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
@@ -115,32 +114,35 @@ public class ProjectServiceImpl implements ProjectService {
                 if (project.getMeeting() != null && project.getMeeting().getAddress() != null) {
                     projectFound.setMeeting(project.getMeeting());
                 }
-                if (!project.getRefused()) {
+                if (project.getRefused()) {
+                    projectFound.setRefused(project.getRefused());
+                }
+                else {
                     project.setApprovedBy(user);
-                }
-                projectFound.setRefused(project.getRefused());
-                projectFound.setReason(project.getReason());
-                projectFound.setCourse(project.getCourse());
-                projectFound.setSemester(project.getSemester());
-                projectFound.setOpen(project.getOpen());
+                    projectFound.setRefused(project.getRefused());
+                    projectFound.setReason(project.getReason());
+                    projectFound.setCourse(project.getCourse());
+                    projectFound.setSemester(project.getSemester());
+                    projectFound.setOpen(project.getOpen());
 
-                if (project.getFinished() != null && projectFound.getFinished() != null) {
-                    projectFound.setFinished(project.getFinished());
+                    if (project.getFinished() != null && projectFound.getFinished() != null) {
+                        projectFound.setFinished(project.getFinished());
 
-                    Cadi cadi = cadiService.findById(userId);
-                    projectFound.setFinishedBy(cadi);
-                }
+                        Cadi cadi = cadiService.findById(userId);
+                        projectFound.setFinishedBy(cadi);
+                    }
 
-                if (project.getApprovedBy() != null && projectFound.getApprovedBy()  != null) {
-                    Cadi cadi = cadiService.findById(userId);
-                    projectFound.setApprovedBy(cadi);
-                }
+                    if (project.getApprovedBy() != null && projectFound.getApprovedBy() != null) {
+                        Cadi cadi = cadiService.findById(userId);
+                        projectFound.setApprovedBy(cadi);
+                    }
 
-                if (project.getTeacher() != null) {
-                    Teacher teacher = teacherService.findById(project.getTeacher().getId());
-                    throwIfUserIsNull(teacher);
-                    throwIfUserIsInactive(teacher);
-                    projectFound.setTeacher(teacher);
+                    if (project.getTeacher() != null) {
+                        Teacher teacher = teacherService.findById(project.getTeacher().getId());
+                        throwIfUserIsNull(teacher);
+                        throwIfUserIsInactive(teacher);
+                        projectFound.setTeacher(teacher);
+                    }
                 }
 
                 break;
@@ -157,21 +159,22 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     private int getProgress (Project project) {
-        if (project.getProgress() == 2 && project.getCompleteDescription() == null && project.getTechnologyDescription() == null) {
-            return 3;
-        } else if (project.getCompleteDescription() != null && project.getTechnologyDescription() != null && project.getProgress() == 3) {
-            return 4;
-        } if (project.getProgress() == 4 && project.getCompleteDescription() != null && project.getTechnologyDescription() != null) {
-            return 5;
-        } else if (project.getProgress() == 5 && project.getMeeting() != null && project.getMeeting().getPossibleDate().size() > 0 && project.getMeeting().getChosenDate() != null) {
-            return 6;
-        } else if (project.getProgress() == 6) { // todo - verificar se tem a url
-            return 7;
-        } else if (project.getProgress() == 7 && !project.getOpen() ) {
-            return 8;
-        } else {
-            return project.getProgress();
+        if (!project.getRefused()) {
+            if (project.getProgress() == 2 && project.getCompleteDescription() == null && project.getTechnologyDescription() == null) {
+                return 3;
+            } else if (project.getCompleteDescription() != null && project.getTechnologyDescription() != null && project.getProgress() == 3) {
+                return 4;
+            } if (project.getProgress() == 4 && project.getCompleteDescription() != null && project.getTechnologyDescription() != null) {
+                return 5;
+            } else if (project.getProgress() == 5 && project.getMeeting() != null && project.getMeeting().getPossibleDate().size() > 0 && project.getMeeting().getChosenDate() != null) {
+                return 6;
+            } else if (project.getProgress() == 6) { // todo - verificar se tem a url
+                return 7;
+            } else if (project.getProgress() == 7 && !project.getOpen() ) {
+                return 8;
+            }
         }
+        return project.getProgress();
     }
 
     public List<Project> initializeObjects(List<Project> projects) {

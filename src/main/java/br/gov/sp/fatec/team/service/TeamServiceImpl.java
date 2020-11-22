@@ -4,8 +4,10 @@ import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.service.StudentService;
+import br.gov.sp.fatec.team.domain.Role;
 import br.gov.sp.fatec.team.domain.StudentTeam;
 import br.gov.sp.fatec.team.domain.Team;
+import br.gov.sp.fatec.team.repository.RoleRepository;
 import br.gov.sp.fatec.team.repository.StudentTeamRepository;
 import br.gov.sp.fatec.team.repository.TeamRepository;
 import br.gov.sp.fatec.user.domain.User;
@@ -42,6 +44,9 @@ public class TeamServiceImpl implements TeamService {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     @PreAuthorize("isAuthenticated()")
     public List<Team> findAll(Long projectId) {
         User user = userService.getUserLoggedIn();
@@ -52,21 +57,31 @@ public class TeamServiceImpl implements TeamService {
             if (team != null) {
                 teamList.add(team);
             }
+
             return teamList;
         }
 
         return repository.findAllByProjectId(projectId);
     }
 
+    public List<Role> getRoles() {
+        return roleRepository.findAll();
+    }
+
     @PreAuthorize("hasRole('ROLE_STUDENT')")
-    public Team save(Team team, String role) {
+    public Team save(Team team) {
         Project project = projectService.findById(team.getProject().getId());
         throwIfProjectIsNull(project);
         team.setProject(project);
         Student student = studentService.findById(userService.getUserLoggedIn().getId());
         Team newTeam = repository.save(team);
 
-        StudentTeam studentTeam = new StudentTeam(role, newTeam, student);
+        List<Role> roles = new ArrayList<>();
+        for (Role role: team.getRoles()) {
+            roles.add(roleRepository.findById(role.getId()).orElse(null));
+        }
+
+        StudentTeam studentTeam = new StudentTeam(roles, newTeam, student);
         team.setStudentTeamList(new LinkedList<>());
         team.getStudentTeamList().add(studentTeam);
 
@@ -86,7 +101,6 @@ public class TeamServiceImpl implements TeamService {
     public Team update(Team team) { // todo - verificar se não veio null
         Team found = repository.findById(team.getId()).orElse(null);
         assert found != null; // todo - criar exception para team
-        User user = userService.getUserLoggedIn();
 
         List<StudentTeam> studentTeams = new LinkedList<>();
 
