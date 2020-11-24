@@ -43,7 +43,7 @@ public class StudentController {
         return service.findAll();
     }
 
-    @PostMapping(value = "/update", produces = APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/update", produces = APPLICATION_JSON_VALUE)
     @JsonView({ View.Student.class })
     public Student update(@RequestBody Student student, UriComponentsBuilder uriComponentsBuilder) {
         String url = uriComponentsBuilder.build().toUriString();
