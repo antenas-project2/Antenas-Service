@@ -19,12 +19,12 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Cadi.class, View.User.class })
     private Long id;
 
     String name;
 
     @ManyToMany(mappedBy = "categories")
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Cadi.class, View.User.class })
     private List<Medal> projects = new LinkedList<>();
 }

@@ -19,25 +19,25 @@ import java.util.List;
 public class ProfessionalInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.Student.class })
+    @JsonView({ View.Student.class, View.User.class })
     private Long id;
 
-    @JsonView({ View.Student.class })
+    @JsonView({ View.Student.class, View.User.class })
     private String role;
 
-    @JsonView({ View.Student.class })
+    @JsonView({ View.Student.class, View.User.class })
     private String activitiesPerformed;
 
-    @JsonView({ View.Student.class })
+    @JsonView({ View.Student.class, View.User.class })
     private String company;
 
-    @JsonView({ View.Student.class })
+    @JsonView({ View.Student.class, View.User.class })
     private Date start;
 
-    @JsonView({ View.Student.class })
+    @JsonView({ View.Student.class, View.User.class })
     private Date end;
 
     @ManyToMany(mappedBy = "professionalInfos")
-//    @JsonView({ View.Student.class })
+//    @JsonView({ View.Student.class, View.User.class })
     private List<Student> students = new LinkedList<>();
 }

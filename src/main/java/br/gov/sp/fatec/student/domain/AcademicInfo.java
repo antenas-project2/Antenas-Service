@@ -21,22 +21,22 @@ import java.util.List;
 public class AcademicInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.Student.class })
+    @JsonView({ View.Student.class, View.User.class })
     private Long id;
 
-    @JsonView({ View.Student.class })
+    @JsonView({ View.Student.class, View.User.class })
     private String course;
 
-    @JsonView({ View.Student.class })
+    @JsonView({ View.Student.class, View.User.class })
     private String institution;
 
-    @JsonView({ View.Student.class })
+    @JsonView({ View.Student.class, View.User.class })
     private Date start;
 
-    @JsonView({ View.Student.class })
+    @JsonView({ View.Student.class, View.User.class })
     private Date end;
 
     @ManyToMany(mappedBy = "academicInfos")
-//    @JsonView({ View.Student.class })
+//    @JsonView({ View.Student.class, View.User.class })
     private List<Student> students = new LinkedList<>();
 }

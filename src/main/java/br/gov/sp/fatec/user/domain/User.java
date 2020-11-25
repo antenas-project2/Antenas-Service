@@ -22,35 +22,35 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class })
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class, View.User.class })
     private Long id;
 
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class })
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class, View.User.class })
     protected String email;
 
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class })
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class, View.User.class })
     protected String password;
 
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class, View.Project.class })
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class, View.Project.class, View.User.class })
     protected String name;
 
     protected Boolean active;
 
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class })
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class, View.User.class })
     protected String photo;
 
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class })
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class, View.User.class })
     protected String cpf;
 
     @Transient
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class })
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class, View.User.class })
     private String token;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_authorization",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "authorization_id") })
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class})
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class, View.User.class })
     private List<Authorization> authorizations;
 
     @Override

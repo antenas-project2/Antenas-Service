@@ -116,11 +116,10 @@ public class ProjectServiceImpl implements ProjectService {
                 }
                 if (project.getRefused()) {
                     projectFound.setRefused(project.getRefused());
+                    projectFound.setReason(project.getReason());
                 }
                 else {
                     project.setApprovedBy(user);
-                    projectFound.setRefused(project.getRefused());
-                    projectFound.setReason(project.getReason());
                     projectFound.setCourse(project.getCourse());
                     projectFound.setSemester(project.getSemester());
                     projectFound.setOpen(project.getOpen());

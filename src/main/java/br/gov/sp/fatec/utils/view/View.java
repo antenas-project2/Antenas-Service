@@ -19,4 +19,7 @@ public class View {
 
     public static class Team {
     }
+
+    public static class User {
+    }
 }

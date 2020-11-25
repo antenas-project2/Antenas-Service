@@ -19,6 +19,6 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name = "id")
 public class Cadi extends User {
 
-    @JsonView({ View.Cadi.class })
+    @JsonView({ View.Cadi.class, View.User.class })
     private String position;
 }

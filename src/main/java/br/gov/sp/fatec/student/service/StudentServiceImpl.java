@@ -76,7 +76,7 @@ public class StudentServiceImpl implements  StudentService{
     }
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
-    @JsonView({ View.Student.class })
+    @JsonView({ View.Student.class, View.User.class })
     public Student update(Student user, String url) {
         Student found = (Student) userService.getUserLoggedIn();
         if (!found.getEmail().equals(user.getEmail())) {

@@ -18,11 +18,11 @@ public class Authorization implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.User.class })
     private Long id;
 
     @Column(unique=true, length = 20, nullable = false)
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.User.class })
     private String name;
 
     public Long getId() {
