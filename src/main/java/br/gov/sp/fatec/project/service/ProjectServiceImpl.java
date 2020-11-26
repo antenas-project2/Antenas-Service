@@ -112,7 +112,7 @@ public class ProjectServiceImpl implements ProjectService {
                 if (project.getMeeting() != null && project.getMeeting().getAddress() != null) {
                     projectFound.setMeeting(project.getMeeting());
                 }
-                if (project.getRefused()) {
+                if (project.getRefused() != null && project.getRefused()) {
                     projectFound.setRefused(project.getRefused());
                     projectFound.setReason(project.getReason());
                 }
@@ -195,7 +195,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = findById(projectId);
         throwIfProjectIsNull(project);
 
-        if (project.getRefused()) {
+        if (project.getRefused() != null && project.getRefused()) {
             repository.delete(project);
         } else {
             throw new projectCannotBeDeletedException();
