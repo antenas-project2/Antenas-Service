@@ -32,7 +32,7 @@ public class CadiServiceImpl implements CadiService {
     public Cadi save(Cadi user, String url) {
 
         if (repository.findByEmail(user.getEmail()) != null) {
-            throw new Exception.CreateUserException();
+            throw new Exception.EmailDuplicateException();
         }
 
         user.setActive(false);

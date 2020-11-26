@@ -31,7 +31,7 @@ public class TeacherServiceImpl implements TeacherService{
 
     public Teacher save(Teacher teacher, String url) {
         if (repository.findByEmail(teacher.getEmail()) != null) {
-            throw new Exception.CreateUserException();
+            throw new Exception.EmailDuplicateException();
         }
 
         teacher.setActive(false);

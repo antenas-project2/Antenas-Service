@@ -30,7 +30,7 @@ public class RepresentativeServiceImpl implements RepresentativeService{
 
     public Representative save(Representative representative, String url) {
         if (repository.findByEmail(representative.getEmail()) != null) {
-            throw new Exception.CreateUserException();
+            throw new Exception.EmailDuplicateException();
         }
 
         representative.setActive(false);

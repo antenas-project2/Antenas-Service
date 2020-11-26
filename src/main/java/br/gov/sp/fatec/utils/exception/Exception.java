@@ -16,9 +16,9 @@ public class Exception extends Throwable {
     }
 
     @ResponseStatus(code = HttpStatus.CONFLICT)
-    public static class CreateUserException extends RuntimeException {
-        public CreateUserException() {
-            super("There is more than one user with this email");
+    public static class EmailDuplicateException extends RuntimeException {
+        public EmailDuplicateException() {
+            super("Duplicate email");
         }
     }
 

@@ -44,7 +44,7 @@ public class StudentServiceImpl implements  StudentService{
 
     public Student save(Student student, String url) {
         if (repository.findByEmail(student.getEmail()) != null) {
-            throw new Exception.CreateUserException();
+            throw new Exception.EmailDuplicateException();
         }
 
         student.setActive(false);

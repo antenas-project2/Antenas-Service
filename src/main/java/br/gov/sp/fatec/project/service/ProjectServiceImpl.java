@@ -52,7 +52,6 @@ public class ProjectServiceImpl implements ProjectService {
         throwIfUserIsInactive(found);
         project.setCreatedBy(found);
         project.setUpdatedAt(new Date());
-
         project.setCreatedAt(ZonedDateTime.now());
         project.setProgress(2);
         project.setOpen(false);
@@ -94,8 +93,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project projectFound = projectRepository.findById(project.getId()).orElse(null);
         throwIfProjectIsNull(projectFound);
 
-        Long userId = userService.getUserLoggedIn().getId();
-        User user = userService.findById(userId);
+        User user = userService.getUserLoggedIn();
         throwIfUserIsNull(user);
 
         switch (user.getAuthorizations().get(0).getName()) {
@@ -127,12 +125,12 @@ public class ProjectServiceImpl implements ProjectService {
                     if (project.getFinished() != null && projectFound.getFinished() != null) {
                         projectFound.setFinished(project.getFinished());
 
-                        Cadi cadi = cadiService.findById(userId);
+                        Cadi cadi = (Cadi) user;
                         projectFound.setFinishedBy(cadi);
                     }
 
                     if (project.getApprovedBy() != null && projectFound.getApprovedBy() != null) {
-                        Cadi cadi = cadiService.findById(userId);
+                        Cadi cadi = (Cadi) user;
                         projectFound.setApprovedBy(cadi);
                     }
 
@@ -160,7 +158,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     private int getProgress (Project project) {
-        if (!project.getRefused()) {
+        if (project.getRefused() == null || !project.getRefused()) {
             if (project.getProgress() == 2 && project.getCompleteDescription() == null && project.getTechnologyDescription() == null) {
                 return 3;
             } else if (project.getCompleteDescription() != null && project.getTechnologyDescription() != null && project.getProgress() == 3) {
