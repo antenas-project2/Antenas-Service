@@ -1,6 +1,7 @@
 package br.gov.sp.fatec.student.controller;
 
 import br.gov.sp.fatec.student.domain.Student;
+import br.gov.sp.fatec.student.domain.StudentDTO;
 import br.gov.sp.fatec.student.service.StudentService;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.utils.view.View;
@@ -48,5 +49,10 @@ public class StudentController {
     public Student update(@RequestBody Student student, UriComponentsBuilder uriComponentsBuilder) {
         String url = uriComponentsBuilder.build().toUriString();
         return service.update(student, url);
+    }
+
+    @GetMapping(value = "/profile-info", produces = APPLICATION_JSON_VALUE)
+    public StudentDTO getProfileInfo() {
+        return service.getProfileInfo();
     }
 }

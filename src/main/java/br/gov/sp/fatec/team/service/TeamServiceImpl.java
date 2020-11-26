@@ -68,6 +68,10 @@ public class TeamServiceImpl implements TeamService {
         return roleRepository.findAll();
     }
 
+    public List<StudentTeam> findAllByStudent(Long studentId) {
+        return studentTeamRepository.findAllByStudentIdAndTeamProjectFinished(studentId, true);
+    }
+
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public Team save(Team team) {
         Project project = projectService.findById(team.getProject().getId());
@@ -104,7 +108,9 @@ public class TeamServiceImpl implements TeamService {
             if (studentTeam.getId() != null) {
                 studentTeamRepository.findById(studentTeam.getId()).ifPresent(studentTeams::add);
             } else {
-                StudentTeam studentTeamExists = studentTeamRepository.findByStudentId(studentTeam.getStudent().getId());
+//                StudentTeam studentTeamExists = studentTeamRepository.findByStudentId(studentTeam.getStudent().getId());
+                StudentTeam studentTeamExists = new StudentTeam();
+
 
                 if (studentTeamExists != null) {
                     throw new studentAlreadyInTeamException();

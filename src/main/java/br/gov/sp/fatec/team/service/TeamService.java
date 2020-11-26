@@ -19,4 +19,6 @@ public interface TeamService {
     List<Role> getRoles();
 
     Team updateStudentTeam(StudentTeam studentTeam);
+
+    List<StudentTeam> findAllByStudent(Long studentId);
 }
