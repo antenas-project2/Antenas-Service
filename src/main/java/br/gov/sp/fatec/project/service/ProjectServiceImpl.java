@@ -145,9 +145,7 @@ public class ProjectServiceImpl implements ProjectService {
 
             case "ROLE_TEACHER":
                 projectFound.setOpen(project.getOpen());
-                if (!project.getOpen()) {
-                    project.setFinished(true);
-                }
+                projectFound.setFinished(project.getFinished());
                 break;
         }
 
@@ -171,6 +169,8 @@ public class ProjectServiceImpl implements ProjectService {
                 return 7;
             } else if (project.getProgress() == 7 && !project.getOpen() ) {
                 return 8;
+            } else if (project.getProgress() == 8) { // todo - fazer mais uma verificação antes de avançar para o 8
+                return 9;
             }
         }
         return project.getProgress();

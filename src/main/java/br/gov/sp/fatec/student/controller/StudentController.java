@@ -24,7 +24,6 @@ public class StudentController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView({ View.Student.class })
     public Student save (@RequestBody Student student, UriComponentsBuilder uriComponentsBuilder) {
         String url = uriComponentsBuilder.build().toUriString();

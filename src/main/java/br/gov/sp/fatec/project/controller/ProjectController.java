@@ -22,7 +22,6 @@ public class ProjectController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView({ View.Project.class })
     public Project create(@RequestBody Project project) {
         return service.save(project);

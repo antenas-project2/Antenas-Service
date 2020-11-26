@@ -22,7 +22,6 @@ public class TeacherController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView({ View.Teacher.class })
     public Teacher create (@RequestBody Teacher teacher, UriComponentsBuilder uriComponentsBuilder) {
         String url = uriComponentsBuilder.build().toUriString();

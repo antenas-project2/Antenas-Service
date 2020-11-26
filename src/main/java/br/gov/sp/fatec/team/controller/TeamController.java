@@ -30,7 +30,6 @@ public class TeamController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView({ View.Team.class })
     public Team save (@RequestBody Team team) {
         return service.save(team);

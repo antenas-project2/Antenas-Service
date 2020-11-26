@@ -21,7 +21,6 @@ public class RepresentativeController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView({ View.Representative.class })
     public Representative save (@RequestBody Representative representative, UriComponentsBuilder uriComponentsBuilder) {
         String url = uriComponentsBuilder.build().toUriString();
