@@ -55,6 +55,8 @@ public class ProjectServiceImpl implements ProjectService {
         project.setCreatedAt(ZonedDateTime.now());
         project.setProgress(2);
         project.setOpen(false);
+        project.setRefused(false);
+        project.setFinished(false);
         return initializeObject(repository.save(project));
     }
 
@@ -146,6 +148,9 @@ public class ProjectServiceImpl implements ProjectService {
             case "ROLE_TEACHER":
                 projectFound.setOpen(project.getOpen());
                 projectFound.setFinished(project.getFinished());
+//                if (project.getFinished()) { todo - mudar pra representante
+//                    project.setFinishedBy();
+//                }
                 if (project.getProgress() == 7) {
                     projectFound.setShortDescription(project.getShortDescription());
                     projectFound.setCompleteDescription(project.getCompleteDescription());
@@ -170,7 +175,7 @@ public class ProjectServiceImpl implements ProjectService {
                 return 6;
             } else if (project.getProgress() == 6) {
                 return 7;
-            } else if (project.getProgress() == 7 && !project.getOpen() && project.getFinished() == null || !project.getFinished()) {
+            } else if (project.getProgress() == 7 && !project.getOpen() && !project.getFinished()) {
                 return 8;
             } else if (project.getProgress() == 8 && project.getFinished()) {
                 return 9;
