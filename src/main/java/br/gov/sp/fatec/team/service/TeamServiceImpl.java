@@ -70,10 +70,17 @@ public class TeamServiceImpl implements TeamService {
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public Team save(Team team) {
+        Student student = (Student) userService.getUserLoggedIn();
+
+        StudentTeam studentTeamExists = studentTeamRepository.findByStudentId(student.getId());
+
+        if (studentTeamExists != null) {
+            throw new studentAlreadyInTeamException();
+        }
+
         Project project = projectService.findById(team.getProject().getId());
         throwIfProjectIsNull(project);
         team.setProject(project);
-        Student student = studentService.findById(userService.getUserLoggedIn().getId());
         Team newTeam = repository.save(team);
 
         List<Role> roles = new ArrayList<>();

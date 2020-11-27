@@ -11,18 +11,21 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long>, JpaSpecificationExecutor<Project>  {
 
-    List<Project> findByCreatedById(Long id);
+    List<Project> findByCreatedByIdOrderByUpdatedAtDesc(Long id);
 
     @Query("select p from Project p " +
             "inner join Team t on p.id = t.project.id " +
             "inner join StudentTeam st on st.team.id = t.id " +
             "inner join Student s on s.id = st.student.id " +
-            "where s.id = ?1")
+            "where s.id = ?1 " +
+            "order by p.updatedAt")
 //            nativeQuery = true)
     List<Project> findByStudentId(Long id);
 
-    List<Project> findByTeacherId(Long id);
+    List<Project> findByTeacherIdOrderByUpdatedAtDesc(Long id);
 
-    List<Project> findAllByOpen(Boolean open);
+    List<Project> findAllByOpenOrderByUpdatedAtDesc(Boolean open);
+
+    List<Project> findAllByOrderByUpdatedAtDesc();
 
 }

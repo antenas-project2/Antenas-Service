@@ -73,9 +73,9 @@ public class ProjectServiceImpl implements ProjectService {
         List<Project> projects = new ArrayList<>();
 
         if (authorization.equals("ROLE_REPRESENTATIVE")) {
-            projects = repository.findByCreatedById(id);
+            projects = repository.findByCreatedByIdOrderByUpdatedAtDesc(id);
         } else if (authorization.equals("ROLE_STUDENT")) {
-            projects = repository.findAllByOpen(true);
+            projects = repository.findAllByOpenOrderByUpdatedAtDesc(true);
 
             for (Project project : repository.findByStudentId(id)) {
                 if (!projects.contains(project)) {
@@ -83,9 +83,9 @@ public class ProjectServiceImpl implements ProjectService {
                 }
             }
         } else if (authorization.equals("ROLE_CADI")) {
-            projects = repository.findAll();
+            projects = repository.findAllByOrderByUpdatedAtDesc();
         } else if (authorization.equals("ROLE_TEACHER")) {
-            projects = repository.findByTeacherId(id);
+            projects = repository.findByTeacherIdOrderByUpdatedAtDesc(id);
         }
         return initializeObjects(projects);
     }
@@ -175,11 +175,12 @@ public class ProjectServiceImpl implements ProjectService {
                 return 6;
             } else if (project.getProgress() == 6) {
                 return 7;
-            } else if (project.getProgress() == 7 && !project.getOpen() && !project.getFinished()) {
+            } else if (project.getProgress() == 7 && !project.getOpen() && project.getFinished()) {
                 return 8;
-            } else if (project.getProgress() == 8 && project.getFinished()) {
-                return 9;
             }
+//            else if (project.getProgress() == 8 && project.getFinished()) {
+//                return 9;
+//            }
         }
         return project.getProgress();
     }
