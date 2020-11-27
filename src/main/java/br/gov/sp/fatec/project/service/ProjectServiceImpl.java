@@ -170,9 +170,9 @@ public class ProjectServiceImpl implements ProjectService {
                 return 6;
             } else if (project.getProgress() == 6) {
                 return 7;
-            } else if (project.getProgress() == 7 && !project.getOpen() ) {
+            } else if (project.getProgress() == 7 && !project.getOpen() && project.getFinished() == null || !project.getFinished()) {
                 return 8;
-            } else if (project.getProgress() == 8) { // todo - fazer mais uma verificação antes de avançar para o 8
+            } else if (project.getProgress() == 8 && project.getFinished()) {
                 return 9;
             }
         }
