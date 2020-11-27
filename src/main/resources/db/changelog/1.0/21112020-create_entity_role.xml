@@ -42,15 +42,15 @@
                                  referencedColumnNames="id" referencedTableName="student_team"/>
     </changeSet>
 
-    <changeSet id="21112020-7" author="liquibase-docs">
-        <insert tableName="role">
-            <column name="name" value="DevOps"/>
-        </insert>
-        <insert tableName="role">
-            <column name="name" value="Dev"/>
-        </insert>
-        <insert tableName="role">
-            <column name="name" value="Scrum Master"/>
-        </insert>
-    </changeSet>
+<!--    <changeSet id="21112020-7" author="liquibase-docs">-->
+<!--        <insert tableName="role">-->
+<!--            <column name="name" value="DevOps"/>-->
+<!--        </insert>-->
+<!--        <insert tableName="role">-->
+<!--            <column name="name" value="Dev"/>-->
+<!--        </insert>-->
+<!--        <insert tableName="role">-->
+<!--            <column name="name" value="Scrum Master"/>-->
+<!--        </insert>-->
+<!--    </changeSet>-->
 </databaseChangeLog>
