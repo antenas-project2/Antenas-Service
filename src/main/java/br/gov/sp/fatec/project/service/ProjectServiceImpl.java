@@ -146,12 +146,15 @@ public class ProjectServiceImpl implements ProjectService {
             case "ROLE_TEACHER":
                 projectFound.setOpen(project.getOpen());
                 projectFound.setFinished(project.getFinished());
+                if (project.getProgress() == 7) {
+                    projectFound.setShortDescription(project.getShortDescription());
+                    projectFound.setCompleteDescription(project.getCompleteDescription());
+                    projectFound.setTechnologyDescription(project.getTechnologyDescription());
+                }
                 break;
         }
-
         projectFound.setProgress(getProgress(projectFound));
         projectFound.setUpdatedAt(new Date());
-
         return initializeObject(repository.save(projectFound));
     }
 
