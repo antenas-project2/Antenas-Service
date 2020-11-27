@@ -42,7 +42,7 @@
                                  referencedColumnNames="id" referencedTableName="student_team"/>
     </changeSet>
 
-    <changeSet id="21112020-7" author="liquibase-docs">
+    <changeSet id="21112020-7" author="danielly">
         <insert tableName="role">
             <column name="name" value="DevOps"/>
         </insert>
