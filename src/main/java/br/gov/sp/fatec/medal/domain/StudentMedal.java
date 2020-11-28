@@ -20,19 +20,16 @@ import java.util.List;
 public class StudentMedal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     private Long id;
 
     @ManyToOne
     @MapsId("student_id")
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     private Student student;
 
     @ManyToOne
     @MapsId("medal_id")
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
     private Medal medal;
 
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Profile.class })
     private Date date;
 }

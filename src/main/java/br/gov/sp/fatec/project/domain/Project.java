@@ -31,16 +31,16 @@ public class Project {
     @JsonView({ View.Project.class })
     private Meeting meeting;
 
-    @JsonView({ View.Project.class })
+    @JsonView({ View.Project.class, View.Profile.class })
     private String title;
 
-    @JsonView({ View.Project.class })
+    @JsonView({ View.Project.class, View.Profile.class })
     private String shortDescription;
 
-    @JsonView({ View.Project.class })
+    @JsonView({ View.Project.class, View.Profile.class })
     private String completeDescription;
 
-    @JsonView({ View.Project.class })
+    @JsonView({ View.Project.class, View.Profile.class })
     private String technologyDescription;
 
     @JsonView({ View.Project.class })
@@ -91,6 +91,9 @@ public class Project {
     @JsonView({ View.Project.class })
     private Teacher teacher;
 
-    @JsonView({ View.Project.class })
+    @JsonView({ View.Project.class, View.Profile.class })
     private int semester;
+
+    @JsonView({ View.Project.class, View.Profile.class })
+    private java.util.Date finishedDate;
 }

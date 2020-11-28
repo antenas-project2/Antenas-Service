@@ -25,18 +25,18 @@ public class Evaluation {
 
     @OneToOne
     @JoinColumn(name = "evaluated_by")
-    @JsonView({ View.Team.class })
+    @JsonView({ View.Team.class, View.Profile.class  })
     private User evaluatedBy;
 
-    @JsonView({ View.Team.class })
+    @JsonView({ View.Team.class, View.Profile.class })
     private int proactivity;
 
-    @JsonView({ View.Team.class })
+    @JsonView({ View.Team.class, View.Profile.class })
     private int collaboration;
 
-    @JsonView({ View.Team.class })
+    @JsonView({ View.Team.class, View.Profile.class })
     private int autonomy;
 
-    @JsonView({ View.Team.class })
-    private int resultsDeliver;
+    @JsonView({ View.Team.class, View.Profile.class })
+    private int resultsDeliver ;
 }

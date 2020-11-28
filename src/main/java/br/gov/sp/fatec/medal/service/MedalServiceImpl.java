@@ -21,4 +21,9 @@ public class MedalServiceImpl implements MedalService {
     public List<Medal> findAll() {
         return repository.findAll();
     }
+
+    @PreAuthorize("isAuthenticated()")
+    public List<Medal> findAllByStudentId(Long id) {
+        return repository.findAllByStudentId(id);
+    }
 }

@@ -68,6 +68,10 @@ public class TeamServiceImpl implements TeamService {
         return roleRepository.findAll();
     }
 
+    public List<StudentTeam> findAllByStudent(Long studentId) {
+        return studentTeamRepository.findAllByStudentIdAndTeamProjectFinishedOrderByTeamProjectFinishedDateDesc(studentId, true);
+    }
+
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public Team save(Team team) {
         Student student = (Student) userService.getUserLoggedIn();

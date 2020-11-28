@@ -1,6 +1,7 @@
 package br.gov.sp.fatec.student.service;
 
 import br.gov.sp.fatec.student.domain.Student;
+import br.gov.sp.fatec.student.domain.StudentDTO;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface StudentService {
     List<Student> findAll();
 
     Student update(Student user, String url);
+
+    StudentDTO getProfileInfo();
 }

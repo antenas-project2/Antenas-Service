@@ -147,6 +147,7 @@ public class ProjectServiceImpl implements ProjectService {
                 projectFound.setFinished(project.getFinished());
                 if (project.getFinished()) {
                     project.setOpen(false);
+                    project.setFinishedDate(new Date());
 //                    project.setFinishedBy(); todo - mudar pra representante
                 }
                 if (project.getProgress() == 7) {

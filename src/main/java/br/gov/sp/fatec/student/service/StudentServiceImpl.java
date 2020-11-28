@@ -1,10 +1,15 @@
 package br.gov.sp.fatec.student.service;
 
+import br.gov.sp.fatec.medal.service.MedalService;
 import br.gov.sp.fatec.security.service.AuthorizationService;
 import br.gov.sp.fatec.student.domain.AcademicInfo;
 import br.gov.sp.fatec.student.domain.ProfessionalInfo;
 import br.gov.sp.fatec.student.domain.Student;
+import br.gov.sp.fatec.student.domain.StudentDTO;
 import br.gov.sp.fatec.student.repository.StudentRepository;
+import br.gov.sp.fatec.team.domain.Evaluation;
+import br.gov.sp.fatec.team.domain.StudentTeam;
+import br.gov.sp.fatec.team.service.TeamService;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.user.service.UserService;
 import br.gov.sp.fatec.utils.commons.SendEmail;
@@ -25,7 +30,7 @@ import static br.gov.sp.fatec.utils.exception.Exception.throwIfUserIsNull;
 
 @Service
 @Transactional
-public class StudentServiceImpl implements  StudentService{
+public class StudentServiceImpl implements  StudentService {
 
     @Autowired
     private StudentRepository repository;
@@ -41,6 +46,12 @@ public class StudentServiceImpl implements  StudentService{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TeamService teamService;
+
+    @Autowired
+    private MedalService medalService;
 
     public Student save(Student student, String url) {
         if (repository.findByEmail(student.getEmail()) != null) {
@@ -113,5 +124,48 @@ public class StudentServiceImpl implements  StudentService{
         }
 
         return repository.save(found);
+    }
+
+    public StudentDTO getProfileInfo() {
+        Student found = (Student) userService.getUserLoggedIn();
+        StudentDTO student = new StudentDTO();
+
+        student.setBiography(found.getBiography());
+        student.setCity(found.getCity());
+        student.setEmail(found.getEmail());
+        student.setLinkedin(found.getLinkedin());
+        student.setPhoto(found.getPhoto());
+        student.setStudentTeam(teamService.findAllByStudent(found.getId()));
+        student.setCompletedProjects(student.getStudentTeam().size());
+        student.setAcademicInfos(found.getAcademicInfos());
+        student.setProfessionalInfos(found.getProfessionalInfos());
+        student.setAverage(this.getAverage(student.getStudentTeam()));
+        student.setMedals(medalService.findAllByStudentId(found.getId()));
+
+        return student;
+    }
+
+    private Evaluation getAverage(List<StudentTeam> studentTeamList) {
+        Evaluation evaluationAverage = new Evaluation();
+        int proactivity = 0;
+        int collaboration = 0;
+        int autonomy = 0;
+        int resultsDeliver = 0;
+        int qty = 0;
+
+        for (StudentTeam studentTeam : studentTeamList) {
+            qty += studentTeam.getEvaluations().size();
+            for (Evaluation evaluation : studentTeam.getEvaluations()) {
+                proactivity += evaluation.getProactivity();
+                collaboration += evaluation.getCollaboration();
+                autonomy += evaluation.getAutonomy();
+                resultsDeliver += evaluation.getResultsDeliver();
+            }
+        }
+        evaluationAverage.setAutonomy(autonomy / qty);
+        evaluationAverage.setCollaboration(collaboration / qty);
+        evaluationAverage.setProactivity(proactivity / qty);
+        evaluationAverage.setResultsDeliver(resultsDeliver / qty);
+        return evaluationAverage;
     }
 }

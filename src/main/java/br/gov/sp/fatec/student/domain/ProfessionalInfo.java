@@ -22,19 +22,19 @@ public class ProfessionalInfo {
     @JsonView({ View.Student.class, View.User.class })
     private Long id;
 
-    @JsonView({ View.Student.class, View.User.class })
+    @JsonView({ View.Student.class, View.User.class, View.Profile.class })
     private String role;
 
-    @JsonView({ View.Student.class, View.User.class })
+    @JsonView({ View.Student.class, View.User.class, View.Profile.class })
     private String activitiesPerformed;
 
-    @JsonView({ View.Student.class, View.User.class })
+    @JsonView({ View.Student.class, View.User.class, View.Profile.class })
     private String company;
 
-    @JsonView({ View.Student.class, View.User.class })
+    @JsonView({ View.Student.class, View.User.class, View.Profile.class })
     private Date start;
 
-    @JsonView({ View.Student.class, View.User.class })
+    @JsonView({ View.Student.class, View.User.class, View.Profile.class })
     private Date end;
 
     @ManyToMany(mappedBy = "professionalInfos")

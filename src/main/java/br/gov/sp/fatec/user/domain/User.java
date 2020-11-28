@@ -50,7 +50,7 @@ public class User implements UserDetails {
     @JoinTable(name = "user_authorization",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "authorization_id") })
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class, View.User.class })
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class, View.User.class, View.Profile.class  })
     private List<Authorization> authorizations;
 
     @Override
