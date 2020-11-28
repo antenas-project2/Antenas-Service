@@ -42,9 +42,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private CadiService cadiService;
-
     @PreAuthorize("hasRole('ROLE_REPRESENTATIVE')")
     public Project save(Project project) {
         Representative found = representativeService.findById(userService.getUserLoggedIn().getId());
@@ -148,9 +145,10 @@ public class ProjectServiceImpl implements ProjectService {
             case "ROLE_TEACHER":
                 projectFound.setOpen(project.getOpen());
                 projectFound.setFinished(project.getFinished());
-//                if (project.getFinished()) { todo - mudar pra representante
-//                    project.setFinishedBy();
-//                }
+                if (project.getFinished()) {
+                    project.setOpen(false);
+//                    project.setFinishedBy(); todo - mudar pra representante
+                }
                 if (project.getProgress() == 7) {
                     projectFound.setShortDescription(project.getShortDescription());
                     projectFound.setCompleteDescription(project.getCompleteDescription());
