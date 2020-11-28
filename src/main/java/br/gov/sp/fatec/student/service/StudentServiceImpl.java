@@ -126,8 +126,8 @@ public class StudentServiceImpl implements  StudentService {
         return repository.save(found);
     }
 
-    public StudentDTO getProfileInfo() {
-        Student found = (Student) userService.getUserLoggedIn();
+    public StudentDTO getProfileInfo(Long id) {
+        Student found = (Student) userService.findById(id);
         StudentDTO student = new StudentDTO();
 
         student.setBiography(found.getBiography());

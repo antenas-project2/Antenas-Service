@@ -15,5 +15,5 @@ public interface StudentService {
 
     Student update(Student user, String url);
 
-    StudentDTO getProfileInfo();
+    StudentDTO getProfileInfo(Long id);
 }

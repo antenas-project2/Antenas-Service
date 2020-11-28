@@ -51,8 +51,8 @@ public class StudentController {
     }
 
     @JsonView({ View.Profile.class })
-    @GetMapping(value = "/profile-info", produces = APPLICATION_JSON_VALUE)
-    public StudentDTO getProfileInfo() {
-        return service.getProfileInfo();
+    @GetMapping(value = "/profile-info/{id}", produces = APPLICATION_JSON_VALUE)
+    public StudentDTO getProfileInfo(@PathVariable("id") Long id) {
+        return service.getProfileInfo(id);
     }
 }
