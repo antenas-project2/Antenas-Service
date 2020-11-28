@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface StudentTeamRepository extends JpaRepository<StudentTeam, Long>, JpaSpecificationExecutor<StudentTeam> {
 
     StudentTeam findByStudentId(Long student);
+
+    StudentTeam findByStudentIdAndTeamProjectFinished(Long student, boolean finished);
 }
