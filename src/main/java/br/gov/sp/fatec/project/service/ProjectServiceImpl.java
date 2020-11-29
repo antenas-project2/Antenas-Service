@@ -174,12 +174,11 @@ public class ProjectServiceImpl implements ProjectService {
                 return 6;
             } else if (project.getProgress() == 6) {
                 return 7;
-            } else if (project.getProgress() == 7 && !project.getOpen() && project.getFinished()) {
+            } else if (project.getProgress() == 7 && !project.getOpen() && !project.getFinished()) {
                 return 8;
+            } else if (project.getProgress() == 8 && project.getFinished()) {
+                return 9;
             }
-//            else if (project.getProgress() == 8 && project.getFinished()) {
-//                return 9;
-//            }
         }
         return project.getProgress();
     }

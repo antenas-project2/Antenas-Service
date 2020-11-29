@@ -24,6 +24,8 @@ public class StudentMedal {
 
     @ManyToOne
     @MapsId("student_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Student student;
 
     @ManyToOne

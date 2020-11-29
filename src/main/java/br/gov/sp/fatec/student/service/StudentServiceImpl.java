@@ -104,17 +104,17 @@ public class StudentServiceImpl implements  StudentService {
         found.setCity(user.getCity());
         found.setLinkedin(user.getLinkedin());
 
-        for (AcademicInfo academicInfo : user.getAcademicInfos()) {
-            if (academicInfo.getStudents() != null && !academicInfo.getStudents().isEmpty()) {
-                academicInfo.getStudents().add(found);
-            }
-        }
-
-        for (ProfessionalInfo professionalInfo : user.getProfessionalInfos()) {
-            if (professionalInfo.getStudents() != null && !professionalInfo.getStudents().isEmpty()) {
-                professionalInfo.getStudents().add(found);
-            }
-        }
+//        for (AcademicInfo academicInfo : user.getAcademicInfos()) {
+//            if (academicInfo.getStudents() != null && !academicInfo.getStudents().isEmpty()) {
+//                academicInfo.getStudents().add(found);
+//            }
+//        }
+//
+//        for (ProfessionalInfo professionalInfo : user.getProfessionalInfos()) {
+//            if (professionalInfo.getStudents() != null && !professionalInfo.getStudents().isEmpty()) {
+//                professionalInfo.getStudents().add(found);
+//            }
+//        }
 
         found.setAcademicInfos(user.getAcademicInfos());
         found.setProfessionalInfos(user.getProfessionalInfos());

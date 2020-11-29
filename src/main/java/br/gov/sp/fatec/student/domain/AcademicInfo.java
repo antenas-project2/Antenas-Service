@@ -37,6 +37,7 @@ public class AcademicInfo {
     private Date end;
 
     @ManyToMany(mappedBy = "academicInfos")
-//    @JsonView({ View.Student.class, View.User.class })
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Student> students = new LinkedList<>();
 }

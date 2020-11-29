@@ -56,11 +56,7 @@ public class Student extends User {
     @JsonView({ View.Student.class, View.User.class, View.Profile.class })
     private List<AcademicInfo> academicInfos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "student")
-    @JsonIgnore
-    private List<StudentTeam> studentTeamList;
-
-    @OneToMany(mappedBy = "student")
+    @OneToMany
     @JsonView({ View.Student.class, View.User.class })
     private List<StudentMedal> studentMedals;
 }

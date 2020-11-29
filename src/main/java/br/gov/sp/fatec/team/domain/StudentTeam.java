@@ -38,6 +38,8 @@ public class StudentTeam {
     @ManyToOne
     @JoinColumn(name = "student_id")
     @JsonView({ View.Team.class })
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Student student;
 
     @ManyToMany(cascade = CascadeType.PERSIST)

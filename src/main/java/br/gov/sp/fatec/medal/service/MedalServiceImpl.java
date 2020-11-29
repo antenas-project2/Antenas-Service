@@ -3,6 +3,8 @@ package br.gov.sp.fatec.medal.service;
 import br.gov.sp.fatec.medal.domain.Medal;
 import br.gov.sp.fatec.medal.repository.MedalRepository;
 import br.gov.sp.fatec.medal.service.MedalService;
+import br.gov.sp.fatec.utils.view.View;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ public class MedalServiceImpl implements MedalService {
     private MedalRepository repository;
 
     @PreAuthorize("isAuthenticated()")
+    @JsonView({ View.Medal.class })
     public List<Medal> findAll() {
         return repository.findAll();
     }

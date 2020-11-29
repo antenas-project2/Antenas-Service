@@ -1,6 +1,5 @@
 package br.gov.sp.fatec.medal.domain;
 
-import br.gov.sp.fatec.team.domain.StudentTeam;
 import br.gov.sp.fatec.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
@@ -16,25 +15,31 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "medal")
-@JsonView({ View.Profile.class })
 public class Medal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({ View.Medal.class })
     private Long id;
 
+    @JsonView({ View.Profile.class, View.Medal.class  })
     private String name;
 
+    @JsonView({ View.Profile.class, View.Medal.class  })
     private String description;
 
+    @JsonView({ View.Profile.class, View.Medal.class  })
     private String picture;
 
     @ManyToMany
     @JoinTable(name = "medal_category",
             joinColumns = @JoinColumn(name = "medal_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
+    @JsonView({ View.Profile.class, View.Medal.class })
     private List<Category> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "medal")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<StudentMedal> studentMedals;
 }

@@ -25,4 +25,7 @@ public class View {
 
     public static class Profile {
     }
+
+    public static class Medal {
+    }
 }
