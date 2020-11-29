@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -31,6 +32,9 @@ public class Medal {
     @JsonView({ View.Profile.class, View.Medal.class  })
     private String picture;
 
+    @JsonView({ View.Medal.class  })
+    private Date creationDate;
+
     @ManyToMany
     @JoinTable(name = "medal_category",
             joinColumns = @JoinColumn(name = "medal_id"),
@@ -43,3 +47,4 @@ public class Medal {
     @EqualsAndHashCode.Exclude
     private List<StudentMedal> studentMedals;
 }
+
