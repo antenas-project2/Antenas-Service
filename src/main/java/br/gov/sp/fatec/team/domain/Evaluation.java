@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
@@ -29,14 +27,14 @@ public class Evaluation {
     private User evaluatedBy;
 
     @JsonView({ View.Team.class, View.Profile.class })
-    private int proactivity;
+    private Integer proactivity;
 
     @JsonView({ View.Team.class, View.Profile.class })
-    private int collaboration;
+    private Integer collaboration;
 
     @JsonView({ View.Team.class, View.Profile.class })
-    private int autonomy;
+    private Integer autonomy;
 
     @JsonView({ View.Team.class, View.Profile.class })
-    private int resultsDeliver ;
+    private Integer resultsDeliver ;
 }

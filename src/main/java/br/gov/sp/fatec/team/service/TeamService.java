@@ -21,4 +21,6 @@ public interface TeamService {
     Team updateStudentTeam(StudentTeam studentTeam);
 
     List<StudentTeam> findAllByStudent(Long studentId);
+
+    void evaluate(List<Team> teams);
 }

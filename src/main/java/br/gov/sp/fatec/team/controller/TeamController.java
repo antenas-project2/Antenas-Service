@@ -58,5 +58,9 @@ public class TeamController {
         return service.updateStudentTeam(studentTeam);
     }
 
-
+    @PutMapping(path = "/evaluate")
+    @JsonView({ View.Team.class })
+    public void evaluate(@RequestBody List<Team> teams) {
+        service.evaluate(teams);
+    }
 }

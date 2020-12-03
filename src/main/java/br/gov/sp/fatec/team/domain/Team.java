@@ -31,7 +31,7 @@ public class Team {
 
     @ManyToOne
     @JoinColumn(name = "project_id", referencedColumnName = "id")
-    @JsonView({ View.Team.class, View.Profile.class })
+    @JsonView({ View.Profile.class })
     private Project project;
 
     @JsonView({ View.Team.class })

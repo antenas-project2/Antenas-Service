@@ -148,16 +148,20 @@ public class ProjectServiceImpl implements ProjectService {
                 if (project.getFinished()) {
                     project.setOpen(false);
                     project.setFinishedDate(new Date());
-//                    project.setFinishedBy(); todo - mudar pra representante
+//                    project.setFinishedBy(); todo - mudar pra PROFESOR
                 }
                 if (project.getProgress() == 7) {
                     projectFound.setShortDescription(project.getShortDescription());
                     projectFound.setCompleteDescription(project.getCompleteDescription());
                     projectFound.setTechnologyDescription(project.getTechnologyDescription());
+                } else {
+                    projectFound.setProgress(getProgress(projectFound));
                 }
                 break;
         }
-        projectFound.setProgress(getProgress(projectFound));
+        if (!user.getAuthorizations().get(0).getName().equals("ROLE_TEACHER")) {
+            projectFound.setProgress(getProgress(projectFound));
+        }
         projectFound.setUpdatedAt(new Date());
         return initializeObject(repository.save(projectFound));
     }
@@ -205,7 +209,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (project.getRefused() != null && project.getRefused()) {
             repository.delete(project);
         } else {
-            throw new projectCannotBeDeletedException();
+            throw new ProjectCannotBeDeletedException();
         }
     }
 }

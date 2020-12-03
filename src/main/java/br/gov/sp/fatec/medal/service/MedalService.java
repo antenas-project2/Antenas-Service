@@ -9,4 +9,8 @@ public interface MedalService {
     List<Medal> findAll();
 
     List<Medal> findAllByStudentId(Long id);
+
+    Medal save(Medal medal);
+
+    Medal update(Medal medal);
 }

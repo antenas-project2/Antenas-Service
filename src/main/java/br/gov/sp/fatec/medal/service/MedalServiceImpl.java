@@ -2,7 +2,6 @@ package br.gov.sp.fatec.medal.service;
 
 import br.gov.sp.fatec.medal.domain.Medal;
 import br.gov.sp.fatec.medal.repository.MedalRepository;
-import br.gov.sp.fatec.medal.service.MedalService;
 import br.gov.sp.fatec.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+
+import static br.gov.sp.fatec.utils.exception.Exception.throwIfMedalIsNull;
 
 @Service
 @Transactional
@@ -28,5 +29,23 @@ public class MedalServiceImpl implements MedalService {
     @PreAuthorize("isAuthenticated()")
     public List<Medal> findAllByStudentId(Long id) {
         return repository.findAllByStudentId(id);
+    }
+
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    public Medal save(Medal medal) {
+        return repository.save(medal);
+    }
+
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    public Medal update(Medal medal) {
+        Medal found = repository.findById(medal.getId()).orElse(null);
+        throwIfMedalIsNull(found);
+
+        found.setCategories(medal.getCategories());
+        found.setDescription(medal.getDescription());
+        found.setName(medal.getName());
+        found.setPicture(medal.getPicture());
+
+        return repository.save(found);
     }
 }

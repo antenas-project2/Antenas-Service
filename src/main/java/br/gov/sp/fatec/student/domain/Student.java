@@ -2,10 +2,8 @@ package br.gov.sp.fatec.student.domain;
 
 import br.gov.sp.fatec.medal.domain.Category;
 import br.gov.sp.fatec.medal.domain.StudentMedal;
-import br.gov.sp.fatec.team.domain.StudentTeam;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.utils.view.View;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 
@@ -35,12 +33,12 @@ public class Student extends User {
     @JsonView({ View.Student.class, View.User.class })
     private String biography;
 
-    @ManyToMany
-    @JoinTable(name = "medal_category",
-            joinColumns = @JoinColumn(name = "medal_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    @JsonView({ View.Student.class, View.User.class })
-    private List<Category> categories = new ArrayList<>();
+//    @ManyToMany
+//    @JoinTable(name = "medal_category",
+//            joinColumns = @JoinColumn(name = "medal_id"),
+//            inverseJoinColumns = @JoinColumn(name = "category_id"))
+//    @JsonView({ View.Student.class, View.User.class })
+//    private List<Category> categories = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "student_professional_info",

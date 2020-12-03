@@ -91,7 +91,7 @@ public class StudentServiceImpl implements  StudentService {
     public Student update(Student user, String url) {
         Student found = (Student) userService.getUserLoggedIn();
         if (!found.getEmail().equals(user.getEmail())) {
-            throw new Exception.userInvalidException();
+            throw new Exception.UserInvalidException();
         }
 
         throwIfUserIsNull(found);
@@ -151,16 +151,13 @@ public class StudentServiceImpl implements  StudentService {
         int collaboration = 0;
         int autonomy = 0;
         int resultsDeliver = 0;
-        int qty = 0;
+        int qty = studentTeamList.size();
 
         for (StudentTeam studentTeam : studentTeamList) {
-            qty += studentTeam.getEvaluations().size();
-            for (Evaluation evaluation : studentTeam.getEvaluations()) {
-                proactivity += evaluation.getProactivity();
-                collaboration += evaluation.getCollaboration();
-                autonomy += evaluation.getAutonomy();
-                resultsDeliver += evaluation.getResultsDeliver();
-            }
+                proactivity += studentTeam.getEvaluation().getProactivity();
+                collaboration += studentTeam.getEvaluation().getCollaboration();
+                autonomy += studentTeam.getEvaluation().getAutonomy();
+                resultsDeliver += studentTeam.getEvaluation().getResultsDeliver();
         }
         evaluationAverage.setAutonomy(autonomy / qty);
         evaluationAverage.setCollaboration(collaboration / qty);

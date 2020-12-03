@@ -33,6 +33,8 @@ public class StudentTeam {
     @ManyToOne
     @JoinColumn(name = "team_id")
     @JsonView({ View.Profile.class })
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Team team;
 
     @ManyToOne
@@ -42,12 +44,9 @@ public class StudentTeam {
     @EqualsAndHashCode.Exclude
     private Student student;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "student_team_evaluation",
-            joinColumns = @JoinColumn(name = "student_team_id"),
-            inverseJoinColumns = @JoinColumn(name = "evaluation_id"))
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JsonView({ View.Team.class, View.Profile.class })
-    private List<Evaluation> evaluations = new ArrayList<>();
+    private Evaluation evaluation;
 
     public StudentTeam(List<Role> role, Team team, Student student) {
         this.role = role;

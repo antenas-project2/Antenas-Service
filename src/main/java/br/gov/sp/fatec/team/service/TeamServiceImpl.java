@@ -4,20 +4,17 @@ import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.service.StudentService;
-import br.gov.sp.fatec.team.domain.Role;
-import br.gov.sp.fatec.team.domain.StudentTeam;
-import br.gov.sp.fatec.team.domain.Team;
+import br.gov.sp.fatec.teacher.domain.Teacher;
+import br.gov.sp.fatec.team.domain.*;
 import br.gov.sp.fatec.team.repository.RoleRepository;
 import br.gov.sp.fatec.team.repository.StudentTeamRepository;
 import br.gov.sp.fatec.team.repository.TeamRepository;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.user.service.UserService;
-import liquibase.pro.packaged.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.PreRemove;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -57,11 +54,34 @@ public class TeamServiceImpl implements TeamService {
             if (team != null) {
                 teamList.add(team);
             }
-
             return teamList;
         }
 
-        return repository.findAllByProjectId(projectId);
+        List<Team> teams = repository.findAllByProjectId(projectId);
+
+        if (user.getAuthorizations().get(0).getName().equals("ROLE_TEACHER")) {
+            for (Team team : teams) {
+                for (StudentTeam studentTeam : team.getStudentTeamList()) {
+                    studentTeam.setEvaluation(new Evaluation());
+                    studentTeam.getEvaluation().setId(null);
+                }
+            }
+        }
+        return teams;
+    }
+
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    public void evaluate(List<Team> teams) {
+        for (Team team : teams) {
+            for (StudentTeam studentTeam : team.getStudentTeamList()) {
+                StudentTeam studentTeamFound = studentTeamRepository.findById(studentTeam.getId()).orElse(null);
+                assert studentTeamFound != null;
+
+                studentTeam.getEvaluation().setEvaluatedBy( userService.getUserLoggedIn());
+                studentTeamFound.setEvaluation(studentTeam.getEvaluation());
+                studentTeamRepository.save(studentTeamFound);
+            }
+        }
     }
 
     public List<Role> getRoles() {
@@ -79,7 +99,7 @@ public class TeamServiceImpl implements TeamService {
         StudentTeam studentTeamExists = studentTeamRepository.findByStudentIdAndTeamProjectFinished(student.getId(), false);
 
         if (studentTeamExists != null) {
-            throw new studentAlreadyInTeamException();
+            throw new StudentAlreadyInTeamException();
         }
 
         Project project = projectService.findById(team.getProject().getId());
@@ -118,7 +138,7 @@ public class TeamServiceImpl implements TeamService {
                 StudentTeam studentTeamExists = studentTeamRepository.findByStudentIdAndTeamProjectFinished(studentTeam.getStudent().getId(), false);
 
                 if (studentTeamExists != null) {
-                    throw new studentAlreadyInTeamException();
+                    throw new StudentAlreadyInTeamException();
                 }
 
                 Student student = studentService.findById(studentTeam.getStudent().getId());
@@ -137,15 +157,6 @@ public class TeamServiceImpl implements TeamService {
         found.setProjectUrl(team.getProjectUrl());
         found.setCommunicationLink(team.getCommunicationLink());
 
-        for (StudentTeam studentTeamFound : found.getStudentTeamList()) {
-            for (StudentTeam studentTeam : team.getStudentTeamList()) {
-                if (studentTeamFound.getId().equals(studentTeam.getId()) && studentTeam.getEvaluations().size() > 0) {
-                    studentTeam.getEvaluations().get(0).setEvaluatedBy(userService.getUserLoggedIn());
-                    studentTeamFound.getEvaluations().add(studentTeam.getEvaluations().get(0));
-                }
-            }
-        }
-
         return repository.save(found);
     }
 
@@ -156,7 +167,6 @@ public class TeamServiceImpl implements TeamService {
         assert found != null;
         found.setRole(studentTeam.getRole());
         return studentTeamRepository.save(found).getTeam();
-
     }
 }
 
