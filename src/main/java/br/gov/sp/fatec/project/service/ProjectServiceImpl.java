@@ -150,19 +150,26 @@ public class ProjectServiceImpl implements ProjectService {
                     project.setFinishedDate(new Date());
 //                    project.setFinishedBy(); todo - mudar pra PROFESOR
                 }
-                if (project.getProgress() == 7) {
-                    projectFound.setShortDescription(project.getShortDescription());
-                    projectFound.setCompleteDescription(project.getCompleteDescription());
-                    projectFound.setTechnologyDescription(project.getTechnologyDescription());
-                } else {
-                    projectFound.setProgress(getProgress(projectFound));
-                }
+                projectFound.setShortDescription(project.getShortDescription());
+                projectFound.setCompleteDescription(project.getCompleteDescription());
+                projectFound.setTechnologyDescription(project.getTechnologyDescription());
                 break;
         }
-        if (!user.getAuthorizations().get(0).getName().equals("ROLE_TEACHER")) {
-            projectFound.setProgress(getProgress(projectFound));
-        }
+        projectFound.setProgress(getProgress(projectFound));
         projectFound.setUpdatedAt(new Date());
+        return initializeObject(repository.save(projectFound));
+    }
+
+    @PreAuthorize("hasRole('ROLE_REPRESENTATIVE')")
+    public Project closeProject (Project project) {
+        Project projectFound = projectRepository.findById(project.getId()).orElse(null);
+        throwIfProjectIsNull(projectFound);
+
+        User user = userService.getUserLoggedIn();
+        throwIfUserIsNull(user);
+
+        projectFound.setOpen(false);
+
         return initializeObject(repository.save(projectFound));
     }
 

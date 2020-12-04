@@ -39,6 +39,12 @@ public class ProjectController {
         return service.update(project);
     }
 
+    @PutMapping(value = "/close")
+    @JsonView({ View.Project.class })
+    public Project close(@RequestBody Project project) {
+        return service.closeProject(project);
+    }
+
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @JsonView({ View.Project.class })
     public Project getById(@PathVariable("id") Long id) {
