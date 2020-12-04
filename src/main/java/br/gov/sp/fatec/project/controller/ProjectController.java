@@ -33,7 +33,7 @@ public class ProjectController {
         return service.findAll();
     }
 
-    @PostMapping(value = "/update")
+    @PutMapping()
     @JsonView({ View.Project.class })
     public Project update(@RequestBody Project project) {
         return service.update(project);

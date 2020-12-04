@@ -160,7 +160,7 @@ public class ProjectServiceImpl implements ProjectService {
         return initializeObject(repository.save(projectFound));
     }
 
-    @PreAuthorize("hasRole('ROLE_REPRESENTATIVE')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
     public Project closeProject (Project project) {
         Project projectFound = projectRepository.findById(project.getId()).orElse(null);
         throwIfProjectIsNull(projectFound);
@@ -169,6 +169,7 @@ public class ProjectServiceImpl implements ProjectService {
         throwIfUserIsNull(user);
 
         projectFound.setOpen(false);
+        projectFound.setProgress(8);
 
         return initializeObject(repository.save(projectFound));
     }
