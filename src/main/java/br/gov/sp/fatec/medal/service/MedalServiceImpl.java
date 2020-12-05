@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 import static br.gov.sp.fatec.utils.exception.Exception.throwIfMedalIsNull;
@@ -33,6 +34,7 @@ public class MedalServiceImpl implements MedalService {
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     public Medal save(Medal medal) {
+        medal.setCreationDate(new Date());
         return repository.save(medal);
     }
 

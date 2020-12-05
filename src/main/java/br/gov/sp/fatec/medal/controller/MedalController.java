@@ -25,7 +25,7 @@ public class MedalController {
         return service.findAll();
     }
 
-    @PostMapping
+    @PutMapping
     @JsonView({ View.Medal.class })
     public Medal update(@RequestBody Medal medal) {
         return service.update(medal);
