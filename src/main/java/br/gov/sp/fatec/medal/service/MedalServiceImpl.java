@@ -47,6 +47,7 @@ public class MedalServiceImpl implements MedalService {
         found.setDescription(medal.getDescription());
         found.setName(medal.getName());
         found.setPicture(medal.getPicture());
+        found.setColor(medal.getColor());
 
         return repository.save(found);
     }

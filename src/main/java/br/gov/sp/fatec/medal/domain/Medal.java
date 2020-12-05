@@ -35,6 +35,9 @@ public class Medal {
     @JsonView({ View.Medal.class, View.Team.class  })
     private Date creationDate;
 
+    @JsonView({ View.Medal.class, View.Team.class  })
+    private String color;
+
     @ManyToMany
     @JoinTable(name = "medal_category",
             joinColumns = @JoinColumn(name = "medal_id"),

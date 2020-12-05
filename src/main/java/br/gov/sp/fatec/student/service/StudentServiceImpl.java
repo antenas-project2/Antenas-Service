@@ -2,8 +2,6 @@ package br.gov.sp.fatec.student.service;
 
 import br.gov.sp.fatec.medal.service.MedalService;
 import br.gov.sp.fatec.security.service.AuthorizationService;
-import br.gov.sp.fatec.student.domain.AcademicInfo;
-import br.gov.sp.fatec.student.domain.ProfessionalInfo;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.domain.StudentDTO;
 import br.gov.sp.fatec.student.repository.StudentRepository;
@@ -22,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +87,7 @@ public class StudentServiceImpl implements  StudentService {
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @JsonView({ View.Student.class, View.User.class })
-    public Student update(Student user, String url) {
+    public Student update(Student user, String url) throws IOException {
         Student found = (Student) userService.getUserLoggedIn();
         if (!found.getEmail().equals(user.getEmail())) {
             throw new Exception.UserInvalidException();
@@ -103,19 +102,6 @@ public class StudentServiceImpl implements  StudentService {
         found.setBiography(user.getBiography());
         found.setCity(user.getCity());
         found.setLinkedin(user.getLinkedin());
-
-//        for (AcademicInfo academicInfo : user.getAcademicInfos()) {
-//            if (academicInfo.getStudents() != null && !academicInfo.getStudents().isEmpty()) {
-//                academicInfo.getStudents().add(found);
-//            }
-//        }
-//
-//        for (ProfessionalInfo professionalInfo : user.getProfessionalInfos()) {
-//            if (professionalInfo.getStudents() != null && !professionalInfo.getStudents().isEmpty()) {
-//                professionalInfo.getStudents().add(found);
-//            }
-//        }
-
         found.setAcademicInfos(user.getAcademicInfos());
         found.setProfessionalInfos(user.getProfessionalInfos());
 

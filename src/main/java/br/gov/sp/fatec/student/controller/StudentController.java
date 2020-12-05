@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
@@ -45,7 +46,7 @@ public class StudentController {
 
     @PutMapping(value = "/update", produces = APPLICATION_JSON_VALUE)
     @JsonView({ View.Student.class })
-    public Student update(@RequestBody Student student, UriComponentsBuilder uriComponentsBuilder) {
+    public Student update(@RequestBody Student student, UriComponentsBuilder uriComponentsBuilder) throws IOException {
         String url = uriComponentsBuilder.build().toUriString();
         return service.update(student, url);
     }
