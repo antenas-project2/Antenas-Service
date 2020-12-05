@@ -20,6 +20,7 @@ import java.util.List;
 public class StudentMedal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({ View.Team.class })
     private Long id;
 
     @ManyToOne
@@ -30,8 +31,9 @@ public class StudentMedal {
 
     @ManyToOne
     @MapsId("medal_id")
+    @JsonView({ View.Team.class })
     private Medal medal;
 
-    @JsonView({ View.Profile.class })
+    @JsonView({ View.Team.class })
     private Date date;
 }

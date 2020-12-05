@@ -20,26 +20,26 @@ public class Medal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.Medal.class })
+    @JsonView({ View.Medal.class, View.Team.class })
     private Long id;
 
-    @JsonView({ View.Profile.class, View.Medal.class  })
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class  })
     private String name;
 
-    @JsonView({ View.Profile.class, View.Medal.class  })
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class  })
     private String description;
 
-    @JsonView({ View.Profile.class, View.Medal.class  })
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class  })
     private String picture;
 
-    @JsonView({ View.Medal.class  })
+    @JsonView({ View.Medal.class, View.Team.class  })
     private Date creationDate;
 
     @ManyToMany
     @JoinTable(name = "medal_category",
             joinColumns = @JoinColumn(name = "medal_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    @JsonView({ View.Profile.class, View.Medal.class })
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class })
     private List<Category> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "medal")
