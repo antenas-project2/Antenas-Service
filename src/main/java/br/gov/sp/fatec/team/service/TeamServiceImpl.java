@@ -4,7 +4,6 @@ import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.service.StudentService;
-import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.team.domain.*;
 import br.gov.sp.fatec.team.repository.RoleRepository;
 import br.gov.sp.fatec.team.repository.StudentTeamRepository;
@@ -45,7 +44,7 @@ public class TeamServiceImpl implements TeamService {
     private RoleRepository roleRepository;
 
     @PreAuthorize("isAuthenticated()")
-    public List<Team> findAll(Long projectId) {
+    public List<TeamDTO> findAll(Long projectId) {
         User user = userService.getUserLoggedIn();
 
         if (user.getAuthorizations().get(0).getName().equals("ROLE_STUDENT")) {
@@ -54,20 +53,10 @@ public class TeamServiceImpl implements TeamService {
             if (team != null) {
                 teamList.add(team);
             }
-            return teamList;
+            return teamToDTO(teamList);
         }
 
-        List<Team> teams = repository.findAllByProjectId(projectId);
-
-        if (user.getAuthorizations().get(0).getName().equals("ROLE_TEACHER")) {
-            for (Team team : teams) {
-                for (StudentTeam studentTeam : team.getStudentTeamList()) {
-                    studentTeam.setEvaluation(new Evaluation());
-                    studentTeam.getEvaluation().setId(null);
-                }
-            }
-        }
-        return teams;
+        return teamToDTO(repository.findAllByProjectId(projectId));
     }
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
@@ -82,6 +71,44 @@ public class TeamServiceImpl implements TeamService {
                 studentTeamRepository.save(studentTeamFound);
             }
         }
+    }
+
+    private List<TeamDTO> teamToDTO(List<Team> teamList) {
+        List<TeamDTO> teamDTOList = new ArrayList<>();
+
+        for (Team team : teamList) {
+            TeamDTO teamDTO = new TeamDTO();
+
+            teamDTO.setProjectUrl(team.getProjectUrl());
+            teamDTO.setProject(team.getProject());
+            teamDTO.setName(team.getName());
+            teamDTO.setId(team.getId());
+            teamDTO.setCommunicationLink(team.getCommunicationLink());
+            teamDTO.setStudentTeamList(studentTeamToDTO(team.getStudentTeamList()));
+
+            teamDTOList.add(teamDTO);
+        }
+
+        return teamDTOList;
+    }
+
+    private List<StudentTeamDTO> studentTeamToDTO(List<StudentTeam> studentTeamList) {
+        List<StudentTeamDTO> studentTeamDTOList = new ArrayList<>();
+
+        for(StudentTeam studentTeam : studentTeamList) {
+            StudentTeamDTO studentTeamDTO = new StudentTeamDTO();
+
+            studentTeamDTO.setStudent(studentTeam.getStudent());
+            studentTeamDTO.setRole(studentTeam.getRole());
+            studentTeamDTO.setId(studentTeam.getId());
+            if (studentTeam.getEvaluation() == null) {
+                studentTeamDTO.setEvaluation(new Evaluation());
+            } else {
+                studentTeamDTO.setEvaluation(studentTeam.getEvaluation());
+            }
+            studentTeamDTOList.add(studentTeamDTO);
+        }
+        return studentTeamDTOList;
     }
 
     public List<Role> getRoles() {

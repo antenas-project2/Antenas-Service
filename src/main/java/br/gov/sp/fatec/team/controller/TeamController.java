@@ -3,11 +3,11 @@ package br.gov.sp.fatec.team.controller;
 import br.gov.sp.fatec.team.domain.Role;
 import br.gov.sp.fatec.team.domain.StudentTeam;
 import br.gov.sp.fatec.team.domain.Team;
+import br.gov.sp.fatec.team.domain.TeamDTO;
 import br.gov.sp.fatec.team.service.TeamService;
 import br.gov.sp.fatec.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class TeamController {
 
     @GetMapping(path = "/{projectId}", produces = APPLICATION_JSON_VALUE)
     @JsonView({ View.Team.class })
-    public List<Team> findAll(@PathVariable("projectId") Long projectId) {
+    public List<TeamDTO> findAll(@PathVariable("projectId") Long projectId) {
         return service.findAll(projectId);
     }
 
