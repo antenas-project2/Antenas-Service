@@ -133,17 +133,20 @@ public class StudentServiceImpl implements  StudentService {
 
     private Evaluation getAverage(List<StudentTeam> studentTeamList) {
         Evaluation evaluationAverage = new Evaluation();
+
+        int qty = studentTeamList.size();
         int proactivity = 0;
         int collaboration = 0;
         int autonomy = 0;
         int resultsDeliver = 0;
-        int qty = studentTeamList.size();
 
         for (StudentTeam studentTeam : studentTeamList) {
+            if (studentTeam.getEvaluation() != null) {
                 proactivity += studentTeam.getEvaluation().getProactivity();
                 collaboration += studentTeam.getEvaluation().getCollaboration();
                 autonomy += studentTeam.getEvaluation().getAutonomy();
                 resultsDeliver += studentTeam.getEvaluation().getResultsDeliver();
+            }
         }
         evaluationAverage.setAutonomy(autonomy / qty);
         evaluationAverage.setCollaboration(collaboration / qty);
