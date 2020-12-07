@@ -127,6 +127,7 @@ public class StudentServiceImpl implements  StudentService {
         student.setProfessionalInfos(found.getProfessionalInfos());
         student.setAverage(this.getAverage(student.getStudentTeam()));
         student.setMedals(medalService.findAllByStudentId(found.getId()));
+        student.setName(found.getName());
 
         return student;
     }
