@@ -23,27 +23,23 @@ public class Medal {
     @JsonView({ View.Medal.class, View.Team.class })
     private Long id;
 
-    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class  })
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class })
     private String name;
 
-    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class  })
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class })
     private String description;
 
-    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class  })
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class })
     private String picture;
 
-    @JsonView({ View.Medal.class, View.Team.class  })
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class })
     private Date creationDate;
 
-    @JsonView({ View.Medal.class, View.Team.class  })
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class })
     private String color;
 
-    @ManyToMany
-    @JoinTable(name = "medal_category",
-            joinColumns = @JoinColumn(name = "medal_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
     @JsonView({ View.Profile.class, View.Medal.class, View.Team.class })
-    private List<Category> categories = new ArrayList<>();
+    private String category;
 
     @OneToMany(mappedBy = "medal")
     @ToString.Exclude

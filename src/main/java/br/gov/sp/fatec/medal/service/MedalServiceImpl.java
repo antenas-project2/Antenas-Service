@@ -43,7 +43,7 @@ public class MedalServiceImpl implements MedalService {
         Medal found = repository.findById(medal.getId()).orElse(null);
         throwIfMedalIsNull(found);
 
-        found.setCategories(medal.getCategories());
+        found.setCategory(medal.getCategory());
         found.setDescription(medal.getDescription());
         found.setName(medal.getName());
         found.setPicture(medal.getPicture());

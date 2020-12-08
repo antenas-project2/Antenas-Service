@@ -1,6 +1,5 @@
 package br.gov.sp.fatec.student.domain;
 
-import br.gov.sp.fatec.medal.domain.Category;
 import br.gov.sp.fatec.medal.domain.StudentMedal;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.utils.view.View;

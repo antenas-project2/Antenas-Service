@@ -24,4 +24,17 @@
         <modifyDataType columnName="name" newDataType="VARCHAR(16)" tableName="medal" />
     </changeSet>
 
+    <changeSet id="29112020-05" author="danielly">
+        <addColumn tableName="medal">
+            <column name="category" type="VARCHAR(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="29112020-06" author="danielly">
+        <dropTable tableName="medal_category"/>
+    </changeSet>
+
+    <changeSet id="29112020-04" author="danielly">
+        <modifyDataType columnName="color" newDataType="VARCHAR(10)" tableName="medal" />
+    </changeSet>
 </databaseChangeLog>
