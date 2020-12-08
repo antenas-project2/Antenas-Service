@@ -34,7 +34,7 @@
         <dropTable tableName="medal_category"/>
     </changeSet>
 
-<!--    medalCategory_medal_fk-->
-<!--    medalCategory_category_fk-->
-
+    <changeSet id="29112020-07" author="danielly">
+        <modifyDataType columnName="color" newDataType="VARCHAR(10)" tableName="medal" />
+    </changeSet>
 </databaseChangeLog>
