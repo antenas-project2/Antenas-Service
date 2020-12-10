@@ -46,10 +46,6 @@ public class Exception extends Throwable {
         public userInactiveException(Long id) {
             super(format("User with id '%d' is inactive", id));
         }
-
-        public userInactiveException() {
-            super("User not found");
-        }
     }
 
     @ResponseStatus(code = HttpStatus.CONFLICT)

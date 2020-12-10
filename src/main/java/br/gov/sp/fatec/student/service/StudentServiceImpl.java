@@ -149,10 +149,18 @@ public class StudentServiceImpl implements  StudentService {
                 resultsDeliver += studentTeam.getEvaluation().getResultsDeliver();
             }
         }
-        evaluationAverage.setAutonomy(autonomy / qty);
-        evaluationAverage.setCollaboration(collaboration / qty);
-        evaluationAverage.setProactivity(proactivity / qty);
-        evaluationAverage.setResultsDeliver(resultsDeliver / qty);
+
+        if (qty > 0) {
+            evaluationAverage.setAutonomy(autonomy / qty);
+            evaluationAverage.setCollaboration(collaboration / qty);
+            evaluationAverage.setProactivity(proactivity / qty);
+            evaluationAverage.setResultsDeliver(resultsDeliver / qty);
+        } else {
+            evaluationAverage.setAutonomy(0);
+            evaluationAverage.setCollaboration(0);
+            evaluationAverage.setProactivity(0);
+            evaluationAverage.setResultsDeliver(0);
+        }
         return evaluationAverage;
     }
 }
