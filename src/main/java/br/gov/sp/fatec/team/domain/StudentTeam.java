@@ -44,7 +44,7 @@ public class StudentTeam {
     @EqualsAndHashCode.Exclude
     private Student student;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JsonView({ View.Team.class, View.Profile.class })
     private Evaluation evaluation;
 

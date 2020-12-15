@@ -1,7 +1,6 @@
 package br.gov.sp.fatec.project.service;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
-import br.gov.sp.fatec.cadi.service.CadiService;
 import br.gov.sp.fatec.project.domain.Meeting;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
@@ -174,6 +173,20 @@ public class ProjectServiceImpl implements ProjectService {
         return initializeObject(repository.save(projectFound));
     }
 
+    public void closeAndFinishProject(Project project) {
+        Project projectFound = projectRepository.findById(project.getId()).orElse(null);
+        throwIfProjectIsNull(projectFound);
+
+        User user = userService.getUserLoggedIn();
+        throwIfUserIsNull(user);
+
+        projectFound.setOpen(false);
+        projectFound.setProgress(9);
+        projectFound.setFinished(true);
+
+        repository.save(projectFound);
+    }
+
     private int getProgress (Project project) {
         if (project.getRefused() == null || !project.getRefused()) {
             if (project.getProgress() == 2 && project.getCompleteDescription() == null && project.getTechnologyDescription() == null) {
@@ -186,8 +199,6 @@ public class ProjectServiceImpl implements ProjectService {
                 return 6;
             } else if (project.getProgress() == 6) {
                 return 7;
-            } else if (project.getProgress() == 7 && !project.getOpen() && !project.getFinished()) {
-                return 8;
             } else if (project.getProgress() == 8 && project.getFinished()) {
                 return 9;
             }

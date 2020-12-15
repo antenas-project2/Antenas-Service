@@ -21,4 +21,6 @@ public interface ProjectService {
     List<Project> initializeObjects(List<Project> projects);
 
     Project closeProject (Project project);
+
+    void closeAndFinishProject(Project project);
 }

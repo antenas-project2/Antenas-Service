@@ -71,6 +71,9 @@ public class TeamServiceImpl implements TeamService {
                 studentTeamRepository.save(studentTeamFound);
             }
         }
+        if (teams.size() > 0) {
+            projectService.closeAndFinishProject(teams.get(0).getProject());
+        }
     }
 
     private List<TeamDTO> teamToDTO(List<Team> teamList) {
