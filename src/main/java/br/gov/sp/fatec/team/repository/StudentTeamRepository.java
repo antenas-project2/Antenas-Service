@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface StudentTeamRepository extends JpaRepository<StudentTeam, Long>, JpaSpecificationExecutor<StudentTeam> {
 
-    StudentTeam findByStudentIdAndTeamProjectFinished(Long student, boolean finished);
+    StudentTeam findByStudentIdAndTeamProjectFinishedAndTeamProjectProgressLessThan(Long student, boolean finished, int progress);
 
     List<StudentTeam> findAllByStudentIdAndTeamProjectFinishedOrderByTeamProjectFinishedDateDesc(Long student, boolean finished);
 }

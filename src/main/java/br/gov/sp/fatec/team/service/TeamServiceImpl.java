@@ -1,5 +1,8 @@
 package br.gov.sp.fatec.team.service;
 
+import br.gov.sp.fatec.medal.domain.Medal;
+import br.gov.sp.fatec.medal.domain.StudentMedal;
+import br.gov.sp.fatec.medal.service.MedalService;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,6 +47,9 @@ public class TeamServiceImpl implements TeamService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private MedalService medalService;
+
     @PreAuthorize("isAuthenticated()")
     public List<TeamDTO> findAll(Long projectId) {
         User user = userService.getUserLoggedIn();
@@ -69,11 +76,24 @@ public class TeamServiceImpl implements TeamService {
                 studentTeam.getEvaluation().setEvaluatedBy( userService.getUserLoggedIn());
                 studentTeamFound.setEvaluation(studentTeam.getEvaluation());
                 studentTeamRepository.save(studentTeamFound);
+
+                for (StudentMedal studentMedal :  studentTeam.getStudent().getStudentMedals()) {
+                    if (studentMedal.getId() == null) {
+                        Medal medal = medalService.findMedalById(studentMedal.getMedal().getId());
+                        Student student = studentService.findById(studentTeam.getStudent().getId());
+
+                        studentMedal.setMedal(medal);
+                        studentMedal.setStudent(student);
+                        studentMedal.setDate(new Date());
+                        medalService.saveStudentMedal(studentMedal);
+                    }
+
+                }
             }
         }
-        if (teams.size() > 0) {
-            projectService.closeAndFinishProject(teams.get(0).getProject());
-        }
+//        if (teams.size() > 0) {
+//            projectService.closeAndFinishProject(teams.get(0).getProject());
+//        }
     }
 
     private List<TeamDTO> teamToDTO(List<Team> teamList) {
@@ -126,7 +146,7 @@ public class TeamServiceImpl implements TeamService {
     public Team save(Team team) {
         Student student = (Student) userService.getUserLoggedIn();
 
-        StudentTeam studentTeamExists = studentTeamRepository.findByStudentIdAndTeamProjectFinished(student.getId(), false);
+        StudentTeam studentTeamExists = studentTeamRepository.findByStudentIdAndTeamProjectFinishedAndTeamProjectProgressLessThan(student.getId(), false, 8);
 
         if (studentTeamExists != null) {
             throw new StudentAlreadyInTeamException();
@@ -165,7 +185,7 @@ public class TeamServiceImpl implements TeamService {
             if (studentTeam.getId() != null) {
                 studentTeamRepository.findById(studentTeam.getId()).ifPresent(studentTeams::add);
             } else {
-                StudentTeam studentTeamExists = studentTeamRepository.findByStudentIdAndTeamProjectFinished(studentTeam.getStudent().getId(), false);
+                StudentTeam studentTeamExists = studentTeamRepository.findByStudentIdAndTeamProjectFinishedAndTeamProjectProgressLessThan(studentTeam.getStudent().getId(), false, 8);
 
                 if (studentTeamExists != null) {
                     throw new StudentAlreadyInTeamException();

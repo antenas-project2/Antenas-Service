@@ -1,6 +1,7 @@
 package br.gov.sp.fatec.medal.domain;
 
 import br.gov.sp.fatec.student.domain.Student;
+import br.gov.sp.fatec.team.domain.Team;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -24,13 +25,13 @@ public class StudentMedal {
     private Long id;
 
     @ManyToOne
-    @MapsId("student_id")
+    @JoinColumn(name = "student_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Student student;
 
     @ManyToOne
-    @MapsId("medal_id")
+    @JoinColumn(name = "medal_id")
     @JsonView({ View.Team.class })
     private Medal medal;
 

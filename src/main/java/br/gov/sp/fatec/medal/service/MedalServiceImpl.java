@@ -1,7 +1,9 @@
 package br.gov.sp.fatec.medal.service;
 
 import br.gov.sp.fatec.medal.domain.Medal;
+import br.gov.sp.fatec.medal.domain.StudentMedal;
 import br.gov.sp.fatec.medal.repository.MedalRepository;
+import br.gov.sp.fatec.medal.repository.StudentMedalRepository;
 import br.gov.sp.fatec.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class MedalServiceImpl implements MedalService {
 
     @Autowired
     private MedalRepository repository;
+
+    @Autowired
+    private StudentMedalRepository studentMedalRepository;
 
     @PreAuthorize("isAuthenticated()")
     @JsonView({ View.Medal.class })
@@ -50,5 +55,14 @@ public class MedalServiceImpl implements MedalService {
         found.setColor(medal.getColor());
 
         return repository.save(found);
+    }
+
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    public StudentMedal saveStudentMedal(StudentMedal studentMedal) {
+        return studentMedalRepository.save(studentMedal);
+    }
+
+    public Medal findMedalById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 }
