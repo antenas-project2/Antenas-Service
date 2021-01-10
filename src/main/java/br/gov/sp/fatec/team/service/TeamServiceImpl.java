@@ -91,9 +91,9 @@ public class TeamServiceImpl implements TeamService {
                 }
             }
         }
-//        if (teams.size() > 0) {
-//            projectService.closeAndFinishProject(teams.get(0).getProject());
-//        }
+        if (teams.size() > 0) {
+            projectService.closeAndFinishProject(teams.get(0).getProject());
+        }
     }
 
     private List<TeamDTO> teamToDTO(List<Team> teamList) {

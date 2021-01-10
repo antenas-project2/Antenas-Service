@@ -31,6 +31,7 @@ public class StudentTeam {
     private List<Role> role = new ArrayList<>();
 
     @ManyToOne
+
     @JoinColumn(name = "team_id")
     @JsonView({ View.Profile.class })
     @ToString.Exclude
