@@ -22,7 +22,7 @@ public class CadiController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    private Cadi create (@RequestBody Cadi cadi, UriComponentsBuilder uriComponentsBuilder) {
+    private Cadi create(@RequestBody Cadi cadi, UriComponentsBuilder uriComponentsBuilder) {
         String url = uriComponentsBuilder.build().toUriString();
         return service.save(cadi, url);
     }
