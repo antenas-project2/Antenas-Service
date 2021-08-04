@@ -19,4 +19,8 @@ public interface ProjectService {
     Project initializeObject(Project project);
 
     List<Project> initializeObjects(List<Project> projects);
+
+    Project closeProject (Project project);
+
+    void closeAndFinishProject(Project project);
 }

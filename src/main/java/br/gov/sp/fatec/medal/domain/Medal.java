@@ -1,12 +1,12 @@
 package br.gov.sp.fatec.medal.domain;
 
-import br.gov.sp.fatec.team.domain.StudentTeam;
 import br.gov.sp.fatec.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,28 +17,33 @@ import java.util.List;
 @Setter
 @Table(name = "medal")
 public class Medal {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.Cadi.class, View.Representative.class })
+    @JsonView({ View.Medal.class, View.Team.class })
     private Long id;
 
-    @JsonView({ View.Cadi.class, View.Representative.class })
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class })
     private String name;
 
-    @JsonView({ View.Cadi.class, View.Representative.class })
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class })
     private String description;
 
-    @JsonView({ View.Cadi.class, View.Representative.class })
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class })
     private String picture;
 
-    @ManyToMany
-    @JoinTable(name = "medal_category",
-            joinColumns = @JoinColumn(name = "medal_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    @JsonView({ View.Cadi.class, View.Representative.class })
-    private List<Category> categories = new ArrayList<>();
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class })
+    private Date creationDate;
+
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class })
+    private String color;
+
+    @JsonView({ View.Profile.class, View.Medal.class, View.Team.class })
+    private String category;
 
     @OneToMany(mappedBy = "medal")
-    @JsonView({ View.Cadi.class, View.Representative.class })
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<StudentMedal> studentMedals;
 }
+

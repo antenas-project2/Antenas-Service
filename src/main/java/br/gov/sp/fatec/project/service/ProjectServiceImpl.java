@@ -1,7 +1,6 @@
 package br.gov.sp.fatec.project.service;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
-import br.gov.sp.fatec.cadi.service.CadiService;
 import br.gov.sp.fatec.project.domain.Meeting;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
@@ -148,18 +147,45 @@ public class ProjectServiceImpl implements ProjectService {
                 projectFound.setFinished(project.getFinished());
                 if (project.getFinished()) {
                     project.setOpen(false);
-//                    project.setFinishedBy(); todo - mudar pra representante
+                    project.setFinishedDate(new Date());
+//                    project.setFinishedBy(); todo - mudar pra PROFESOR
                 }
-                if (project.getProgress() == 7) {
-                    projectFound.setShortDescription(project.getShortDescription());
-                    projectFound.setCompleteDescription(project.getCompleteDescription());
-                    projectFound.setTechnologyDescription(project.getTechnologyDescription());
-                }
+                projectFound.setShortDescription(project.getShortDescription());
+                projectFound.setCompleteDescription(project.getCompleteDescription());
+                projectFound.setTechnologyDescription(project.getTechnologyDescription());
                 break;
         }
         projectFound.setProgress(getProgress(projectFound));
         projectFound.setUpdatedAt(new Date());
         return initializeObject(repository.save(projectFound));
+    }
+
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    public Project closeProject (Project project) {
+        Project projectFound = projectRepository.findById(project.getId()).orElse(null);
+        throwIfProjectIsNull(projectFound);
+
+        User user = userService.getUserLoggedIn();
+        throwIfUserIsNull(user);
+
+        projectFound.setOpen(false);
+        projectFound.setProgress(8);
+
+        return initializeObject(repository.save(projectFound));
+    }
+
+    public void closeAndFinishProject(Project project) {
+        Project projectFound = projectRepository.findById(project.getId()).orElse(null);
+        throwIfProjectIsNull(projectFound);
+
+        User user = userService.getUserLoggedIn();
+        throwIfUserIsNull(user);
+
+        projectFound.setOpen(false);
+        projectFound.setProgress(9);
+        projectFound.setFinished(true);
+
+        repository.save(projectFound);
     }
 
     private int getProgress (Project project) {
@@ -174,12 +200,9 @@ public class ProjectServiceImpl implements ProjectService {
                 return 6;
             } else if (project.getProgress() == 6) {
                 return 7;
-            } else if (project.getProgress() == 7 && !project.getOpen() && project.getFinished()) {
-                return 8;
+            } else if (project.getProgress() == 8 && project.getFinished()) {
+                return 9;
             }
-//            else if (project.getProgress() == 8 && project.getFinished()) {
-//                return 9;
-//            }
         }
         return project.getProgress();
     }
@@ -206,7 +229,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (project.getRefused() != null && project.getRefused()) {
             repository.delete(project);
         } else {
-            throw new projectCannotBeDeletedException();
+            throw new ProjectCannotBeDeletedException();
         }
     }
 }

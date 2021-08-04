@@ -24,19 +24,20 @@ public class AcademicInfo {
     @JsonView({ View.Student.class, View.User.class })
     private Long id;
 
-    @JsonView({ View.Student.class, View.User.class })
+    @JsonView({ View.Student.class, View.User.class, View.Profile.class })
     private String course;
 
-    @JsonView({ View.Student.class, View.User.class })
+    @JsonView({ View.Student.class, View.User.class, View.Profile.class })
     private String institution;
 
-    @JsonView({ View.Student.class, View.User.class })
+    @JsonView({ View.Student.class, View.User.class, View.Profile.class })
     private Date start;
 
-    @JsonView({ View.Student.class, View.User.class })
+    @JsonView({ View.Student.class, View.User.class, View.Profile.class })
     private Date end;
 
     @ManyToMany(mappedBy = "academicInfos")
-//    @JsonView({ View.Student.class, View.User.class })
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Student> students = new LinkedList<>();
 }

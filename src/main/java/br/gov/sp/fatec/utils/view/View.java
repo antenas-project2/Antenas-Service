@@ -22,4 +22,10 @@ public class View {
 
     public static class User {
     }
+
+    public static class Profile {
+    }
+
+    public static class Medal {
+    }
 }

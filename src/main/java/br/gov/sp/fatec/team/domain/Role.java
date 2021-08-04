@@ -20,6 +20,6 @@ public class Role {
     @JsonView({ View.Team.class })
     private Long id;
 
-    @JsonView({ View.Team.class })
+    @JsonView({ View.Team.class, View.Profile.class })
     private String name;
 }

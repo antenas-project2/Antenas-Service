@@ -33,10 +33,16 @@ public class ProjectController {
         return service.findAll();
     }
 
-    @PostMapping(value = "/update")
+    @PutMapping()
     @JsonView({ View.Project.class })
     public Project update(@RequestBody Project project) {
         return service.update(project);
+    }
+
+    @PutMapping(value = "/close")
+    @JsonView({ View.Project.class })
+    public Project close(@RequestBody Project project) {
+        return service.closeProject(project);
     }
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
