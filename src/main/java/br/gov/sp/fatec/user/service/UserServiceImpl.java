@@ -34,7 +34,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AuthorizationRepository authorizationRepository;
 
-
     @Autowired
     private StudentService studentService;
 
@@ -51,6 +50,11 @@ public class UserServiceImpl implements UserService {
         return repository.findByNameContainsIgnoreCase(login);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    public List<User> findAllDisabledUsers() {
+        return repository.findAllNotActive();
+    }
+
     public User findByEmail(String email) {
         return repository.findByEmail(email);
     }
@@ -58,15 +62,6 @@ public class UserServiceImpl implements UserService {
     @PreAuthorize("isAuthenticated()")
     public User search(Long id) {
         return repository.findById(id).orElse(null);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    public List<User> all() {
-        List<User> retorno = new ArrayList<User>();
-        for(User user: repository.findAll()) {
-            retorno.add(user);
-        }
-        return retorno;
     }
 
     public User findById(Long id) {

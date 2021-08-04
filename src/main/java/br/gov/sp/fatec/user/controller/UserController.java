@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 
@@ -22,6 +24,11 @@ public class UserController {
     @JsonView({ View.User.class })
     public User getLoggedInfo() {
         return service.getUserLoggedIn();
+    }
+
+    @GetMapping(value = "/disabled-users", produces = APPLICATION_JSON_VALUE)
+    public List<User> findAllDisabledUsers() {
+        return service.findAllDisabledUsers();
     }
 
     @GetMapping(value = "/activate/{b64}")

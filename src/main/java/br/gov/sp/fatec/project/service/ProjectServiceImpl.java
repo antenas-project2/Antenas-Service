@@ -45,6 +45,7 @@ public class ProjectServiceImpl implements ProjectService {
     @PreAuthorize("hasRole('ROLE_REPRESENTATIVE')")
     public Project save(Project project) {
         Representative found = representativeService.findById(userService.getUserLoggedIn().getId());
+        System.out.println(found);
         throwIfUserIsNull(found);
         throwIfUserIsInactive(found);
         project.setCreatedBy(found);
