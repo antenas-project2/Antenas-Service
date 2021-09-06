@@ -76,6 +76,13 @@ public class Exception extends Throwable {
         }
     }
 
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public static class UserRetrievingInvalidException extends RuntimeException {
+        public UserRetrievingInvalidException() {
+            super("You cannot change another user's information.");
+        }
+    }
+
     public static void throwIfUserIsInactive(User user) throws UserNotFoundException {
         if (!user.getActive()) {
             throw new userInactiveException(user.getId());

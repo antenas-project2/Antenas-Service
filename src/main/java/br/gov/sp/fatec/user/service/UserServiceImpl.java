@@ -7,8 +7,11 @@ import br.gov.sp.fatec.security.repository.AuthorizationRepository;
 import br.gov.sp.fatec.student.service.StudentService;
 import br.gov.sp.fatec.teacher.service.TeacherService;
 import br.gov.sp.fatec.user.domain.User;
+import br.gov.sp.fatec.user.dto.PendingUser;
+import br.gov.sp.fatec.user.dto.UserDTO;
 import br.gov.sp.fatec.user.repository.UserRepository;
 import br.gov.sp.fatec.utils.exception.Exception;
+import javassist.NotFoundException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +19,21 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static br.gov.sp.fatec.utils.exception.Exception.throwIfUserIsNull;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
     @Autowired
     private AuthorizationRepository authorizationRepository;
@@ -47,25 +51,104 @@ public class UserServiceImpl implements UserService {
     private TeacherService teacherService;
 
     public List<User> search(String login) {
-        return repository.findByNameContainsIgnoreCase(login);
+        return userRepository.findByNameContainsIgnoreCase(login);
     }
 
     @PreAuthorize("isAuthenticated()")
-    public List<User> findAllDisabledUsers() {
-        return repository.findAllNotActive();
+    public List<PendingUser> findAllPendingAndArchivedUsers() {
+        if (!this.isLoggedUserEligibilityToModifyOtherUser()) {
+            throw new Exception.UserRetrievingInvalidException();
+        }
+
+        if (this.isLoggedUserTeacher()) {
+            return userRepository.findAllPendingAndArchivedStudentsAndTeachers();
+        }
+
+        return userRepository.findAllPendingAndArchivedUsers();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public Boolean acceptUser(String email) {
+        if (!this.isLoggedUserEligibilityToModifyOtherUser()) {
+            throw new Exception.UserInvalidException();
+        }
+
+        User foundUser = userRepository.findByEmail(email);
+        throwIfUserIsNull(foundUser);
+
+        if (this.isLoggedUserTeacher() && !(foundUser.isStudent() || foundUser.isTeacher())) {
+            throw new Exception.UserInvalidException();
+        }
+
+        unarchiveUser(foundUser);
+        return activeUser(foundUser);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public Boolean declineUser(String email) {
+        if (!this.isLoggedUserEligibilityToModifyOtherUser()) {
+            throw new Exception.UserInvalidException();
+        }
+
+        User foundUser = userRepository.findByEmail(email);
+        throwIfUserIsNull(foundUser);
+
+        if (this.isLoggedUserTeacher() && !(foundUser.isStudent() || foundUser.isTeacher())) {
+            throw new Exception.UserInvalidException();
+        }
+
+        return archiveUser(foundUser);
+    }
+
+    public Boolean isLoggedUserEligibilityToModifyOtherUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return !authentication
+                .getAuthorities()
+                .stream()
+                .anyMatch(r -> r.getAuthority().equals("ROLE_STUDENT") || r.getAuthority().equals("ROLE_REPRESENTATIVE"));
+    }
+
+    public Boolean isLoggedUserTeacher() {
+        return this.verifyRole("ROLE_TEACHER");
+    }
+
+    public Boolean verifyRole(String role) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication
+                .getAuthorities()
+                .stream()
+                .anyMatch(r -> r.getAuthority().equals(role));
+    }
+
+    public Boolean unarchiveUser(User user) {
+        user.setArchived(false);
+        userRepository.save(user);
+        return true;
+    }
+
+    public Boolean archiveUser(User user) {
+        user.setArchived(true);
+        userRepository.save(user);
+        return true;
+    }
+
+    public Boolean activeUser(User user) {
+        user.setActive(true);
+        userRepository.save(user);
+        return true;
     }
 
     public User findByEmail(String email) {
-        return repository.findByEmail(email);
+        return userRepository.findByEmail(email);
     }
 
     @PreAuthorize("isAuthenticated()")
     public User search(Long id) {
-        return repository.findById(id).orElse(null);
+        return userRepository.findById(id).orElse(null);
     }
 
     public User findById(Long id) {
-        return repository.findById(id).orElse(null);
+        return userRepository.findById(id).orElse(null);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -81,7 +164,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         user.setPassword(user.getPassword());
-        return repository.save(user);
+        return userRepository.save(user);
     }
 
     public User getUserLoggedIn() {
@@ -99,16 +182,16 @@ public class UserServiceImpl implements UserService {
             jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
             User found;
             if (jsonObject.has("oldEmail")) {
-                found = repository.findByEmail(jsonObject.get("oldEmail").toString());
+                found = userRepository.findByEmail(jsonObject.get("oldEmail").toString());
                 throwIfUserIsNull(found);
                 found.setEmail(jsonObject.get("email").toString());
             } else {
-                found = repository.findByEmail(jsonObject.get("email").toString());
+                found = userRepository.findByEmail(jsonObject.get("email").toString());
             }
 
             assert found != null;
             found.setActive(true);
-            return repository.save(found);
+            return userRepository.save(found);
         } catch (JSONException e) {
             e.printStackTrace();
         }

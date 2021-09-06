@@ -1,6 +1,7 @@
 package br.gov.sp.fatec.user.service;
 
 import br.gov.sp.fatec.user.domain.User;
+import br.gov.sp.fatec.user.dto.PendingUser;
 
 import java.util.List;
 
@@ -11,5 +12,7 @@ public interface UserService {
     User save(User user);
     User getUserLoggedIn();
     User activate(String b64);
-    List<User> findAllDisabledUsers();
+    List<PendingUser> findAllPendingAndArchivedUsers();
+    Boolean acceptUser(String email);
+    Boolean declineUser(String email);
 }

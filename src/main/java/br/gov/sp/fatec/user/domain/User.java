@@ -36,6 +36,8 @@ public class User implements UserDetails {
 
     protected Boolean active;
 
+    protected Boolean archived;
+
     @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.User.class })
     protected String photo;
 

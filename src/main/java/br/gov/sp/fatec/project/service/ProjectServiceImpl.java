@@ -145,10 +145,13 @@ public class ProjectServiceImpl implements ProjectService {
             case "ROLE_TEACHER":
                 projectFound.setOpen(project.getOpen());
                 projectFound.setFinished(project.getFinished());
+
+                System.out.println((projectFound));
+
                 if (project.getFinished()) {
                     project.setOpen(false);
                     project.setFinishedDate(new Date());
-//                    project.setFinishedBy(); todo - mudar pra PROFESOR
+//                    project.setFinishedBy(); todo - Adicionar quem finalizou o projeto
                 }
                 projectFound.setShortDescription(project.getShortDescription());
                 projectFound.setCompleteDescription(project.getCompleteDescription());
@@ -184,6 +187,8 @@ public class ProjectServiceImpl implements ProjectService {
         projectFound.setOpen(false);
         projectFound.setProgress(9);
         projectFound.setFinished(true);
+
+        System.out.println(projectFound.getFinished());
 
         repository.save(projectFound);
     }

@@ -8,9 +8,10 @@
     <include file="db/changelog/1.0/01082020-initial_entities_users.xml"/>
     <include file="db/changelog/1.0/01082020-initial_entities_project.xml"/>
     <include file="db/changelog/1.0/14112020-changing_cpf_and_removing_project_from_meeting.xml"/>
-<!--    <include file="db/changelog/1.0/21112020-create_entity_role.xml"/>-->
+    <include file="db/changelog/1.0/21112020-create_entity_role.xml"/>
     <include file="db/changelog/1.0/27112020-change_notes_size.xml"/>
     <include file="db/changelog/1.0/28112020-add_finished_date_and_change_photo_type.xml"/>
     <include file="db/changelog/1.0/05122020-add_medal_color.xml"/>
     <include file="db/changelog/1.0/29112020-change_evaluation.xml"/>
+    <include file="db/changelog/1.0/06092021-archived-property.xml" />
 </databaseChangeLog>
