@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="28112020-1" author="danielly">
+        <addColumn tableName="project">
+            <column name="finished_date" type="DATETIME"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="27112020-2" author="danielly">
+        <modifyDataType columnName="photo" newDataType="LONGBLOB" tableName="user" />
+    </changeSet>
+
+    <changeSet id="27112020-3" author="danielly">
+        <modifyDataType columnName="telephone" newDataType="varchar(16)" tableName="representative" />
+    </changeSet>
+
+    <changeSet id="27112020-4" author="danielly">
+        <modifyDataType columnName="picture" newDataType="LONGBLOB" tableName="medal" />
+    </changeSet>
+</databaseChangeLog>

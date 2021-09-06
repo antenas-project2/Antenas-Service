@@ -30,7 +30,6 @@ public class CadiServiceImpl implements CadiService {
     private AuthorizationService authorizationService;
 
     public Cadi save(Cadi user, String url) {
-
         if (repository.findByEmail(user.getEmail()) != null) {
             throw new Exception.EmailDuplicateException();
         }
@@ -41,7 +40,6 @@ public class CadiServiceImpl implements CadiService {
 
         user.getAuthorizations().add(authorizationService.create("ROLE_CADI"));
 
-        sendEmail.sendEmail(user.getEmail(), url, null);
         return repository.save(user);
     }
 
@@ -62,5 +60,4 @@ public class CadiServiceImpl implements CadiService {
     public Cadi findById(Long id) {
         return repository.findById(id).orElse(null);
     }
-
 }

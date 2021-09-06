@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="29112020-1" author="danielly">
+        <dropTable tableName="student_team_evaluation"/>
+    </changeSet>
+
+    <changeSet id="29112020-02" author="danielly">
+        <addColumn tableName="student_team">
+            <column name="evaluation_id" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="29112020-03" author="danielly">
+        <addForeignKeyConstraint baseColumnNames="evaluation_id" baseTableName="student_team" constraintName="evaluation_student_team_fk"
+                                 referencedColumnNames="id" referencedTableName="evaluation"/>
+    </changeSet>
+
+    <changeSet id="29112020-04" author="danielly">
+        <modifyDataType columnName="name" newDataType="VARCHAR(16)" tableName="medal" />
+    </changeSet>
+
+    <changeSet id="29112020-05" author="danielly">
+        <addColumn tableName="medal">
+            <column name="category" type="VARCHAR(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="29112020-06" author="danielly">
+        <dropTable tableName="medal_category"/>
+    </changeSet>
+
+    <changeSet id="29112020-07" author="danielly">
+        <modifyDataType columnName="color" newDataType="VARCHAR(10)" tableName="medal" />
+    </changeSet>
+</databaseChangeLog>

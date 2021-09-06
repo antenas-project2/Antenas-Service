@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.utils.exception;
 
+import br.gov.sp.fatec.medal.domain.Medal;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.user.domain.User;
 import org.springframework.http.HttpStatus;
@@ -23,12 +24,19 @@ public class Exception extends Throwable {
     }
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public static class userNotFoundException extends RuntimeException {
-        public userNotFoundException(Long id) {
+    public static class UserNotFoundException extends RuntimeException {
+        public UserNotFoundException(Long id) {
             super(format("User with id '%d' not found", id));
         }
 
-        public userNotFoundException() {
+        public UserNotFoundException() {
+            super("User not found");
+        }
+    }
+
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public static class MedalNotFoundException extends RuntimeException {
+        public MedalNotFoundException() {
             super("User not found");
         }
     }
@@ -38,63 +46,66 @@ public class Exception extends Throwable {
         public userInactiveException(Long id) {
             super(format("User with id '%d' is inactive", id));
         }
-
-        public userInactiveException() {
-            super("User not found");
-        }
     }
 
     @ResponseStatus(code = HttpStatus.CONFLICT)
-    public static class studentAlreadyInTeamException extends RuntimeException {
-        public studentAlreadyInTeamException() {
+    public static class StudentAlreadyInTeamException extends RuntimeException {
+        public StudentAlreadyInTeamException() {
             super(format("Student already resgistered in a team."));
         }
     }
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public static class projectNotFoundException extends RuntimeException {
-        public projectNotFoundException(Long id) {
-            super(format("Project with id '%d' not found", id));
-        }
-
-        public projectNotFoundException() {
+    public static class ProjectNotFoundException extends RuntimeException {
+        public ProjectNotFoundException() {
             super("Project not found");
         }
     }
 
     @ResponseStatus(code = HttpStatus.METHOD_NOT_ALLOWED)
-    public static class projectCannotBeDeletedException extends RuntimeException {
-        public projectCannotBeDeletedException() {
+    public static class ProjectCannotBeDeletedException extends RuntimeException {
+        public ProjectCannotBeDeletedException() {
             super("This project canot be deleted.");
         }
     }
 
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-    public static class userInvalidException extends RuntimeException {
-        public userInvalidException() {
+    public static class UserInvalidException extends RuntimeException {
+        public UserInvalidException() {
             super("You cannot change another user's information.");
         }
     }
 
-    public static void throwIfUserIsInactive(User user) throws userNotFoundException {
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public static class UserRetrievingInvalidException extends RuntimeException {
+        public UserRetrievingInvalidException() {
+            super("You cannot change another user's information.");
+        }
+    }
+
+    public static void throwIfUserIsInactive(User user) throws UserNotFoundException {
         if (!user.getActive()) {
             throw new userInactiveException(user.getId());
         }
     }
 
-    public static void throwIfUserIsNull(User user) throws userNotFoundException {
+    public static void throwIfUserIsNull(User user) throws UserNotFoundException {
         if (user == null) {
-            throw new userNotFoundException();
+            throw new UserNotFoundException();
         }
     }
 
-    public static void throwIfProjectIsNull(Project project) throws projectNotFoundException {
+    public static void throwIfProjectIsNull(Project project) throws ProjectNotFoundException {
         if (project == null) {
-            throw new projectNotFoundException();
+            throw new ProjectNotFoundException();
         }
     }
 
-
+    public static void throwIfMedalIsNull(Medal medal) throws UserNotFoundException {
+        if (medal == null) {
+            throw new MedalNotFoundException();
+        }
+    }
 }
 
 

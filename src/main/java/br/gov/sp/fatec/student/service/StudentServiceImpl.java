@@ -1,10 +1,13 @@
 package br.gov.sp.fatec.student.service;
 
+import br.gov.sp.fatec.medal.service.MedalService;
 import br.gov.sp.fatec.security.service.AuthorizationService;
-import br.gov.sp.fatec.student.domain.AcademicInfo;
-import br.gov.sp.fatec.student.domain.ProfessionalInfo;
 import br.gov.sp.fatec.student.domain.Student;
+import br.gov.sp.fatec.student.domain.StudentDTO;
 import br.gov.sp.fatec.student.repository.StudentRepository;
+import br.gov.sp.fatec.team.domain.Evaluation;
+import br.gov.sp.fatec.team.domain.StudentTeam;
+import br.gov.sp.fatec.team.service.TeamService;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.user.service.UserService;
 import br.gov.sp.fatec.utils.commons.SendEmail;
@@ -17,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +29,7 @@ import static br.gov.sp.fatec.utils.exception.Exception.throwIfUserIsNull;
 
 @Service
 @Transactional
-public class StudentServiceImpl implements  StudentService{
+public class StudentServiceImpl implements  StudentService {
 
     @Autowired
     private StudentRepository repository;
@@ -41,6 +45,12 @@ public class StudentServiceImpl implements  StudentService{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TeamService teamService;
+
+    @Autowired
+    private MedalService medalService;
 
     public Student save(Student student, String url) {
         if (repository.findByEmail(student.getEmail()) != null) {
@@ -77,10 +87,10 @@ public class StudentServiceImpl implements  StudentService{
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @JsonView({ View.Student.class, View.User.class })
-    public Student update(Student user, String url) {
+    public Student update(Student user, String url) throws IOException {
         Student found = (Student) userService.getUserLoggedIn();
         if (!found.getEmail().equals(user.getEmail())) {
-            throw new Exception.userInvalidException();
+            throw new Exception.UserInvalidException();
         }
 
         throwIfUserIsNull(found);
@@ -92,19 +102,6 @@ public class StudentServiceImpl implements  StudentService{
         found.setBiography(user.getBiography());
         found.setCity(user.getCity());
         found.setLinkedin(user.getLinkedin());
-
-        for (AcademicInfo academicInfo : user.getAcademicInfos()) {
-            if (academicInfo.getStudents() != null && !academicInfo.getStudents().isEmpty()) {
-                academicInfo.getStudents().add(found);
-            }
-        }
-
-        for (ProfessionalInfo professionalInfo : user.getProfessionalInfos()) {
-            if (professionalInfo.getStudents() != null && !professionalInfo.getStudents().isEmpty()) {
-                professionalInfo.getStudents().add(found);
-            }
-        }
-
         found.setAcademicInfos(user.getAcademicInfos());
         found.setProfessionalInfos(user.getProfessionalInfos());
 
@@ -113,5 +110,57 @@ public class StudentServiceImpl implements  StudentService{
         }
 
         return repository.save(found);
+    }
+
+    public StudentDTO getProfileInfo(Long id) {
+        Student found = (Student) userService.findById(id);
+        StudentDTO student = new StudentDTO();
+
+        student.setBiography(found.getBiography());
+        student.setCity(found.getCity());
+        student.setEmail(found.getEmail());
+        student.setLinkedin(found.getLinkedin());
+        student.setPhoto(found.getPhoto());
+        student.setStudentTeam(teamService.findAllByStudent(found.getId()));
+        student.setCompletedProjects(student.getStudentTeam().size());
+        student.setAcademicInfos(found.getAcademicInfos());
+        student.setProfessionalInfos(found.getProfessionalInfos());
+        student.setAverage(this.getAverage(student.getStudentTeam()));
+        student.setMedals(medalService.findAllByStudentId(found.getId()));
+        student.setName(found.getName());
+
+        return student;
+    }
+
+    private Evaluation getAverage(List<StudentTeam> studentTeamList) {
+        Evaluation evaluationAverage = new Evaluation();
+
+        int qty = studentTeamList.size();
+        int proactivity = 0;
+        int collaboration = 0;
+        int autonomy = 0;
+        int resultsDeliver = 0;
+
+        for (StudentTeam studentTeam : studentTeamList) {
+            if (studentTeam.getEvaluation() != null) {
+                proactivity += studentTeam.getEvaluation().getProactivity();
+                collaboration += studentTeam.getEvaluation().getCollaboration();
+                autonomy += studentTeam.getEvaluation().getAutonomy();
+                resultsDeliver += studentTeam.getEvaluation().getResultsDeliver();
+            }
+        }
+
+        if (qty > 0) {
+            evaluationAverage.setAutonomy(autonomy / qty);
+            evaluationAverage.setCollaboration(collaboration / qty);
+            evaluationAverage.setProactivity(proactivity / qty);
+            evaluationAverage.setResultsDeliver(resultsDeliver / qty);
+        } else {
+            evaluationAverage.setAutonomy(0);
+            evaluationAverage.setCollaboration(0);
+            evaluationAverage.setProactivity(0);
+            evaluationAverage.setResultsDeliver(0);
+        }
+        return evaluationAverage;
     }
 }

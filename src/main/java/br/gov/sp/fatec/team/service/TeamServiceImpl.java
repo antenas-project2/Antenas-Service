@@ -1,25 +1,25 @@
 package br.gov.sp.fatec.team.service;
 
+import br.gov.sp.fatec.medal.domain.Medal;
+import br.gov.sp.fatec.medal.domain.StudentMedal;
+import br.gov.sp.fatec.medal.service.MedalService;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.service.StudentService;
-import br.gov.sp.fatec.team.domain.Role;
-import br.gov.sp.fatec.team.domain.StudentTeam;
-import br.gov.sp.fatec.team.domain.Team;
+import br.gov.sp.fatec.team.domain.*;
 import br.gov.sp.fatec.team.repository.RoleRepository;
 import br.gov.sp.fatec.team.repository.StudentTeamRepository;
 import br.gov.sp.fatec.team.repository.TeamRepository;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.user.service.UserService;
-import liquibase.pro.packaged.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.PreRemove;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,8 +47,11 @@ public class TeamServiceImpl implements TeamService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private MedalService medalService;
+
     @PreAuthorize("isAuthenticated()")
-    public List<Team> findAll(Long projectId) {
+    public List<TeamDTO> findAll(Long projectId) {
         User user = userService.getUserLoggedIn();
 
         if (user.getAuthorizations().get(0).getName().equals("ROLE_STUDENT")) {
@@ -57,25 +60,96 @@ public class TeamServiceImpl implements TeamService {
             if (team != null) {
                 teamList.add(team);
             }
-
-            return teamList;
+            return teamToDTO(teamList);
         }
 
-        return repository.findAllByProjectId(projectId);
+        return teamToDTO(repository.findAllByProjectId(projectId));
+    }
+
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    public void evaluate(List<Team> teams) {
+        for (Team team : teams) {
+            for (StudentTeam studentTeam : team.getStudentTeamList()) {
+                StudentTeam studentTeamFound = studentTeamRepository.findById(studentTeam.getId()).orElse(null);
+                assert studentTeamFound != null;
+
+                studentTeam.getEvaluation().setEvaluatedBy( userService.getUserLoggedIn());
+                studentTeamFound.setEvaluation(studentTeam.getEvaluation());
+                studentTeamRepository.save(studentTeamFound);
+
+                for (StudentMedal studentMedal :  studentTeam.getStudent().getStudentMedals()) {
+                    if (studentMedal.getId() == null) {
+                        Medal medal = medalService.findMedalById(studentMedal.getMedal().getId());
+                        Student student = studentService.findById(studentTeam.getStudent().getId());
+
+                        studentMedal.setMedal(medal);
+                        studentMedal.setStudent(student);
+                        studentMedal.setDate(new Date());
+                        medalService.saveStudentMedal(studentMedal);
+                    }
+
+                }
+            }
+        }
+        if (teams.size() > 0) {
+            projectService.closeAndFinishProject(teams.get(0).getProject());
+        }
+    }
+
+    private List<TeamDTO> teamToDTO(List<Team> teamList) {
+        List<TeamDTO> teamDTOList = new ArrayList<>();
+
+        for (Team team : teamList) {
+            TeamDTO teamDTO = new TeamDTO();
+
+            teamDTO.setProjectUrl(team.getProjectUrl());
+            teamDTO.setProject(team.getProject());
+            teamDTO.setName(team.getName());
+            teamDTO.setId(team.getId());
+            teamDTO.setCommunicationLink(team.getCommunicationLink());
+            teamDTO.setStudentTeamList(studentTeamToDTO(team.getStudentTeamList()));
+
+            teamDTOList.add(teamDTO);
+        }
+
+        return teamDTOList;
+    }
+
+    private List<StudentTeamDTO> studentTeamToDTO(List<StudentTeam> studentTeamList) {
+        List<StudentTeamDTO> studentTeamDTOList = new ArrayList<>();
+
+        for(StudentTeam studentTeam : studentTeamList) {
+            StudentTeamDTO studentTeamDTO = new StudentTeamDTO();
+
+            studentTeamDTO.setStudent(studentTeam.getStudent());
+            studentTeamDTO.setRole(studentTeam.getRole());
+            studentTeamDTO.setId(studentTeam.getId());
+            if (studentTeam.getEvaluation() == null) {
+                studentTeamDTO.setEvaluation(new Evaluation());
+            } else {
+                studentTeamDTO.setEvaluation(studentTeam.getEvaluation());
+            }
+            studentTeamDTOList.add(studentTeamDTO);
+        }
+        return studentTeamDTOList;
     }
 
     public List<Role> getRoles() {
         return roleRepository.findAll();
     }
 
+    public List<StudentTeam> findAllByStudent(Long studentId) {
+        return studentTeamRepository.findAllByStudentIdAndTeamProjectFinishedOrderByTeamProjectFinishedDateDesc(studentId, true);
+    }
+
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public Team save(Team team) {
         Student student = (Student) userService.getUserLoggedIn();
 
-        StudentTeam studentTeamExists = studentTeamRepository.findByStudentIdAndTeamProjectFinished(student.getId(), false);
+        StudentTeam studentTeamExists = studentTeamRepository.findByStudentIdAndTeamProjectFinishedAndTeamProjectProgressLessThan(student.getId(), false, 8);
 
         if (studentTeamExists != null) {
-            throw new studentAlreadyInTeamException();
+            throw new StudentAlreadyInTeamException();
         }
 
         Project project = projectService.findById(team.getProject().getId());
@@ -111,10 +185,10 @@ public class TeamServiceImpl implements TeamService {
             if (studentTeam.getId() != null) {
                 studentTeamRepository.findById(studentTeam.getId()).ifPresent(studentTeams::add);
             } else {
-                StudentTeam studentTeamExists = studentTeamRepository.findByStudentIdAndTeamProjectFinished(studentTeam.getStudent().getId(), false);
+                StudentTeam studentTeamExists = studentTeamRepository.findByStudentIdAndTeamProjectFinishedAndTeamProjectProgressLessThan(studentTeam.getStudent().getId(), false, 8);
 
                 if (studentTeamExists != null) {
-                    throw new studentAlreadyInTeamException();
+                    throw new StudentAlreadyInTeamException();
                 }
 
                 Student student = studentService.findById(studentTeam.getStudent().getId());
@@ -133,15 +207,6 @@ public class TeamServiceImpl implements TeamService {
         found.setProjectUrl(team.getProjectUrl());
         found.setCommunicationLink(team.getCommunicationLink());
 
-        for (StudentTeam studentTeamFound : found.getStudentTeamList()) {
-            for (StudentTeam studentTeam : team.getStudentTeamList()) {
-                if (studentTeamFound.getId().equals(studentTeam.getId()) && studentTeam.getEvaluations().size() > 0) {
-                    studentTeam.getEvaluations().get(0).setEvaluatedBy(userService.getUserLoggedIn());
-                    studentTeamFound.getEvaluations().add(studentTeam.getEvaluations().get(0));
-                }
-            }
-        }
-
         return repository.save(found);
     }
 
@@ -152,7 +217,6 @@ public class TeamServiceImpl implements TeamService {
         assert found != null;
         found.setRole(studentTeam.getRole());
         return studentTeamRepository.save(found).getTeam();
-
     }
 }
 

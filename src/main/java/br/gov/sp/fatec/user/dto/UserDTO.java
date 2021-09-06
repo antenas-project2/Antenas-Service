@@ -17,4 +17,12 @@ public class UserDTO {
     private String token;
     private Long id;
     private String photo;
+
+    public UserDTO() {}
+
+    public UserDTO(Long id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
 }

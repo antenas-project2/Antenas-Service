@@ -39,8 +39,6 @@ public class RepresentativeServiceImpl implements RepresentativeService{
 
         representative.getAuthorizations().add(authorizationService.create("ROLE_REPRESENTATIVE"));
 
-        sendEmail.sendEmail(representative.getEmail(), url, null);
-
         return repository.save(representative);
     }
 

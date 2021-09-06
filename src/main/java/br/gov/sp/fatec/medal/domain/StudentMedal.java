@@ -1,6 +1,7 @@
 package br.gov.sp.fatec.medal.domain;
 
 import br.gov.sp.fatec.student.domain.Student;
+import br.gov.sp.fatec.team.domain.Team;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -20,19 +21,20 @@ import java.util.List;
 public class StudentMedal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Team.class })
     private Long id;
 
     @ManyToOne
-    @MapsId("student_id")
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JoinColumn(name = "student_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Student student;
 
     @ManyToOne
-    @MapsId("medal_id")
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JoinColumn(name = "medal_id")
+    @JsonView({ View.Team.class })
     private Medal medal;
 
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class })
+    @JsonView({ View.Team.class })
     private Date date;
 }

@@ -12,8 +12,8 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="21112020-2" author="danielly">
-        <createTable tableName="student_team_role">
+    <changeSet id="21112020-2-1" author="danielly">
+        <createTable tableName="student_role">
             <column name="id" type="BIGINT"/>
             <column name="role_id" type="BIGINT"/>
             <column name="student_team_id" type="BIGINT"/>

@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
@@ -25,18 +23,18 @@ public class Evaluation {
 
     @OneToOne
     @JoinColumn(name = "evaluated_by")
-    @JsonView({ View.Team.class })
+    @JsonView({ View.Team.class, View.Profile.class  })
     private User evaluatedBy;
 
-    @JsonView({ View.Team.class })
-    private int proactivity;
+    @JsonView({ View.Team.class, View.Profile.class })
+    private Integer proactivity;
 
-    @JsonView({ View.Team.class })
-    private int collaboration;
+    @JsonView({ View.Team.class, View.Profile.class })
+    private Integer collaboration;
 
-    @JsonView({ View.Team.class })
-    private int autonomy;
+    @JsonView({ View.Team.class, View.Profile.class })
+    private Integer autonomy;
 
-    @JsonView({ View.Team.class })
-    private int resultsDeliver;
+    @JsonView({ View.Team.class, View.Profile.class })
+    private Integer resultsDeliver ;
 }
