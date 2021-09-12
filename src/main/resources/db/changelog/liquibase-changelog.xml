@@ -14,4 +14,5 @@
     <include file="db/changelog/1.0/05122020-add_medal_color.xml"/>
     <include file="db/changelog/1.0/29112020-change_evaluation.xml"/>
     <include file="db/changelog/1.0/06092021-archived-property.xml" />
+    <include file="db/changelog/1.0/11092021-added_markdown_profile_proprety.xml" />
 </databaseChangeLog>
