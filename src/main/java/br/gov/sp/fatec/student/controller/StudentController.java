@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.student.controller;
 
+import br.gov.sp.fatec.student.domain.Profile;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.domain.StudentDTO;
 import br.gov.sp.fatec.student.service.StudentService;
@@ -30,6 +31,12 @@ public class StudentController {
     public Student save (@RequestBody Student student, UriComponentsBuilder uriComponentsBuilder) {
         String url = uriComponentsBuilder.build().toUriString();
         return service.save(student, url);
+    }
+
+    @PutMapping(value = "/public-profile", produces = APPLICATION_JSON_VALUE)
+    @JsonView({ View.Student.class })
+    public Student createPublicProfile(@RequestBody Profile profile) {
+        return service.createPublicProfile(profile.markdownProfile);
     }
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)

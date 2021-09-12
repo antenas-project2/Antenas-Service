@@ -11,6 +11,8 @@ import br.gov.sp.fatec.user.dto.PendingUser;
 import br.gov.sp.fatec.user.dto.UserDTO;
 import br.gov.sp.fatec.user.repository.UserRepository;
 import br.gov.sp.fatec.utils.exception.Exception;
+import br.gov.sp.fatec.utils.view.View;
+import com.fasterxml.jackson.annotation.JsonView;
 import javassist.NotFoundException;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,6 +54,14 @@ public class UserServiceImpl implements UserService {
 
     public List<User> search(String login) {
         return userRepository.findByNameContainsIgnoreCase(login);
+    }
+
+    public User getStudent(Long id) {
+        return studentService.findById(id);
+//        User user = userRepository.findById(id).orElse(null);
+//        throwIfUserIsNull(user);
+
+//        return user.isStudent() ? user : null;
     }
 
     @PreAuthorize("isAuthenticated()")

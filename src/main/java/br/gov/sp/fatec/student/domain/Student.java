@@ -32,6 +32,9 @@ public class Student extends User {
     @JsonView({ View.Student.class, View.User.class })
     private String biography;
 
+    @JsonView({ View.Student.class })
+    private String markdownProfile;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "student_professional_info",
             joinColumns = @JoinColumn(name = "student_id"),

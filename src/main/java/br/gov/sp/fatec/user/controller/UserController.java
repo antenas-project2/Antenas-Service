@@ -26,6 +26,12 @@ public class UserController {
         return service.getUserLoggedIn();
     }
 
+    @GetMapping(value = "/student/{id}", produces = APPLICATION_JSON_VALUE)
+    @JsonView({ View.Student.class })
+    public User getStudent(@PathVariable("id") Long id) {
+        return service.getStudent(id);
+    }
+
     @GetMapping(value = "/pending-archived-users", produces = APPLICATION_JSON_VALUE)
     public List<PendingUser> findAllDisabledUsers() {
         return service.findAllPendingAndArchivedUsers();

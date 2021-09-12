@@ -11,6 +11,7 @@ public interface UserService {
     User findById(Long id);
     User save(User user);
     User getUserLoggedIn();
+    User getStudent(Long id);
     User activate(String b64);
     List<PendingUser> findAllPendingAndArchivedUsers();
     Boolean acceptUser(String email);
