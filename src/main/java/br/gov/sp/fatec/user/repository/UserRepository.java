@@ -2,7 +2,6 @@ package br.gov.sp.fatec.user.repository;
 
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.user.dto.PendingUser;
-import br.gov.sp.fatec.user.dto.UserDTO;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

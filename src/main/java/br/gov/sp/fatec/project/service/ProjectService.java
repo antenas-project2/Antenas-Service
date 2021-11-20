@@ -23,4 +23,6 @@ public interface ProjectService {
     Project closeProject (Project project);
 
     void closeAndFinishProject(Project project);
+
+    Boolean createMeetSchedule(Long projectId);
 }

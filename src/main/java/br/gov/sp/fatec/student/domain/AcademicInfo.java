@@ -1,9 +1,7 @@
 package br.gov.sp.fatec.student.domain;
 
-import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
-import liquibase.pro.packaged.D;
 import lombok.*;
 
 import javax.persistence.*;

@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.sql.Blob;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,7 +21,7 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class, View.User.class })
+    @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class, View.Team.class, View.Project.class, View.User.class })
     private Long id;
 
     @JsonView({ View.Cadi.class, View.Representative.class, View.Student.class, View.Teacher.class,View.User.class })

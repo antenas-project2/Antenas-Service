@@ -3,11 +3,9 @@ package br.gov.sp.fatec.student.controller;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.domain.StudentDTO;
 import br.gov.sp.fatec.student.service.StudentService;
-import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 

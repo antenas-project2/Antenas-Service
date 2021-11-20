@@ -41,6 +41,13 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private UserService userService;
 
+    @PreAuthorize("isAuthenticated()")
+    public Boolean createMeetSchedule(Long projectId) {
+
+
+        return true;
+    }
+
     @PreAuthorize("hasRole('ROLE_REPRESENTATIVE')")
     public Project save(Project project) {
         Representative found = representativeService.findById(userService.getUserLoggedIn().getId());

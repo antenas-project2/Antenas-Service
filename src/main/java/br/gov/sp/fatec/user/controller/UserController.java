@@ -2,7 +2,6 @@ package br.gov.sp.fatec.user.controller;
 
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.user.dto.PendingUser;
-import br.gov.sp.fatec.user.dto.UserDTO;
 import br.gov.sp.fatec.user.service.UserService;
 import br.gov.sp.fatec.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;

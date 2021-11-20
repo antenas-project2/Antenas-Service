@@ -8,7 +8,6 @@ import br.gov.sp.fatec.student.service.StudentService;
 import br.gov.sp.fatec.teacher.service.TeacherService;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.user.dto.PendingUser;
-import br.gov.sp.fatec.user.dto.UserDTO;
 import br.gov.sp.fatec.user.repository.UserRepository;
 import br.gov.sp.fatec.utils.exception.Exception;
 import javassist.NotFoundException;
@@ -22,11 +21,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static br.gov.sp.fatec.utils.exception.Exception.throwIfUserIsNull;
 

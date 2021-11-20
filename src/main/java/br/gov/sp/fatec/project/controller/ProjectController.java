@@ -27,6 +27,13 @@ public class ProjectController {
         return service.save(project);
     }
 
+    @PostMapping(value = "/{id}/schedule-meet", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @JsonView({ View.Project.class })
+    public Boolean createSchedule(@PathVariable("id") Long projectId) {
+        return service.createMeetSchedule(projectId);
+    }
+
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @JsonView({ View.Project.class })
     public List<Project> findAll() {
