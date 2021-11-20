@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="14112020-1" author="danielly">
+        <modifyDataType columnName="cpf" newDataType="VARCHAR(14)" tableName="user" />
+    </changeSet>
+
+    <changeSet id="14112020-2" author="danielly">
+        <dropForeignKeyConstraint constraintName="meeting_project_fk" baseTableName="meeting"/>
+
+        <dropColumn columnName="id" tableName="meeting">
+            <column name="project_id"/>
+        </dropColumn>
+
+    </changeSet>
+</databaseChangeLog>
