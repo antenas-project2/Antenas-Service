@@ -7,14 +7,10 @@ import java.io.IOException;
 import java.util.List;
 
 public interface StudentService {
-
     Student save(Student student, String url);
-
+    Student createPublicProfile(String markdownProfile);
     Student findById(Long id);
-
     List<Student> findAll();
-
     Student update(Student user, String url) throws IOException;
-
     StudentDTO getProfileInfo(Long id);
 }

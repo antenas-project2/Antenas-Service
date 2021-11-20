@@ -32,7 +32,7 @@ import static br.gov.sp.fatec.utils.exception.Exception.throwIfUserIsNull;
 public class StudentServiceImpl implements  StudentService {
 
     @Autowired
-    private StudentRepository repository;
+    private StudentRepository studentRepository;
 
     @Autowired
     private SendEmail sendEmail;
@@ -53,7 +53,7 @@ public class StudentServiceImpl implements  StudentService {
     private MedalService medalService;
 
     public Student save(Student student, String url) {
-        if (repository.findByEmail(student.getEmail()) != null) {
+        if (studentRepository.findByEmail(student.getEmail()) != null) {
             throw new Exception.EmailDuplicateException();
         }
 
@@ -64,12 +64,21 @@ public class StudentServiceImpl implements  StudentService {
         student.getAuthorizations().add(authorizationService.create("ROLE_STUDENT"));
 
         sendEmail.sendEmail(student.getEmail(), url, null);
-        return repository.save(student);
+        return studentRepository.save(student);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @JsonView({ View.Student.class, View.User.class })
+    public Student createPublicProfile(String markdownProfile) {
+        Student student = (Student) userService.getUserLoggedIn();
+
+        student.setMarkdownProfile(markdownProfile);
+        return studentRepository.save(student);
     }
 
     @PreAuthorize("isAuthenticated()")
     public Student findById(Long id) {
-        Student found = repository.findById(id).orElse(null);
+        Student found = studentRepository.findById(id).orElse(null);
         throwIfUserIsNull(found);
         return found;
     }
@@ -78,7 +87,7 @@ public class StudentServiceImpl implements  StudentService {
     public List<Student> findAll() {
         User user = userService.getUserLoggedIn();
 
-        List<Student> students = repository.findAll();
+        List<Student> students = studentRepository.findAll();
         if (user.getAuthorizations().get(0).getName().equals("ROLE_STUDENT")) {
             students.remove(user);
         }
@@ -109,7 +118,7 @@ public class StudentServiceImpl implements  StudentService {
             sendEmail.sendEmail(user.getEmail(), url, found.getEmail());
         }
 
-        return repository.save(found);
+        return studentRepository.save(found);
     }
 
     public StudentDTO getProfileInfo(Long id) {
